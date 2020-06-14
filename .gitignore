@@ -7,3 +7,5 @@
 fintrack/settings/development.py
 fintrack/settings/production.py
 fintrack/settings/secret_key.py
+
+.ebignore
