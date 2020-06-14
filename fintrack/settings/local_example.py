@@ -1,5 +1,7 @@
 from fintrack.settings.common import *
-from fintrack.settings.secret_key import *
+
+# You must fill in the SECRET_KEY
+SECRET_KEY = ''
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
