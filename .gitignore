@@ -9,3 +9,5 @@ fintrack/settings/production.py
 fintrack/settings/secret_key.py
 
 .ebignore
+
+/static/
