@@ -1,5 +1,3 @@
-from .user_account_manager import UserAccountManager
-from .user import User
 from .country import Country
 from .sector import Sector
 from .industry import Industry

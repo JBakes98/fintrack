@@ -5,5 +5,6 @@ from fintrack import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/', include('fintrack_be.urls.base_urls')),
+    path('api/v1/user/', include('user.urls')),
     path('', views.index),
 ]

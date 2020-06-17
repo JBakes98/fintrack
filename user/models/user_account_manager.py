@@ -10,6 +10,7 @@ class UserAccountManager(BaseUserManager):
             raise ValueError('Email address must be provided')
         if not password:
             raise ValueError('Password must be provided')
+
         now = timezone.now()
         email = self.normalize_email(email)
         user = self.model(
@@ -22,6 +23,7 @@ class UserAccountManager(BaseUserManager):
         )
         user.set_password(password)
         user.save(using=self._db)
+
         return user
 
     def create_user(self, email, password, **extra_fields):

@@ -7,18 +7,18 @@ from django.utils.encoding import force_text, force_bytes
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 
 from rest_framework import generics, status
-from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
 
-from fintrack_be.models import User
-from fintrack_be.tasks.email_tasks import send_email
-from fintrack_be.helpers.token_helper import user_token
-from fintrack_be.serializers.user_serializer import UserSerializer, RegisterUserSerializer
-from fintrack_be.throttles import OncePerHourUserThrottle
+from user.models import User
+from user.tasks.email_tasks import send_email
+from user.token_helper import user_token
+from user.serializers.user_serializer import UserSerializer, RegisterUserSerializer
+
+from fintrack.throttles import OncePerHourUserThrottle
 
 
 class ActivateView(APIView):
@@ -68,7 +68,8 @@ class UserRequestEmailVerificationAPIView(APIView):
                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                 'token': user_token.make_token(user)
             })
-            send_email.delay(subject, message, [user.email, ])
+            # Need to make this an async task
+            # send_email(subject, message, [user.email, ])
 
             return Response('Email sent', status=status.HTTP_202_ACCEPTED)
         return Response('User account already verified', status=status.HTTP_200_OK)
@@ -95,7 +96,7 @@ class RequestUserPasswordReset(APIView):
                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                 'token': user_token.make_token(user)
             })
-            send_email.delay(subject, message, [user.email, ])
+            # send_email(subject, message, [user.email, ])
 
             return Response('Reset email sent to users email')
 

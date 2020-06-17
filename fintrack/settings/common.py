@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     # Local Apps
     'fintrack',
     'fintrack_be',
+    'user',
 ]
 
 # API settings
@@ -34,7 +35,7 @@ REST_FRAMEWORK = {
         'rest_framework.renderers.JSONRenderer',
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'fintrack_be.helpers.authentication_helper.ExpiringTokenAuthentication',
+        'user.authentication.ExpiringTokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',
     ],
 
@@ -97,7 +98,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-AUTH_USER_MODEL = 'fintrack_be.User'
+AUTH_USER_MODEL = 'user.User'
 PASSWORD_RESET_TIMEOUT_DAYS = 1
 
 # Internationalization
