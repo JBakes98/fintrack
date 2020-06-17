@@ -14,10 +14,11 @@ from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
 
 from user.models import User
-from fintrack_be.tasks.email_tasks import send_email
+from user.tasks.email_tasks import send_email
 from user.token_helper import user_token
 from user.serializers.user_serializer import UserSerializer, RegisterUserSerializer
-from fintrack_be.throttles import OncePerHourUserThrottle
+
+from fintrack.throttles import OncePerHourUserThrottle
 
 
 class ActivateView(APIView):
@@ -67,7 +68,8 @@ class UserRequestEmailVerificationAPIView(APIView):
                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                 'token': user_token.make_token(user)
             })
-            send_email.delay(subject, message, [user.email, ])
+            # Need to make this an async task
+            # send_email(subject, message, [user.email, ])
 
             return Response('Email sent', status=status.HTTP_202_ACCEPTED)
         return Response('User account already verified', status=status.HTTP_200_OK)
@@ -94,7 +96,7 @@ class RequestUserPasswordReset(APIView):
                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                 'token': user_token.make_token(user)
             })
-            send_email.delay(subject, message, [user.email, ])
+            # send_email(subject, message, [user.email, ])
 
             return Response('Reset email sent to users email')
 
@@ -151,7 +153,7 @@ class UserCreateAPIView(generics.CreateAPIView):
             'user': user,
             'domain': current_site.domain,
             'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-            'token': user_token.make_token(user)
+            'token': use-r_token.make_token(user)
         })
         send_email.delay(subject, message, [user.email, ])
 

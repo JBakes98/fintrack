@@ -17,6 +17,7 @@ class UserSerializer(serializers.ModelSerializer):
         user = super(UserSerializer, self).create(validated_data)
         user.set_password(validated_data['password'])
         user.save()
+
         return user
 
 
@@ -32,6 +33,7 @@ class SuperUserSerializer(serializers.ModelSerializer):
         user = super(SuperUserSerializer, self).create(validated_data)
         user.set_password(validated_data['password'])
         user.save()
+
         return user
 
 
@@ -59,5 +61,5 @@ class RegisterUserSerializer(serializers.ModelSerializer):
 
         user.set_password(password)
         user.save()
-        return user
 
+        return user
