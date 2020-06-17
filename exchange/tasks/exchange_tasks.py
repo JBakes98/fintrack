@@ -10,7 +10,8 @@ def get_exchanges_day_data(exchange_symbol):
     for that stock.
     :param exchange_symbol: Exchange symbol to get stocks for
     """
-    from fintrack_be.models import Exchange, Stock
+    from exchange.models import Exchange
+    from fintrack_be.models import Stock
     from fintrack_be.tasks.stock_tasks import get_day_stock_data
 
     exchange = Exchange.objects.get(symbol=exchange_symbol)
@@ -27,7 +28,8 @@ def bulk_get_exchanges_day_data(exchange_symbol):
     creates them in bulk
     :param exchange_symbol: Exchange symbol to get data for
     """
-    from fintrack_be.models import Exchange, Stock
+    from exchange.models import Exchange
+    from fintrack_be.models import Stock
     from fintrack_be.tasks.stock_tasks import get_bulk_day_stock_data
 
     exchange = Exchange.objects.get(symbol=exchange_symbol)

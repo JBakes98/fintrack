@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from fintrack_be.models import Exchange, Stock, StockPriceData
-from fintrack_be.serializers.exchange_serializer import ExchangeSerializer
+from exchange.serializers.exchange_serializer import ExchangeSerializer
 from fintrack_be.serializers.stock_serializer import StockSerializer
 from fintrack_be.permissions import IsVerified
 

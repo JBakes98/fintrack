@@ -1,1 +1,0 @@
-from .industry_views import *
