@@ -4,7 +4,7 @@ import pytz
 from django.db import models
 
 from fintrack_be.helpers.timezone_helper import get_timezone, convert_time_to_timezone
-from fintrack_be.models.country import Country
+from country.models.country import Country
 
 
 class Exchange(models.Model):

@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     'fintrack',
     'fintrack_be',
     'user',
+    'country',
 ]
 
 # API settings

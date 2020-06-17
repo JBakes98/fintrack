@@ -10,7 +10,6 @@ class Country(models.Model):
     class Meta:
         verbose_name = 'Country'
         verbose_name_plural = "Countries"
-        db_table = 'country'
 
     def __str__(self):
         return self.alpha2

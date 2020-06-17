@@ -1,6 +1,6 @@
 import requests
 import bs4 as bs
-from fintrack_be.models import Country
+from country.models import Country
 
 
 def create_country_instances():
