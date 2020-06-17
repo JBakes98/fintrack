@@ -1,7 +1,6 @@
 from django.urls import path, include
 
 urlpatterns = [
-    path('user/', include('fintrack_be.urls.user_urls')),
     # path('country/', include('fintrack_be.urls.country_urls')),
     path('company/', include('fintrack_be.urls.company_urls')),
     path('exchange/', include('fintrack_be.urls.exchange_urls')),

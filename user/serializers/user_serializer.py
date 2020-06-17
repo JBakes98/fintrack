@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from fintrack_be.models import Country, User
+from user.models import User
+from fintrack_be.models import Country
 
 
 class UserSerializer(serializers.ModelSerializer):

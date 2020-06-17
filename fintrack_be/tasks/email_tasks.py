@@ -6,7 +6,7 @@ from django.shortcuts import render
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django_celery_results.models import TaskResult
-from fintrack_be.models import User
+from user.models import User
 
 
 @task()

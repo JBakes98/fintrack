@@ -8,7 +8,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from fintrack_be.models import User, Stock
+from user.models import User
+from fintrack_be.models import Stock
 from fintrack_be.models.stock_price import StockPriceData, INTERVAL_OPTIONS
 from fintrack_be.serializers.stock_serializer import StockSerializer, StockPriceDataSerializer
 from fintrack_be.permissions import IsVerified

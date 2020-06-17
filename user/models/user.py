@@ -6,7 +6,7 @@ from django.db import models
 from django.dispatch import receiver
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 
-from fintrack_be.models.user_account_manager import UserAccountManager
+from user.models.user_account_manager import UserAccountManager
 from fintrack_be.models.country import Country
 from fintrack_be.models.stock import Stock
 

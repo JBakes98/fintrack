@@ -1,4 +1,3 @@
-from .user_admin import *
 from .country_admin import *
 from .exchange_admin import *
 from .company_admin import *

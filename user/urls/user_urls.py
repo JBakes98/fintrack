@@ -1,5 +1,5 @@
 from django.urls import path
-from fintrack_be.views import user_views as views
+from user.views import user_views as views
 
 urlpatterns = [
     path('login/', views.obtain_expiring_auth_token, name='get_token'),
