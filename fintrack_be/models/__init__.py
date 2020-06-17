@@ -1,4 +1,3 @@
-from .industry import Industry
 from .company import Company
 from .exchange import Exchange
 from .stock import Stock

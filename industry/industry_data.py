@@ -1,4 +1,4 @@
-from fintrack_be.models import Industry
+from industry.models import Industry
 from sector.models import Sector
 from sector import sector_data
 

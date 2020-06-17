@@ -1,6 +1,6 @@
 from django.db.models import Q
 from fintrack_be.models import Company, Industry
-from fintrack_be.functions.industry import industry_data
+from industry import industry_data
 
 
 def create_company(short_name, long_name, summary, industry):

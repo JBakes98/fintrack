@@ -1,6 +1,5 @@
 from django.contrib import admin
 
-from fintrack_be.admin.linkify import linkify
 from fintrack_be.models import StockPriceData
 
 
@@ -22,7 +21,7 @@ class StockPriceAdmin(admin.ModelAdmin):
     )
 
     list_display = ('timestamp',
-                    linkify(field_name='stock'),
+                    'stock',
                     'open',
                     'close',
                     'change',
