@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from exchange.models import Exchange
+from fintrack_be.models import Exchange
+
 
 
 class ExchangeSerializer(serializers.ModelSerializer):
