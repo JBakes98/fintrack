@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from user.models import User
-from fintrack_be.models import Country
+from country.models import Country
 
 
 class UserSerializer(serializers.ModelSerializer):

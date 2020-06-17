@@ -1,5 +1,5 @@
 from django.contrib import admin
-from fintrack_be.models import Country
+from country.models import Country
 
 
 class CountryAdmin(admin.ModelAdmin):
