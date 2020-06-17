@@ -51,8 +51,8 @@ class NASDAQ(ExchangeClass):
             table = soup.find('table', {'class': 'quotes'})
 
             for row in table.findAll('tr')[1:]:
-                symbol = row.findAll('td')[0].text
+                ticker = row.findAll('td')[0].text
                 mapping = str.maketrans(".", "-")
-                symbol = symbol.translate(mapping)
+                ticker = ticker.translate(mapping)
                 name = row.findAll('td')[1].text
-                stock_data.create_stock(symbol, name, self.symbol)
+                stock_data.create_stock(ticker, name, self.symbol)

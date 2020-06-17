@@ -26,9 +26,11 @@ class SEHK(ExchangeClass):
             table = soup.find('table', {'class': 'quotes'})
 
             for row in table.findAll('tr')[1:]:
-                symbol = row.findAll('td')[0].text
-                symbol = symbol[1:]
+                ticker = row.findAll('td')[0].text
+                ticker = ticker[1:]
+
                 mapping = str.maketrans(".", "-")
-                symbol = symbol.translate(mapping) + ".HK"
+                ticker = ticker.translate(mapping) + ".HK"
+
                 name = row.findAll('td')[1].text
-                stock_data.create_stock(symbol, name, self.symbol)
+                stock_data.create_stock(ticker, name, self.symbol)

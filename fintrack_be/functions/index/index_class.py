@@ -1,6 +1,6 @@
 from django.db import IntegrityError
 
-from fintrack_be import Index
+from fintrack_be.models import Index
 
 
 class IndexClass:

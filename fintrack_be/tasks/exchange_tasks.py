@@ -17,7 +17,7 @@ def get_exchanges_day_data(exchange_symbol):
     stocks = Stock.objects.filter(exchange=exchange).order_by('ticker')
 
     for stock in stocks:
-        get_day_stock_data(stock.symbol)
+        get_day_stock_data(stock.ticker)
 
 
 @task()
@@ -31,10 +31,10 @@ def bulk_get_exchanges_day_data(exchange_symbol):
     from fintrack_be.tasks.stock_tasks import get_bulk_day_stock_data
 
     exchange = Exchange.objects.get(symbol=exchange_symbol)
-    stocks = Stock.objects.filter(exchange=exchange).order_by('symbol')
+    stocks = Stock.objects.filter(exchange=exchange).order_by('ticker')
 
     for stock in stocks:
-        get_bulk_day_stock_data(stock.symbol)
+        get_bulk_day_stock_data(stock.ticker)
 
 
 """
@@ -58,7 +58,7 @@ def get_latest_data_for_open_markets():
         if exchange.market_open():
             stocks = Stock.objects.filter(exchange=exchange)
             for stock in stocks:
-                get_latest_stock_data.delay(stock.symbol)
+                get_latest_stock_data.delay(stock.ticker)
 
 
 @task()
@@ -76,7 +76,7 @@ def get_exchanges_minute_data(exchange_symbol):
     stocks = Stock.objects.filter(exchange=exchange)
 
     for stock in stocks:
-        df = get_stock_data(symbol=stock.symbol, period='1d', interval='1m')
+        df = get_stock_data(ticker=stock.ticker, period='1d', interval='1m')
         stock_price_data_df_to_model(df)
         print('Added {} minute data')
 

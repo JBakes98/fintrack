@@ -14,21 +14,21 @@ from fintrack_be.functions.company import company_data
 from fintrack_be.helpers import dataframe_helper as df_helper
 
 
-def create_stock(symbol, name, exchange):
+def create_stock(ticker, name, exchange):
     """
     Method for creating a stock and finding its parent company object
-    :param symbol: Stocks symbol
+    :param ticker: Stocks ticker
     :param name: Stocks name
     :param exchange: Stocks parent Exchange
     """
     try:
         exchange = Exchange.objects.get(Q(symbol=exchange) | Q(name=exchange))
-        company = get_stock_company(symbol)
-        Stock.objects.update_or_create(symbol=symbol,
+        company = get_stock_company(ticker)
+        Stock.objects.update_or_create(ticker=ticker,
                                        name=name,
                                        exchange=exchange,
                                        company=company)
-        print('{} created'.format(symbol))
+        print('{} created'.format(ticker))
 
     except Exchange.DoesNotExist as e:
         print('{}: {}'.format(exchange, e))
@@ -40,16 +40,16 @@ def create_stock(symbol, name, exchange):
         print(e)
 
 
-def get_stock_company(symbol):
+def get_stock_company(ticker):
     """
     Method for getting the parent company of the specified stock, if company cannot be found
     then it will call the create_company method to create the company. If the method fails
     it will attempt 3 times before failing completely.
-    :param symbol: Stock symbol
+    :param ticker: Stock ticker
     :return: Stocks parent Company
     """
     # Returns JSON data that contains data on the stock
-    stock = yf.Ticker(symbol)
+    stock = yf.Ticker(ticker)
     attempts = 3
 
     for i in range(attempts):
@@ -65,7 +65,7 @@ def get_stock_company(symbol):
                 return company_data.get_company(short_company_name, long_company_name)
 
         except ValueError:
-            print('{} cannot find parent company'.format(symbol))
+            print('{} cannot find parent company'.format(ticker))
             return company_data.get_company('N/A', 'Non linked objects')
         except KeyError:
             return company_data.get_company('N/A', 'Non linked objects')
@@ -137,19 +137,19 @@ def bulk_stock_price_data_to_model(df):
         print(e)
 
 
-def get_stock_data(symbol, period, interval):
+def get_stock_data(ticker, period, interval):
     """
     This method gets a specific stocks price data in a 1 day interval and puts
     it into a dataframe
     :param interval: Interval of data that should be retrieved, options are 1m, 1d, 1m, 1y
     :param period: Period of data that should be retrieved
-    :param symbol: Stocks symbol
+    :param ticker: Stocks ticker
     :return: Stocks price data dataframe
     """
-    stock = yf.Ticker(symbol)
+    stock = yf.Ticker(ticker)
     df = stock.history(period=period, interval=interval)
 
-    return df_helper.prepare_stock_data_df(df, symbol)
+    return df_helper.prepare_stock_data_df(df, ticker)
 
 
 def run_ml_processing(index):

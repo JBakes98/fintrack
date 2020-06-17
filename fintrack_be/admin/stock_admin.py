@@ -6,7 +6,7 @@ from fintrack_be.models import Stock
 class StockAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {'fields': (
-            'symbol',
+            'ticker',
             'name',
             'company',
             'exchange',

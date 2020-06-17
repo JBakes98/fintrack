@@ -38,7 +38,7 @@ class SP500(IndexClass):
                 print(added)
 
                 try:
-                    stock = Stock.objects.get(symbol=stock)
+                    stock = Stock.objects.get(ticker=stock)
                     index = Index.objects.get(symbol=self.symbol)
 
                     if added:
@@ -49,7 +49,7 @@ class SP500(IndexClass):
                         IndexConstituents.objects.create(constituent=stock,
                                                          index=index)
 
-                    print('{} added as a constituent of {}'.format(stock.symbol, self.name))
+                    print('{} added as a constituent of {}'.format(stock.ticker, self.name))
 
                 except ObjectDoesNotExist as e:
                     print(e)
