@@ -4,7 +4,6 @@ from celery.schedules import crontab
 
 # set the default Django settings module for the 'celery' program.
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'fintrack.settings.development')
-os.environ.setdefault('FORKED_BY_MULTIPROCESSING', '1')
 app = Celery('fintrack')
 
 # Using a string here means the worker doesn't have to serialize

@@ -153,7 +153,7 @@ class UserCreateAPIView(generics.CreateAPIView):
             'user': user,
             'domain': current_site.domain,
             'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-            'token': use-r_token.make_token(user)
+            'token': user_token.make_token(user)
         })
         send_email.delay(subject, message, [user.email, ])
 
