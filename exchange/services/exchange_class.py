@@ -1,7 +1,7 @@
 from django.db import IntegrityError
 
 from country.models import Country
-from fintrack_be.models import Exchange
+from exchange.models import Exchange
 
 
 class ExchangeClass:

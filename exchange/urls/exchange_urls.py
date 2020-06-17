@@ -1,5 +1,5 @@
 from django.urls import path
-from fintrack_be.views import exchange_views
+from exchange.views import exchange_views
 
 urlpatterns = [
    path('list/', exchange_views.ExchangeListView.as_view()),

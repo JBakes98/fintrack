@@ -9,7 +9,6 @@ class Industry(models.Model):
     class Meta:
         verbose_name = 'Industry'
         verbose_name_plural = 'Industries'
-        db_table = 'industry'
 
     def __str__(self):
         return self.name

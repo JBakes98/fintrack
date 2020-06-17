@@ -1,4 +1,4 @@
-from fintrack_be.functions.exchange.exchange_class import ExchangeClass
+from exchange.services.exchange_class import ExchangeClass
 from fintrack_be.functions.stock import stock_data
 import requests
 import bs4 as bs
