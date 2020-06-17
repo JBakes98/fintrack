@@ -1,6 +1,5 @@
 from django.contrib import admin
 
-from fintrack_be.admin.linkify import linkify
 from fintrack_be.models import Exchange
 
 
@@ -18,7 +17,7 @@ class ExchangeAdmin(admin.ModelAdmin):
         )}),
     )
 
-    list_display = ('symbol', 'name', linkify(field_name='country'), 'timezone', 'opening_time',
+    list_display = ('symbol', 'name', 'country', 'timezone', 'opening_time',
                     'closing_time', 'market_open')
     list_filter = ('timezone', 'country',)
     search_fields = ('symbol', 'name')

@@ -1,5 +1,5 @@
 from django.db import models
-from fintrack_be.models.industry import Industry
+from industry.models.industry import Industry
 
 
 class Company(models.Model):

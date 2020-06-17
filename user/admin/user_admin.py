@@ -1,8 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
-from fintrack_be.admin.linkify import linkify
-
 from user.models import User
 
 
@@ -30,7 +28,7 @@ class UserAdmin(BaseUserAdmin):
     list_display = ('email',
                     'first_name',
                     'last_name',
-                    linkify(field_name='country'),
+                    'country',
                     'timezone',
                     'is_verified',
                     'is_staff',

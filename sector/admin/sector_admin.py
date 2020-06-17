@@ -1,5 +1,5 @@
 from django.contrib import admin
-from fintrack_be.models import Sector
+from sector.models import Sector
 
 
 class SectorAdmin(admin.ModelAdmin):

@@ -1,5 +1,5 @@
 from django.urls import path
-from fintrack_be.views import industry_views
+from industry.views import industry_views
 
 urlpatterns = [
     path('list/', industry_views.IndustryListView.as_view()),

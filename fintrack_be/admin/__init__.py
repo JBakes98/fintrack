@@ -1,7 +1,5 @@
 from .exchange_admin import *
 from .company_admin import *
-from .sector_admin import *
-from .industry_admin import *
 from .stock_admin import *
 from .stock_price_admin import *
 from .index_admin import *

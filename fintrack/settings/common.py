@@ -28,6 +28,8 @@ INSTALLED_APPS = [
     'fintrack_be',
     'user',
     'country',
+    'sector',
+    'industry',
 ]
 
 # API settings

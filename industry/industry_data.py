@@ -1,6 +1,6 @@
-from fintrack_be.models import Sector, Industry
-
-from fintrack_be.functions.sector import sector_data
+from industry.models import Industry
+from sector.models import Sector
+from sector import sector_data
 
 
 def create_industry(name, sector):
