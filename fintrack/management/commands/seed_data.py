@@ -1,6 +1,6 @@
 from django.core.management import BaseCommand
 from fintrack.management.commands.sub_methods import countries, exchanges, fix_empty_sector_industry, index
-from fintrack_be.functions.sector import sector_data
+from sector import sector_data
 from fintrack_be.functions.industry import industry_data
 from fintrack_be.functions.company import company_data
 

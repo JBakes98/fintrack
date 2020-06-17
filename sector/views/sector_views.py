@@ -6,8 +6,9 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from fintrack_be.models import Sector, Industry, Company, Stock, StockPriceData
-from fintrack_be.serializers.sector_serializer import SectorSerializer
+from sector.models import Sector
+from fintrack_be.models import Industry, Company, Stock, StockPriceData
+from sector.serializers.sector_serializer import SectorSerializer
 from fintrack_be.serializers.company_serializer import CompanySerializer
 from fintrack_be.serializers.stock_serializer import BasicStockSerializer
 from fintrack_be.permissions import IsVerified

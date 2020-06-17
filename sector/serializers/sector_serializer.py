@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from fintrack_be.models import Sector
+from sector.models import Sector
 
 
 class SectorSerializer(serializers.ModelSerializer):
