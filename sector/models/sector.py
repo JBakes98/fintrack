@@ -7,7 +7,6 @@ class Sector(models.Model):
     class Meta:
         verbose_name = 'Sector'
         verbose_name_plural = 'Sectors'
-        db_table = 'sector'
 
     def __str__(self):
         return self.name

@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from fintrack_be.models import Exchange
+from exchange.models import Exchange
 
 
 class ExchangeAdmin(admin.ModelAdmin):

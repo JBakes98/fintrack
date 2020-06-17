@@ -1,11 +1,11 @@
 from django.db.backends.utils import logger
 
-from fintrack_be.functions.exchange.nasdaq import NASDAQ
-from fintrack_be.functions.exchange.nyse import NYSE
-from fintrack_be.functions.exchange.lse import LSE
-from fintrack_be.functions.exchange.sehk import SEHK
-from fintrack_be.models.exchange import Exchange
-from fintrack_be.tasks.exchange_tasks import bulk_get_exchanges_day_data, bulk_get_exchanges_minute_data, get_exchanges_day_data, get_exchanges_minute_data
+from exchange.services.nasdaq import NASDAQ
+from exchange.services.nyse import NYSE
+from exchange.services.lse import LSE
+from exchange.services.sehk import SEHK
+from exchange.models.exchange import Exchange
+from exchange.tasks.exchange_tasks import bulk_get_exchanges_day_data, bulk_get_exchanges_minute_data, get_exchanges_day_data, get_exchanges_minute_data
 
 
 def create_exchanges():

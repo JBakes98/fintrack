@@ -18,7 +18,6 @@ class Exchange(models.Model):
     class Meta:
         verbose_name = 'Exchange'
         verbose_name_plural = 'Exchanges'
-        db_table = 'exchange'
 
     def __str__(self):
         return self.symbol
