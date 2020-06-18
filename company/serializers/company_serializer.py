@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from fintrack_be.models import Company
+from company.models import Company
 
 
 class CompanySerializer(serializers.ModelSerializer):

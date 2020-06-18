@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from fintrack_be.models import Company
+from company.models import Company
 
 
 class CompanyAdmin(admin.ModelAdmin):

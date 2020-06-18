@@ -7,9 +7,10 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from industry.models import Industry
-from fintrack_be.models import Company, Stock, StockPriceData
+from company.models import Company
+from fintrack_be.models import Stock, StockPriceData
 from industry.serializers.industry_serializer import IndustrySerializer
-from fintrack_be.serializers.company_serializer import CompanySerializer
+from company.serializers.company_serializer import CompanySerializer
 from fintrack_be.serializers.stock_serializer import BasicStockSerializer
 from fintrack_be.permissions import IsVerified
 

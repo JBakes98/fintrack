@@ -10,7 +10,7 @@ import yfinance as yf
 from http.client import IncompleteRead
 
 from fintrack_be.models import Exchange, Stock, StockPriceData, Company
-from fintrack_be.functions.company import company_data
+from company.services import company_data
 from fintrack_be.helpers import dataframe_helper as df_helper
 
 
