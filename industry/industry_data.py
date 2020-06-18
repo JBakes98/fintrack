@@ -1,6 +1,6 @@
 from industry.models import Industry
 from sector.models import Sector
-from sector import sector_data
+from sector.services import sector_data
 
 
 def create_industry(name, sector):

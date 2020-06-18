@@ -1,17 +1,14 @@
 import datetime
 from django.db.models import OuterRef, Subquery
 from django.http import Http404
-
 from rest_framework import generics
 from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
 from user.models import User
-from fintrack_be.models import Stock
-from fintrack_be.models.stock_price import StockPriceData, INTERVAL_OPTIONS
-from fintrack_be.serializers.stock_serializer import StockSerializer, StockPriceDataSerializer
+from stock.models import Stock, StockPriceData, INTERVAL_OPTIONS
+from stock.serializers import StockSerializer, StockPriceDataSerializer
 from fintrack_be.permissions import IsVerified
 
 

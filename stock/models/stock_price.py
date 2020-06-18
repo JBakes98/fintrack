@@ -2,7 +2,7 @@ from decimal import Decimal
 
 from django.db import models
 
-from fintrack_be.models.stock import Stock
+from stock.models import Stock
 from fintrack_be.helpers import timezone_helper
 
 ONEm = "1m"

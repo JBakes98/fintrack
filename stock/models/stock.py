@@ -2,8 +2,8 @@ from django.db import models
 import pandas as pd
 
 from fintrack_be.helpers.timezone_helper import get_timezone, convert_datetime_to_timezone
-from exchange.models.exchange import Exchange
-from company.models.company import Company
+from exchange.models import Exchange
+from company.models import Company
 
 
 class Stock(models.Model):

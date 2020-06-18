@@ -8,7 +8,7 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 
 from user.models.user_account_manager import UserAccountManager
 from country.models import Country
-from fintrack_be.models.stock import Stock
+from stock.models.stock import Stock
 
 
 class User(AbstractBaseUser, PermissionsMixin):

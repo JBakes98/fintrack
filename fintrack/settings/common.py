@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'industry',
     'exchange',
     'company',
+    'stock',
 ]
 
 # API settings
