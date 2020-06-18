@@ -1,5 +1,6 @@
 from django.db.models import Q
-from fintrack_be.models import Company, Industry
+from industry.models import Industry
+from company.models import Company
 from industry import industry_data
 
 

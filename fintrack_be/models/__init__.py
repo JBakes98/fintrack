@@ -1,4 +1,3 @@
-from .company import Company
 from .stock import Stock
 from .stock_price import StockPriceData
 from .index import Index
