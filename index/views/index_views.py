@@ -3,8 +3,8 @@ from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from fintrack_be.models import Index
-from fintrack_be.serializers.index_serializer import IndexSerializer, IndexCorrelationSerializer
+from index.models import Index
+from index.serializers import IndexSerializer, IndexCorrelationSerializer
 from fintrack_be.permissions.is_verified import IsVerified
 
 

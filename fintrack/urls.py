@@ -6,7 +6,6 @@ urlpatterns = [
     path('', views.index),
     path('console/', admin.site.urls),
 
-    path('api/v1/', include('fintrack_be.urls.base_urls')),
     path('api/v1/user/', include('user.urls')),
     path('api/v1/country/', include('country.urls')),
     path('api/v1/sector/', include('sector.urls')),
@@ -14,4 +13,5 @@ urlpatterns = [
     path('api/v1/exchange/', include('exchange.urls')),
     path('api/v1/company/', include('company.urls')),
     path('api/v1/stock/', include('stock.urls')),
+    path('api/v1/index/', include('index.urls')),
 ]

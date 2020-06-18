@@ -1,7 +1,6 @@
-import uuid
 from decimal import Decimal
 from django.db import models
-from fintrack_be.models.index import Index
+from index.models.index import Index
 
 ONEm = "1m"
 ONEh = "1h"
@@ -48,7 +47,6 @@ class IndexPriceData(models.Model):
     class Meta:
         verbose_name = 'Index Price Data'
         verbose_name_plural = 'Indices Price Data'
-        db_table = 'index_price'
 
     def __str__(self):
         string = self.index.symbol + ' ' + str(self.timestamp)

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from fintrack_be.models import Index
+from index.models import Index
 from stock.serializers import BasicStockSerializer
 
 
