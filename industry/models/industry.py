@@ -1,5 +1,5 @@
 from django.db import models
-from sector.models.sector import Sector
+from sector.models import Sector
 
 
 class Industry(models.Model):

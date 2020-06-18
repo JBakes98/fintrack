@@ -11,8 +11,8 @@ def get_exchanges_day_data(exchange_symbol):
     :param exchange_symbol: Exchange symbol to get stocks for
     """
     from exchange.models import Exchange
-    from fintrack_be.models import Stock
-    from fintrack_be.tasks.stock_tasks import get_day_stock_data
+    from stock.models import Stock
+    from stock.tasks.stock_tasks import get_day_stock_data
 
     exchange = Exchange.objects.get(symbol=exchange_symbol)
     stocks = Stock.objects.filter(exchange=exchange).order_by('ticker')
@@ -29,8 +29,8 @@ def bulk_get_exchanges_day_data(exchange_symbol):
     :param exchange_symbol: Exchange symbol to get data for
     """
     from exchange.models import Exchange
-    from fintrack_be.models import Stock
-    from fintrack_be.tasks.stock_tasks import get_bulk_day_stock_data
+    from stock.models import Stock
+    from stock.tasks import get_bulk_day_stock_data
 
     exchange = Exchange.objects.get(symbol=exchange_symbol)
     stocks = Stock.objects.filter(exchange=exchange).order_by('ticker')
@@ -53,8 +53,8 @@ def get_latest_data_for_open_markets():
     in trading hours.
     """
     from exchange.models import Exchange
-    from fintrack_be.models import Stock
-    from fintrack_be.tasks.stock_tasks import get_latest_stock_data
+    from stock.models import Stock
+    from stock.tasks import get_latest_stock_data
 
     exchanges = Exchange.objects.all().order_by('symbol')
     for exchange in exchanges:
@@ -73,8 +73,8 @@ def get_exchanges_minute_data(exchange_symbol):
     :param exchange_symbol: Exchange symbol to get stocks for
     """
     from exchange.models import Exchange
-    from fintrack_be.models import Stock
-    from fintrack_be.functions.stock.stock_data import get_stock_data, stock_price_data_df_to_model
+    from stock.models import Stock
+    from stock.services import get_stock_data, stock_price_data_df_to_model
 
     exchange = Exchange.objects.get(symbol=exchange_symbol)
     stocks = Stock.objects.filter(exchange=exchange)
@@ -92,10 +92,9 @@ def bulk_get_exchanges_minute_data(exchange_symbol):
     creates them in bulk
     :param exchange_symbol: Exchange symbol to get data for
     """
-    from fintrack_be.functions.stock.stock_data import get_stock_data, bulk_stock_price_data_to_model
     from exchange.models import Exchange
-    from fintrack_be.models import Stock
-
+    from stock.models import Stock
+    from stock.services import get_stock_data, bulk_stock_price_data_to_model
 
     exchange = Exchange.objects.get(symbol=exchange_symbol)
     stocks = Stock.objects.filter(exchange=exchange).order_by('symbol')

@@ -1,5 +1,5 @@
 from exchange.services.exchange_class import ExchangeClass
-from fintrack_be.functions.stock import stock_data
+from stock.services import create_stock
 import requests
 import bs4 as bs
 import datetime

@@ -1,5 +1,5 @@
 from exchange.services.exchange_class import ExchangeClass
-from fintrack_be.functions.stock import stock_data
+from stock.services import create_stock
 import requests
 import bs4 as bs
 import datetime
@@ -63,4 +63,4 @@ class LSE(ExchangeClass):
                 mapping = str.maketrans(".", "-")
                 symbol = symbol.translate(mapping) + ".L"
                 name = row.findAll('td')[1].text
-                stock_data.create_stock(symbol=symbol, name=name, exchange=self.symbol)
+                create_stock(symbol=symbol, name=name, exchange=self.symbol)

@@ -1,9 +1,7 @@
 import uuid
 from decimal import Decimal
-
 from django.db import models
-
-from fintrack_be.models import Stock
+from stock.models import Stock
 
 BUY = 'BUY'
 SELL = 'SELL'

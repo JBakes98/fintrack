@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from fintrack_be.models import StockPriceData
+from stock.models import StockPriceData
 
 
 class StockPriceAdmin(admin.ModelAdmin):

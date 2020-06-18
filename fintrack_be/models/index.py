@@ -1,6 +1,6 @@
 from django.db import models
 import pandas as pd
-from fintrack_be.models.stock import Stock
+from stock.models.stock import Stock
 import os
 
 

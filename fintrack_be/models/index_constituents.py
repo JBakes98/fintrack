@@ -1,5 +1,6 @@
 from django.db import models
-from fintrack_be.models import Stock, Index
+from stock.models import Stock
+from fintrack_be.models import Index
 
 
 class IndexConstituents(models.Model):

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from fintrack_be.models import Stock
+from stock.models import Stock
 
 
 class StockAdmin(admin.ModelAdmin):
