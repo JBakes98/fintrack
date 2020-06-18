@@ -1,6 +1,6 @@
 from django.urls import path
 
-from fintrack_be.views import index_views
+from index.views import index_views
 
 urlpatterns = [
    path('list/', index_views.IndexListView.as_view()),

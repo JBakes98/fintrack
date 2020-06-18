@@ -1,8 +1,9 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
 
-from fintrack_be.functions.index.index_class import IndexClass
-from fintrack_be.models import Index, IndexConstituents, Stock
+from index.services.index.index_class import IndexClass
+from index.models import Index, IndexConstituents
+from stock.models import Stock
 
 import requests
 import bs4 as bs

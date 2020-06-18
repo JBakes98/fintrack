@@ -12,7 +12,6 @@ class Index(models.Model):
     class Meta:
         verbose_name = 'Index'
         verbose_name_plural = 'Indices'
-        db_table = 'index'
 
     def __str__(self):
         return self.symbol
