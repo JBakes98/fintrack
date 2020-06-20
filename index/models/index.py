@@ -50,12 +50,12 @@ class Index(models.Model):
                 else:
                     main_df = main_df.join(df, how='outer')
 
-        main_df.to_csv('csv/{}-joined-closes.csv'.format(self.name))
+        main_df.to_csv('index/csv/{}-joined-closes.csv'.format(self.name))
 
     def get_index_constituent_correlation(self):
-        if not os.path.exists('csv/{}-joined-closes.csv'.format(self.name)):
-            self.compile_data()
+        if not os.path.exists('index/csv/{}-joined-closes.csv'.format(self.name)):
+            self.compile_index_constituents_data()
 
-        df = pd.read_csv('csv/{}-joined-closes.csv'.format(self.name))
+        df = pd.read_csv('index/csv/{}-joined-closes.csv'.format(self.name))
         df_corr = df.corr()
         return df_corr
