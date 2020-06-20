@@ -29,11 +29,15 @@ def run_seed(self, mode):
                                 'Company for holding Stock instances that dont have a known parent Company',
                                 'N/A')
 
-    # exchanges.add_nyse_stocks()
-    # exchanges.add_lse_stocks()
-    # Run fix to remove empty sector and industry created during seeding
-    # fix_empty_sector_industry.fix()
-    # exchanges.seed_exchange_stocks_data()
+    # Create all exchange stocks
+    exchanges.add_nasdaq_stocks()
+    exchanges.add_nyse_stocks()
+    exchanges.add_lse_stocks()
 
+    # Run fix to remove empty sector and industry created during seeding
+    fix_empty_sector_industry.fix()
+    exchanges.seed_exchange_stocks_data()
+
+    # Create Indices and add constituents
     index.create_indices()
     index.create_constituents()

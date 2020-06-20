@@ -1,4 +1,5 @@
 import decimal
+import pandas as pd
 from django.db import IntegrityError
 from stock.models import Stock, StockPriceData
 
