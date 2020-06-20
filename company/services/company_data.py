@@ -1,7 +1,7 @@
 from django.db.models import Q
 from industry.models import Industry
 from company.models import Company
-from industry import industry_data
+from industry.services.industry_data import create_industry
 
 
 def create_company(short_name, long_name, summary, industry):
@@ -49,19 +49,24 @@ def create_company_json(json):
     except Industry.DoesNotExist:
         # If the parent Industry cannot be found then it creates it then retries to create Company
         sector = json['sector']
-        industry_data.create_industry(industry_name, sector)
+        create_industry(industry_name, sector)
+
         industry = Industry.objects.get(name=industry_name)
         Company.objects.update_or_create(short_name=short_company_name,
                                          long_name=long_company_name,
                                          business_summary=business_summary,
                                          industry=industry)
+
         print('{} created'.format(short_company_name))
-    except KeyError:
+
+    except KeyError as e:
+        print(e)
         industry = Industry.objects.get(name='N/A')
         Company.objects.update_or_create(short_name=short_company_name,
                                          long_name=long_company_name,
                                          business_summary=business_summary,
                                          industry=industry)
+
         print('{} created'.format(short_company_name))
 
 

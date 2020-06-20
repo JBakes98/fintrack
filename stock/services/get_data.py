@@ -1,10 +1,11 @@
 from http.client import IncompleteRead
 from urllib.error import HTTPError
-from django.core.exceptions import MultipleObjectsReturned
-from company.models import Company
-from company.services import company_data
 import yfinance as yf
-import fintrack_be.helpers.dataframe_helper as df_helper
+from django.core.exceptions import MultipleObjectsReturned
+
+from company.models import Company
+from company.services.company_data import get_company, extract_company_names_from_json, create_company_json
+from stock.services.df_services import prepare_stock_data_df
 
 
 def get_stock_company(ticker):
@@ -23,32 +24,32 @@ def get_stock_company(ticker):
         try:
             json = stock.info
             # Get company names from the JSON response data
-            short_company_name, long_company_name = company_data.extract_company_names_from_json(json)
+            short_company_name, long_company_name = extract_company_names_from_json(json)
 
             try:
-                return company_data.get_company(short_company_name, long_company_name)
+                return get_company(short_company_name, long_company_name)
             except Company.DoesNotExist:
-                company_data.create_company_json(json)
-                return company_data.get_company(short_company_name, long_company_name)
+                create_company_json(json)
+                return get_company(short_company_name, long_company_name)
 
         except ValueError:
             print('{} cannot find parent company'.format(ticker))
-            return company_data.get_company('N/A', 'Non linked objects')
+            return get_company('N/A', 'Non linked objects')
         except KeyError:
-            return company_data.get_company('N/A', 'Non linked objects')
+            return get_company('N/A', 'Non linked objects')
         except IncompleteRead as e:
             print(e)
         except MultipleObjectsReturned as e:
             print(e)
-        except HTTPError as e:
-            print(e)
-            if i < attempts - 1:
-                print('Retrying attempt {}'.format(i))
-                continue
-            else:
-                print(e)
-                print('Attempted {} times, all unsuccessful'.format(attempts))
-            break
+        # except HTTPError as e:
+        #     if i < attempts - 1:
+        #         print(e)
+        #         print('Retrying attempt {}'.format(i))
+        #         continue
+        #     else:
+        #         print(e)
+        #         print('Attempted {} times, all unsuccessful'.format(attempts))
+        #     break
 
 
 def get_stock_data(ticker, period, interval):
@@ -63,4 +64,4 @@ def get_stock_data(ticker, period, interval):
     stock = yf.Ticker(ticker)
     df = stock.history(period=period, interval=interval)
 
-    return df_helper.prepare_stock_data_df(df, ticker)
+    return prepare_stock_data_df(df, ticker)

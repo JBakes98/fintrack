@@ -47,6 +47,7 @@ class IndexPriceData(models.Model):
     class Meta:
         verbose_name = 'Index Price Data'
         verbose_name_plural = 'Indices Price Data'
+        db_table = 'index_price'
 
     def __str__(self):
         string = self.index.symbol + ' ' + str(self.timestamp)

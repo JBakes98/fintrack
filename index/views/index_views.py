@@ -5,7 +5,7 @@ from rest_framework.response import Response
 
 from index.models import Index
 from index.serializers import IndexSerializer, IndexCorrelationSerializer
-from fintrack_be.permissions.is_verified import IsVerified
+from fintrack.permissions import IsVerified
 
 
 class IndexListView(generics.ListAPIView):

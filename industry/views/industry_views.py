@@ -12,7 +12,7 @@ from industry.serializers import IndustrySerializer
 from company.serializers import CompanySerializer
 from stock.models import Stock, StockPriceData
 from stock.serializers import BasicStockSerializer
-from fintrack_be.permissions import IsVerified
+from fintrack.permissions import IsVerified
 
 
 class IndustryListView(generics.ListAPIView):

@@ -1,5 +1,5 @@
 from exchange.services.exchange_class import ExchangeClass
-from stock.services import create_stock
+from stock.services.create_stock import create_stock
 import requests
 import bs4 as bs
 import datetime
@@ -53,6 +53,8 @@ class NASDAQ(ExchangeClass):
             for row in table.findAll('tr')[1:]:
                 ticker = row.findAll('td')[0].text
                 mapping = str.maketrans(".", "-")
+
                 ticker = ticker.translate(mapping)
                 name = row.findAll('td')[1].text
-                stock_data.create_stock(ticker, name, self.symbol)
+
+                create_stock(ticker, name, self.symbol)

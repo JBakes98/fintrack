@@ -27,7 +27,6 @@ class Position(models.Model):
     class Meta:
         verbose_name = 'Position'
         verbose_name_plural = 'Positions'
-        db_table = 'position'
 
         indexes = [
             models.Index(fields=['id', 'instrument']),

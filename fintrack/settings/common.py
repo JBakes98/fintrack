@@ -25,7 +25,6 @@ INSTALLED_APPS = [
 
     # Local Apps
     'fintrack',
-    'fintrack_be',
     'user',
     'country',
     'sector',
@@ -34,6 +33,8 @@ INSTALLED_APPS = [
     'company',
     'stock',
     'index',
+    'position',
+    'linkify',
 ]
 
 # API settings

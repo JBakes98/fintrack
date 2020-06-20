@@ -235,6 +235,7 @@ class TickerBase():
                 df.index = _pd.to_datetime(df.index, unit='s')
             except ValueError:
                 df.index = _pd.to_datetime(df.index)
+
             df = df.T
             df.columns.name = ''
             df.index.name = 'Breakdown'
@@ -257,13 +258,23 @@ class TickerBase():
 
         # holders
         url = "{}/{}/holders".format(self._scrape_url, self.ticker)
-        holders = _pd.read_html(url)
+
+        try:
+            holders = _pd.read_html(url)
+        except Exception:
+            holders = utils.empty_df()
+
         self._major_holders = holders[0]
-        try: self._institutional_holders = holders[1]
-        except Exception: self._institutional_holders = [None]
+
+        try:
+            self._institutional_holders = holders[1]
+        except Exception:
+            self._institutional_holders = [None]
+
         if 'Date Reported' in self._institutional_holders:
             self._institutional_holders['Date Reported'] = _pd.to_datetime(
                 self._institutional_holders['Date Reported'])
+
         if '% Out' in self._institutional_holders:
             self._institutional_holders['% Out'] = self._institutional_holders[
                 '% Out'].str.replace('%', '').astype(float)/100

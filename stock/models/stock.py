@@ -1,7 +1,7 @@
 from django.db import models
 import pandas as pd
 
-from fintrack_be.helpers.timezone_helper import get_timezone, convert_datetime_to_timezone
+from fintrack.helper.timezone_helper import get_timezone, convert_datetime_to_timezone
 from exchange.models import Exchange
 from company.models import Company
 

@@ -4,7 +4,7 @@ from django.db.models import Q
 from exchange.models import Exchange
 from company.models import Company
 from stock.models import Stock
-from stock.services import get_stock_company
+from stock.services.get_data import get_stock_company
 
 
 def create_stock(ticker, name, exchange):

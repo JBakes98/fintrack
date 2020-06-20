@@ -1,5 +1,5 @@
 from django.db import models
-from industry.models.industry import Industry
+from industry.models import Industry
 
 
 class Company(models.Model):

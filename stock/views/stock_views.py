@@ -9,7 +9,7 @@ from rest_framework.views import APIView
 from user.models import User
 from stock.models import Stock, StockPriceData, INTERVAL_OPTIONS
 from stock.serializers import StockSerializer, StockPriceDataSerializer
-from fintrack_be.permissions import IsVerified
+from fintrack.permissions import IsVerified
 
 
 class StockListView(generics.ListAPIView):

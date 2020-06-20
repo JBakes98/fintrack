@@ -3,7 +3,7 @@ from decimal import Decimal
 from django.db import models
 
 from stock.models import Stock
-from fintrack_be.helpers import timezone_helper
+from fintrack.helper import timezone_helper
 
 ONEm = "1m"
 ONEh = "1h"

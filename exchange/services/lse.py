@@ -1,5 +1,5 @@
 from exchange.services.exchange_class import ExchangeClass
-from stock.services import create_stock
+from stock.services.create_stock import create_stock
 import requests
 import bs4 as bs
 import datetime
@@ -59,8 +59,10 @@ class LSE(ExchangeClass):
             table = soup.find('table', {'class': 'quotes'})
 
             for row in table.findAll('tr')[1:]:
-                symbol = row.findAll('td')[0].text
+                ticker = row.findAll('td')[0].text
                 mapping = str.maketrans(".", "-")
-                symbol = symbol.translate(mapping) + ".L"
+
+                ticker = ticker.translate(mapping) + ".L"
                 name = row.findAll('td')[1].text
-                create_stock(symbol=symbol, name=name, exchange=self.symbol)
+
+                create_stock(ticker, name, self.symbol)

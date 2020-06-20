@@ -3,7 +3,7 @@ from rest_framework.permissions import IsAuthenticated
 
 from country.models import Country
 from country.serializer.country_serializer import CountrySerializer
-from fintrack_be.permissions import IsVerified
+from fintrack.permissions import IsVerified
 
 
 class CountryListView(generics.ListAPIView):

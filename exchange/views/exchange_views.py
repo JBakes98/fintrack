@@ -10,7 +10,7 @@ from exchange.models import Exchange
 from exchange.serializers import ExchangeSerializer
 from stock.models import Stock, StockPriceData
 from stock.serializers import StockSerializer
-from fintrack_be.permissions import IsVerified
+from fintrack.permissions import IsVerified
 
 
 class ExchangeListView(generics.ListAPIView):

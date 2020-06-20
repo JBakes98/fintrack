@@ -13,7 +13,7 @@ from company.models import Company
 from company.serializers import CompanySerializer
 from stock.models import Stock, StockPriceData
 from stock.serializers import BasicStockSerializer
-from fintrack_be.permissions import IsVerified
+from fintrack.permissions import IsVerified
 
 
 class SectorListView(generics.ListAPIView):

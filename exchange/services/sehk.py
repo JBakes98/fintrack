@@ -1,5 +1,5 @@
 from exchange.services.exchange_class import ExchangeClass
-from stock.services import create_stock
+from stock.services.create_stock import create_stock
 import requests
 import bs4 as bs
 import datetime
@@ -33,4 +33,4 @@ class SEHK(ExchangeClass):
                 ticker = ticker.translate(mapping) + ".HK"
 
                 name = row.findAll('td')[1].text
-                stock_data.create_stock(ticker, name, self.symbol)
+                create_stock(ticker, name, self.symbol)
