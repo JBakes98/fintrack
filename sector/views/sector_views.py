@@ -1,84 +1,47 @@
 from django.db.models import OuterRef, Subquery
 from django.http import Http404
 
-from rest_framework import generics
+from rest_framework import generics, viewsets
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
-from rest_framework.response import Response
-from rest_framework.views import APIView
 
 from sector.models import Sector
 from sector.serializers import SectorSerializer
 from industry.models import Industry
 from company.models import Company
 from company.serializers import CompanySerializer
-from sector.services.sector_service import SectorDto, SectorService
 from stock.models import Stock, StockPriceData
 from stock.serializers import BasicStockSerializer
 from fintrack.permissions import IsVerified
 
 
-class SectorListCreateView(generics.ListCreateAPIView):
-    """
-    Get a list of all Sector instances, this view offers two HTTP methods.
-
-    The User must be Verified to use this method
-    GET - List existing Sector
-
-    The User must be a Verified Admin User to use this methods
-    POST - Create new Sector
-
-    This views offers GET and POST method handlers.
-    """
-    serializer_class = SectorSerializer
+class SectorViewSet(viewsets.ModelViewSet):
     queryset = Sector.objects.all()
+    serializer_class = SectorSerializer
+    lookup_field = 'name'
 
     def get_permissions(self):
         request_method = self.request.method
-        if request_method == 'POST':
-            return (IsAdminUser(), IsVerified())
-        else:
+        if request_method == 'GET':
             return (IsAuthenticated(), IsVerified())
-
-    def list(self, request):
-        queryset = self.get_queryset()
-        serializer = self.serializer_class(queryset, many=True)
-        return Response(serializer.data)
-
-    def create(self, request):
-        # Invoke validation and build service input argument in the form
-        # of a Dto (DataTransferObject)
-        dto = self._build_dto_from_validated_data(request)
-        sector_service = SectorService()
-
-        sector_service.create_sector_Dto(dto)
-        return Response({'success': True})
-
-    def _build_dto_from_validated_data(self, request) -> SectorDto:
-        serializer = SectorSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        data = serializer.validated_data
-
-        return SectorDto(
-            name=data['name'],
-        )
+        else:
+            return (IsAdminUser(), IsVerified())
 
 
-class SectorDetailView(APIView):
+class SectorIndustriesListView(generics.ListAPIView):
     """
-    Retrieve a specific Sector instance
+    Get a list of Company instances under a specific Sector
     """
     permission_classes = (IsAuthenticated, IsVerified)
+    serializer_class = CompanySerializer
 
-    def get_object(self, name):
+    def get_queryset(self):
+        name = self.kwargs['name']
         try:
-            return Sector.objects.get(name=name)
+            return Industry.objects.filter(sector__name=name)
         except Sector.DoesNotExist:
             raise Http404
-
-    def get(self, request, name, format=None):
-        sector = self.get_object(name)
-        serializer = SectorSerializer(sector)
-        return Response(serializer.data)
+        except Industry.DoesNotExist:
+            raise Http404
 
 
 class SectorCompanyListView(generics.ListAPIView):
