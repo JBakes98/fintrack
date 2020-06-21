@@ -8,6 +8,7 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
 from company.models import Company
 from company.serializers import CompanySerializer
+from company.services.CompanyService import CompanyDto, CompanyService
 from stock.models import Stock, StockPriceData
 from stock.serializers import BasicStockSerializer
 from fintrack.permissions import IsVerified
@@ -51,6 +52,32 @@ class CompanyListCreateView(generics.ListCreateAPIView):
         serializer = CompanySerializer(queryset, many=True)
         return Response(serializer.data)
 
+    def create(self, request):
+        # Invoke validation and build service input argument in the form
+        # of a DTO (DataTransferObject)
+        dto = self._build_dto_from_validated_data(request)
+        print('Dto {}'.format(dto))
+
+        company_service = CompanyService()
+        try:
+            company_service.create_company_Dto(dto)
+        except:
+            return Response({'success': False}, status=503)
+
+        return Response({'success': True})
+
+    def _build_dto_from_validated_data(self, request) -> CompanyDto:
+        serializer = CompanySerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        data = serializer.validated_data
+
+        return CompanyDto(
+            short_name=data['short_name'],
+            long_name=data['long_name'],
+            business_summary=data['business_summary'],
+            industry_id=data['industry'].id,
+        )
+
 
 class CompanyRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     """
@@ -83,8 +110,8 @@ class CompanyRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
 
 class CompanySharesListView(generics.ListAPIView):
     """
-    Retrieve a Companies listed Stocks, User must be Authenticated and have
-    a verified User Email to use API.
+    Retrieve a Companies listed Stocks, this view accepts HTTP GET requests only. The reuquest
+    User must be authenticated and verified to access the API.
     """
     permission_classes = (IsAuthenticated, IsVerified)
     serializer_class = BasicStockSerializer
