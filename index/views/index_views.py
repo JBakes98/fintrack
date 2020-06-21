@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from index.models import Index
 from index.serializers import IndexSerializer, IndexCorrelationSerializer
 from fintrack.permissions import IsVerified
+from index.services.IndexMachineLearningService import IndexMachineLearningService
 
 
 class IndexListView(generics.ListAPIView):
@@ -32,8 +33,9 @@ class IndexCorrelationAPIView(generics.ListAPIView):
             raise Http404
 
     def get(self, request, symbol, format=None):
-        index = self.get_object(symbol)
-        df = index.get_index_constituent_correlation()
+        index = Index.objects.get(symbol=self.get_object(symbol))
+        index_service = IndexMachineLearningService()
+        df = index_service.get_index_constituent_correlation(index.pk)
         serializer = IndexCorrelationSerializer(df.to_dict())
         print(serializer.data)
         return Response(df.to_json())

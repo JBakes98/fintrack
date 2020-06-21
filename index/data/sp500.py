@@ -1,7 +1,7 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
 
-from index.services.index.index_class import IndexClass
+from index.data.index_class import IndexClass
 from index.models import Index, IndexConstituents
 from stock.models import Stock
 

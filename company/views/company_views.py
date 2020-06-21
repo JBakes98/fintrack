@@ -1,10 +1,10 @@
 from django.db.models import OuterRef, Subquery, Q
 from django.http import Http404
+from django.shortcuts import get_object_or_404
 
 from rest_framework import generics
 from rest_framework.response import Response
-from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
 from company.models import Company
 from company.serializers import CompanySerializer
@@ -13,13 +13,26 @@ from stock.serializers import BasicStockSerializer
 from fintrack.permissions import IsVerified
 
 
-class CompanyListView(generics.ListAPIView):
+class CompanyListCreateView(generics.ListCreateAPIView):
     """
-    Get a list of all Company instances, User must be Authenticated and have
-    a verified User Email to use API.
+    Get a list of all Company instances, this view offers two HTTP methods.
+
+    The User must be Verified to use this method
+    GET - List existing Companies
+
+    The User must be a Verified Admin User to use this methods
+    POST - Create new Company
+
+    This views offers GET and POST method handlers.
     """
-    permission_classes = (IsAuthenticated, IsVerified)
     serializer_class = CompanySerializer
+
+    def get_permissions(self):
+        request_method = self.request.method
+        if request_method == 'POST':
+            return (IsAdminUser(), IsVerified())
+        else:
+            return (IsAuthenticated(), IsVerified())
 
     def get_queryset(self):
         query_params = {'industry__sector__name': self.request.query_params.get('sector', None),
@@ -33,24 +46,39 @@ class CompanyListView(generics.ListAPIView):
 
         return Company.objects.filter(**arguments)
 
-
-class CompanyDetailView(APIView):
-    """
-    Retrieve a Company instance, User must be Authenticated and have
-    a verified User Email to use API.
-    """
-    permission_classes = (IsAuthenticated, IsVerified)
-
-    def get_object(self, name):
-        try:
-            return Company.objects.get(Q(short_name=name) | Q(long_name=name))
-        except Company.DoesNotExist:
-            raise Http404
-
-    def get(self, request, name, format=None):
-        company = self.get_object(name)
-        serializer = CompanySerializer(company)
+    def list(self, request):
+        queryset = self.get_queryset()
+        serializer = CompanySerializer(queryset, many=True)
         return Response(serializer.data)
+
+
+class CompanyRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    """
+    API endpoints related to a specific Company instance, this view offers multiple HTTP methods. The
+    url takes a companies short or long name to select the respective Company model.
+
+    The User must be a Verified Admin User to use this methods
+    POST - create a new Company
+    PATCH - partially update the Company
+    PUT - fully update the Company
+    DELETE - delete the Company from the system
+
+    The User must be Verified to use this method
+    GET - get the Company
+
+    """
+    serializer_class = CompanySerializer
+
+    def get_permissions(self):
+        request_method = self.request.method
+        if request_method == 'POST' or request_method == 'PUT' or request_method == 'PATCH' or request_method == 'DELETE':
+            return (IsAdminUser(), IsVerified())
+        else:
+            return (IsAuthenticated(), IsVerified())
+
+    def get_object(self):
+        name = self.kwargs['name']
+        return get_object_or_404(Company, (Q(short_name=name) | Q(long_name=name)))
 
 
 class CompanySharesListView(generics.ListAPIView):

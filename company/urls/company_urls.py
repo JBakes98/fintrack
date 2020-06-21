@@ -1,8 +1,10 @@
 from django.urls import path
-from company.views import company_views
+from company.views import company_views as views
+
 
 urlpatterns = [
-   path('list/', company_views.CompanyListView.as_view()),
-   path('<str:name>/', company_views.CompanyDetailView.as_view()),
-   path('<str:name>/shares/', company_views.CompanySharesListView.as_view()),
+
+   path('list/', views.CompanyListCreateView.as_view()),
+   path('<str:name>/', views.CompanyRetrieveUpdateDestroyView.as_view()),
+   path('<str:name>/shares/', views.CompanySharesListView.as_view()),
 ]
