@@ -31,6 +31,7 @@ class StockViewSet(viewsets.ModelViewSet):
     """
     serializer_class = StockSerializer
     lookup_field = 'ticker'
+    lookup_value_regex = '[0-9.A-Z]+'
 
     def get_queryset(self):
         return Stock.objects.all()
