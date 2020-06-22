@@ -2,5 +2,7 @@ from rest_framework import serializers
 from sector.models import Sector
 
 
-class SectorSerializer(serializers.Serializer):
-    name = serializers.CharField(max_length=255)
+class SectorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Sector
+        fields = ['id', 'name', 'industry_count', 'company_count']
