@@ -37,10 +37,10 @@ class StockViewSet(viewsets.ModelViewSet):
 
     def get_permissions(self):
         request_method = self.request.method
-        if request_method == 'POST':
-            return (IsAdminUser(), IsVerified())
-        else:
+        if request_method == 'GET':
             return (IsAuthenticated(), IsVerified())
+        else:
+            return (IsAdminUser(), IsVerified())
 
 
 class StockPriceListView(generics.ListAPIView):
