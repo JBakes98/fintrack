@@ -1,17 +1,19 @@
 from rest_framework import serializers
-from index.models import Index
+from index.models import Index, IndexConstituents
 from stock.serializers import BasicStockSerializer
 
 
 class IndexSerializer(serializers.ModelSerializer):
-    constituents = BasicStockSerializer(many=True)
+    constituents = serializers.SlugRelatedField(many=True,
+                                                read_only=True,
+                                                slug_field='ticker')
 
     class Meta:
         model = Index
         fields = ('id',
                   'symbol',
                   'name',
-                  'get_constituents_count',
+                  'constituents_count',
                   'constituents')
 
 

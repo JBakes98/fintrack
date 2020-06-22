@@ -1,15 +1,22 @@
 from rest_framework import serializers
+from sector.models import Sector
 from industry.models import Industry
-from sector.serializers import SectorSerializer
 
 
-class IndustrySerializer(serializers.Serializer):
-    name = serializers.CharField(max_length=255)
-    sector = SectorSerializer()
+class IndustrySerializer(serializers.ModelSerializer):
+    sector = serializers.SlugRelatedField(many=False,
+                                          read_only=False,
+                                          queryset=Sector.objects.all(),
+                                          slug_field='name')
 
-    def create(self, validated_data):
-        return Industry.objects.create(**validated_data)
+    class Meta:
+        model = Industry
+        fields = ['id', 'name', 'sector', 'company_count']
 
-    def update(self, instance, validated_data):
-        instance.name = validated_data.get('name', instance.name)
-        instance.sector = validated_data.get('sector', instance.sector)
+
+class IndustryCompanySerializer(serializers.ModelSerializer):
+    industry_companies = serializers.StringRelatedField(many=True)
+
+    class Meta:
+        model = Industry
+        fields = ['id', 'name', 'industry_companies']

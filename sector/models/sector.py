@@ -12,11 +12,11 @@ class Sector(models.Model):
         return self.name
 
     def industry_count(self):
-        return self.industry_sector.count()
+        return self.sector_industries.count()
 
     def company_count(self):
         count = 0
-        industries = self.industry_sector.all()
+        industries = self.sector_industries.all()
         for industry in industries:
-            count += industry.company_industry.count()
+            count += industry.industry_companies.count()
         return count

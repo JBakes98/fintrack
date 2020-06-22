@@ -37,7 +37,7 @@ PREDICTION_OPTIONS = (
 class StockPriceData(models.Model):
     id = models.BigAutoField(primary_key=True)
     timestamp = models.DateTimeField()
-    stock = models.ForeignKey(Stock, related_name='stock_data', on_delete=models.CASCADE)
+    stock = models.ForeignKey(Stock, related_name='stock_prices', on_delete=models.CASCADE)
 
     high = models.DecimalField(max_digits=15, decimal_places=4, default=Decimal(0.00))
     low = models.DecimalField(max_digits=15, decimal_places=4, default=Decimal(0.00))
@@ -53,6 +53,7 @@ class StockPriceData(models.Model):
     class Meta:
         verbose_name = 'Stock Price Data'
         verbose_name_plural = 'Stocks Price Data'
+        ordering = ('stock', '-timestamp', )
         db_table = 'stock_price'
 
         indexes = [

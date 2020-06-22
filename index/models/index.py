@@ -16,11 +16,8 @@ class Index(models.Model):
     def __str__(self):
         return self.symbol
 
-    def get_constituents_count(self):
+    def constituents_count(self):
         return self.constituents.count()
-
-    def get_constituents(self):
-        return ",".join([str(c) for c in self.constituents.all()])
 
     def compile_index_constituents_data(self):
         # Selects all of the stock constituents for the index

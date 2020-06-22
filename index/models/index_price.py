@@ -33,7 +33,7 @@ PREDICTION_OPTIONS = (
 class IndexPriceData(models.Model):
     id = models.BigAutoField(primary_key=True)
     timestamp = models.DateTimeField()
-    index = models.ForeignKey(Index, related_name='index_data', on_delete=models.CASCADE)
+    index = models.ForeignKey(Index, related_name='index_prices', on_delete=models.CASCADE)
 
     high = models.DecimalField(max_digits=15, decimal_places=2, default=Decimal(0.00))
     low = models.DecimalField(max_digits=15, decimal_places=2, default=Decimal(0.00))

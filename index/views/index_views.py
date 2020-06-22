@@ -1,6 +1,6 @@
 from django.http import Http404
-from rest_framework import generics
-from rest_framework.permissions import IsAuthenticated
+from rest_framework import generics, viewsets
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 
 from index.models import Index
@@ -9,15 +9,34 @@ from fintrack.permissions import IsVerified
 from index.services.IndexMachineLearningService import IndexMachineLearningService
 
 
-class IndexListView(generics.ListAPIView):
+class IndexViewSet(viewsets.ModelViewSet):
     """
-    Retrieve a list of all Index instances
+    Index ViewSet that offers the following actions, list(), retrieve(),
+    create(), update(), partial_update() and destroy(). Depending on the
+    HTTP method the User will require different permissions.
+
+    The User must be Verified to use this method
+    GET - List existing Indices or Retrieve specific Index
+
+
+    The User must be a Verified Admin User to use this methods
+    POST - Create new Index
+    PUT - Fully update existing Index
+    PATCH - Partially update existing Index
+    DELETE - Delete existing Index
     """
-    permission_classes = (IsAuthenticated, IsVerified)
     serializer_class = IndexSerializer
+    lookup_field = 'symbol'
 
     def get_queryset(self):
-        return Index.objects.all().order_by('symbol')
+        return Index.objects.all()
+
+    def get_permissions(self):
+        request_method = self.request.method
+        if request_method == 'POST':
+            return (IsAdminUser(), IsVerified())
+        else:
+            return (IsAuthenticated(), IsVerified())
 
 
 class IndexCorrelationAPIView(generics.ListAPIView):

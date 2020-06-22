@@ -16,7 +16,7 @@ class IndexAdmin(admin.ModelAdmin):
     )
 
     inlines = (ConstituentInlineAdmin, )
-    list_display = ('symbol', 'name', 'get_constituents_count')
+    list_display = ('symbol', 'name', 'constituents_count')
     search_fields = ('symbol', 'name')
     ordering = ('symbol',)
 

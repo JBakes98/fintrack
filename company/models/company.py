@@ -6,7 +6,7 @@ class Company(models.Model):
     short_name = models.CharField(max_length=255, unique=True, null=False, blank=False)
     long_name = models.CharField(max_length=512, unique=True, null=False, blank=False)
     business_summary = models.TextField()
-    industry = models.ForeignKey(Industry, on_delete=models.CASCADE, related_name='company_industry')
+    industry = models.ForeignKey(Industry, on_delete=models.CASCADE, related_name='industry_companies')
 
     class Meta:
         verbose_name = 'Company'
