@@ -1,94 +1,46 @@
 import datetime
 from django.db.models import OuterRef, Subquery
 from django.http import Http404
-from rest_framework import generics
+from django.shortcuts import get_object_or_404
+from rest_framework import generics, viewsets
 from rest_framework.exceptions import ValidationError
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from user.models import User
 from stock.models import Stock, StockPriceData, INTERVAL_OPTIONS
-from stock.serializers import StockSerializer, StockPriceDataSerializer
+from stock.serializers import StockSerializer, StockPriceSerializer
 from fintrack.permissions import IsVerified
 
 
-class StockListView(generics.ListAPIView):
+class StockViewSet(viewsets.ModelViewSet):
     """
-    Get a list of all Stock instances
+    Stock ViewSet that offers the following actions, list(), retrieve(),
+    create(), update(), partial_update() and destroy(). Depending on the
+    HTTP method the User will require different permissions.
+
+    The User must be Verified to use this method
+    GET - List existing Stocks or Retrieve specific Stock
+
+
+    The User must be a Verified Admin User to use this methods
+    POST - Create new Stock
+    PUT - Fully update existing Stock
+    PATCH - Partially update existing Stock
+    DELETE - Delete existing Stock
     """
-    permission_classes = (IsAuthenticated, IsVerified)
     serializer_class = StockSerializer
+    lookup_field = 'ticker'
 
     def get_queryset(self):
-        query_params = {'company__short_name': self.request.query_params.get('company', None),
-                        'company__industry__sector__name': self.request.query_params.get('sector', None),
-                        'company__industry__name': self.request.query_params.get('industry', None)}
-        arguments = {}
+        return Stock.objects.all()
 
-        for k, v in query_params.items():
-            if v:
-                arguments[k] = v
-
-        stocks = Stock.objects.filter(**arguments).order_by('ticker')
-        latest_data = StockPriceData.objects.filter(stock=OuterRef('pk')).order_by('-timestamp')
-        return stocks.annotate(price=Subquery(latest_data.values('close')[:1]),
-                               change=Subquery(latest_data.values('change')[:1]),
-                               change_perc=Subquery(latest_data.values('change_perc')[:1]),
-                               price_date_utc=Subquery(latest_data.values('timestamp')[:1]))
-
-
-class StockDetailView(APIView):
-    """
-    Retrieve a stock instance
-    """
-    permission_classes = (IsAuthenticated, IsVerified)
-
-    def get_object(self, ticker):
-        try:
-            latest_data = StockPriceData.objects.filter(stock=OuterRef('pk')).order_by('-timestamp')
-            stock = Stock.objects.annotate(price=Subquery(latest_data.values('close')[:1]),
-                                           change=Subquery(latest_data.values('change')[:1]),
-                                           change_perc=Subquery(latest_data.values('change_perc')[:1]),
-                                           price_date_utc=Subquery(latest_data.values('timestamp')[:1])
-                                           ).get(ticker=ticker)
-            return stock
-        except Stock.DoesNotExist:
-            raise Http404
-
-    def get(self, request, ticker, format=None):
-        stock = self.get_object(ticker)
-        serializer = StockSerializer(stock)
-        return Response(serializer.data)
-
-
-class AllStockPriceDataListView(generics.ListAPIView):
-    """
-    THIS ISN'T WORKING!!!
-    List all Stock instances Price instances
-    """
-    permission_classes = (IsAuthenticated, IsVerified)
-    serializer_class = StockPriceDataSerializer
-
-    def get_queryset(self):
-        """
-        Retrieve all price data matching the request
-        """
-        valid_interval = False
-        query_params = {'interval': self.request.query_params.get('interval', '1d'),
-                        'ticker': self.request.query_params.get('ticker', None)}
-        arguments = {}
-
-        # Check whether the Interval parameter is a valid option to query
-        for k, v in INTERVAL_OPTIONS:
-            if not v == self.request.query_params.get('interval', '1d'):
-                raise ValidationError(detail='Ensure you have selected a valid data interval')
-
-        # Iterate through query parameters and if they have a value add them to query arguments
-        for k, v in query_params.items():
-            if v:
-                arguments[k] = v
-
-        return StockPriceData.objects.filter(**arguments).order_by('stock.ticker')
+    def get_permissions(self):
+        request_method = self.request.method
+        if request_method == 'GET':
+            return (IsAuthenticated(), IsVerified())
+        else:
+            return (IsAdminUser(), IsVerified())
 
 
 class StockPriceListView(generics.ListAPIView):
@@ -97,7 +49,7 @@ class StockPriceListView(generics.ListAPIView):
     time interval of the data they want through the URL parameter interval=
     """
     permission_classes = (IsAuthenticated, IsVerified)
-    serializer_class = StockPriceDataSerializer
+    serializer_class = StockPriceSerializer
 
     def get_queryset(self):
         """
@@ -132,6 +84,12 @@ class StockPriceListView(generics.ListAPIView):
             stock__ticker=ticker,
             timestamp__range=[from_date, to_date]
         ).order_by('-timestamp')
+
+
+class PriceRetrieveView(generics.RetrieveAPIView):
+    permission_classes = (IsAuthenticated, IsVerified)
+    serializer_class = StockPriceSerializer
+    queryset = StockPriceData.objects.all()
 
 
 class UserFavouriteStockView(APIView):

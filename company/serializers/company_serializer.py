@@ -1,15 +1,14 @@
 from rest_framework import serializers
 from company.models import Company
+from industry.models import Industry
 
 
 class CompanySerializer(serializers.ModelSerializer):
-    industry_name = serializers.CharField(source='industry.name')
-    sector_name = serializers.CharField(source='industry.sector.name')
+    industry = serializers.SlugRelatedField(many=False,
+                                            read_only=False,
+                                            queryset=Industry.objects.all(),
+                                            slug_field='name')
 
     class Meta:
         model = Company
-        fields = ('short_name',
-                  'long_name',
-                  'business_summary',
-                  'industry_name',
-                  'sector_name')
+        fields = ['id', 'short_name', 'long_name', 'business_summary', 'industry']

@@ -9,12 +9,13 @@ from company.models import Company
 class Stock(models.Model):
     ticker = models.CharField(unique=True, max_length=15, null=False, blank=False)
     name = models.CharField(max_length=255)
-    exchange = models.ForeignKey(Exchange, on_delete=models.CASCADE, related_name='listed_exchange')
-    company = models.ForeignKey(Company, on_delete=models.CASCADE, default=None, related_name='parent_company')
+    exchange = models.ForeignKey(Exchange, on_delete=models.CASCADE, related_name='exchange_stocks')
+    company = models.ForeignKey(Company, on_delete=models.CASCADE, default=None, related_name='company_stocks')
 
     class Meta:
         verbose_name = 'Stock'
         verbose_name_plural = 'Stocks'
+        ordering = ('ticker', )
         db_table = 'stock'
 
     def __str__(self):
@@ -31,6 +32,11 @@ class Stock(models.Model):
         local_timestamp = convert_datetime_to_timezone(self.stock_data.order_by('-timestamp').timestamp, "UTC",
                                                        timezone)
         return local_timestamp
+
+    @property
+    def latest_price(self):
+        data = self.stock_prices.first()
+        return data.close
 
     def get_price_data(self):
         return pd.DataFrame(list(self.stock_data.all().values()))

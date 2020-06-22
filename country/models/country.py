@@ -13,3 +13,6 @@ class Country(models.Model):
 
     def __str__(self):
         return self.alpha2
+
+    def __unicode__(self):
+        return self.alpha2

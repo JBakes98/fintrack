@@ -1,54 +1,40 @@
-from django.db.models import OuterRef, Subquery
-from django.http import Http404
-
-from rest_framework import generics
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
-from rest_framework.views import APIView
-
+from django.shortcuts import get_object_or_404
+from rest_framework import generics, viewsets
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from industry.models import Industry
-from company.models import Company
-from industry.serializers import IndustrySerializer
-from company.serializers import CompanySerializer
-from stock.models import Stock, StockPriceData
-from stock.serializers import BasicStockSerializer
+from industry.serializers import IndustrySerializer, IndustryCompanySerializer
 from fintrack.permissions import IsVerified
 
 
-class IndustryListView(generics.ListAPIView):
+class IndustryViewSet(viewsets.ModelViewSet):
     """
-    Get a list of all Industry instances
-    """
-    permission_classes = (IsAuthenticated, IsVerified)
+        Industry ViewSet that offers the following actions, list(), retrieve(),
+        create(), update(), partial_update() and destroy(). Depending on the
+        HTTP method the User will require different permissions.
+
+        The User must be Verified to use this method
+        GET - List existing Industries or Retrieve specific Industry
+
+
+        The User must be a Verified Admin User to use this methods
+        POST - Create new Industry
+        PUT - Fully update existing Industry
+        PATCH - Partially update existing Industry
+        DELETE - Delete existing Industry
+
+        """
     serializer_class = IndustrySerializer
+    lookup_field = 'name'
 
     def get_queryset(self):
-        query_params = {'sector__name': self.request.query_params.get('sector', None)}
-        arguments = {}
+        return Industry.objects.all()
 
-        for k, v in query_params.items():
-            if v:
-                arguments[k] = v
-
-        return Industry.objects.filter(**arguments).order_by('name')
-
-
-class IndustryDetailView(APIView):
-    """
-    Retrieve a specific Industry instance
-    """
-    permission_classes = (IsAuthenticated, IsVerified)
-
-    def get_object(self, name):
-        try:
-            return Industry.objects.get(name=name)
-        except Industry.DoesNotExist:
-            raise Http404
-
-    def get(self, request, name, format=None):
-        industry = self.get_object(name)
-        serializer = IndustrySerializer(industry)
-        return Response(serializer.data)
+    def get_permissions(self):
+        request_method = self.request.method
+        if request_method == 'GET':
+            return (IsAuthenticated(), IsVerified())
+        else:
+            return (IsAdminUser(), IsVerified())
 
 
 class IndustryCompanyListView(generics.ListAPIView):
@@ -56,46 +42,43 @@ class IndustryCompanyListView(generics.ListAPIView):
     Get an Industry instances Companies
     """
     permission_classes = (IsAuthenticated, IsVerified)
-    serializer_class = CompanySerializer
-
-    def get_queryset(self):
-        name = self.kwargs['name']
-
-        try:
-            industry = Industry.objects.get(name=name)
-        except Industry.DoesNotExist:
-            raise Http404
-
-        try:
-            return Company.objects.filter(industry=industry)
-        except Industry.DoesNotExist:
-            raise Http404
+    serializer_class = IndustryCompanySerializer
+    queryset = Industry.objects.all()
 
 
-class IndustryStockListVIew(generics.ListAPIView):
-    """
-    Get a list of Stock instances in a Industry
-    """
+class IndustryCompanyRetrieveView(generics.RetrieveAPIView):
     permission_classes = (IsAuthenticated, IsVerified)
-    serializer_class = BasicStockSerializer
+    serializer_class = IndustryCompanySerializer
 
-    def get_queryset(self):
+    def get_object(self):
         name = self.kwargs['name']
-        try:
-            industries = Industry.objects.filter(name=name)
-        except Industry.DoesNotExist:
-            raise Http404
+        return get_object_or_404(Industry, name=name)
 
-        try:
-            companies = Company.objects.filter(industry__in=industries)
-        except Company.DoesNotExist:
-            raise Http404
 
-        try:
-            stocks = Stock.objects.filter(company__in=companies).order_by('ticker')
-            latest_data = StockPriceData.objects.filter(stock=OuterRef('pk')).order_by('-timestamp')
-            return stocks.annotate(price=Subquery(latest_data.values('close')[:1]))
-        except Stock.DoesNotExist:
-            raise Http404
-        except StockPriceData.DoesNotExist:
-            raise Http404
+# class IndustryStockListVIew(generics.ListAPIView):
+#     """
+#     Get a list of Stock instances in a Industry
+#     """
+#     permission_classes = (IsAuthenticated, IsVerified)
+#     serializer_class = BasicStockSerializer
+#
+#     def get_queryset(self):
+#         name = self.kwargs['name']
+#         try:
+#             industries = Industry.objects.filter(name=name)
+#         except Industry.DoesNotExist:
+#             raise Http404
+#
+#         try:
+#             companies = Company.objects.filter(industry__in=industries)
+#         except Company.DoesNotExist:
+#             raise Http404
+#
+#         try:
+#             stocks = Stock.objects.filter(company__in=companies).order_by('ticker')
+#             latest_data = StockPriceData.objects.filter(stock=OuterRef('pk')).order_by('-timestamp')
+#             return stocks.annotate(price=Subquery(latest_data.values('close')[:1]))
+#         except Stock.DoesNotExist:
+#             raise Http404
+#         except StockPriceData.DoesNotExist:
+#             raise Http404

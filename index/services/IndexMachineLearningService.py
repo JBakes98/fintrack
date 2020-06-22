@@ -1,27 +1,31 @@
-from django.db import models
+from dataclasses import dataclass
 import pandas as pd
-from stock.models import Stock
 import os
 
+from index.models import Index
 
-class Index(models.Model):
-    symbol = models.CharField(max_length=25, unique=True, null=False, blank=False)
-    name = models.CharField(max_length=125)
-    constituents = models.ManyToManyField(Stock, through='IndexConstituents', blank=True)
 
-    class Meta:
-        verbose_name = 'Index'
-        verbose_name_plural = 'Indices'
+@dataclass
+class IndexDto:
+    symbol: str
+    name: str
 
-    def __str__(self):
-        return self.symbol
 
-    def constituents_count(self):
-        return self.constituents.count()
+class IndexMachineLearningService:
+    def get_index_constituent_correlation(self, index_id):
+        index = Index.objects.get(pk=index_id)
+        if not os.path.exists('csv/{}-joined-closes.csv'.format(index.name)):
+            self.compile_constituents_data(index.pk)
 
-    def compile_index_constituents_data(self):
+        df = pd.read_csv('index/csv/{}-joined-closes.csv'.format(index.name))
+        df_corr = df.corr()
+        return df_corr
+
+    @staticmethod
+    def compile_constituents_data(index_id):
+        index = Index.objects.get(pk=index_id)
         # Selects all of the stock constituents for the index
-        stocks = self.constituents.all()
+        stocks = index.constituents.all()
         main_df = pd.DataFrame()
 
         # Iterates through the stocks and gets their relevant price information and puts it into
@@ -47,12 +51,4 @@ class Index(models.Model):
                 else:
                     main_df = main_df.join(df, how='outer')
 
-        main_df.to_csv('index/csv/{}-joined-closes.csv'.format(self.name))
-
-    def get_index_constituent_correlation(self):
-        if not os.path.exists('index/csv/{}-joined-closes.csv'.format(self.name)):
-            self.compile_index_constituents_data()
-
-        df = pd.read_csv('index/csv/{}-joined-closes.csv'.format(self.name))
-        df_corr = df.corr()
-        return df_corr
+        main_df.to_csv('index/csv/{}-joined-closes.csv'.format(index.name))

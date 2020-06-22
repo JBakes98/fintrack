@@ -1,15 +1,18 @@
 from rest_framework import serializers
-from stock.models import StockPriceData
+from stock.models import StockPriceData, Stock
 
 
-class StockPriceDataSerializer(serializers.ModelSerializer):
-    stock_symbol = serializers.CharField(source='stock.ticker')
+class StockPriceSerializer(serializers.ModelSerializer):
+    stock = serializers.SlugRelatedField(many=False,
+                                         read_only=False,
+                                         queryset=Stock.objects.all(),
+                                         slug_field='ticker')
 
     class Meta:
         model = StockPriceData
-        fields = ('timestamp',
-                  'timestamp_in_market_time',
-                  'stock_symbol',
+        fields = ('id',
+                  'timestamp',
+                  'stock',
                   'high',
                   'low',
                   'open',

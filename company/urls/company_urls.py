@@ -1,8 +1,13 @@
 from django.urls import path
-from company.views import company_views
+from rest_framework.routers import DefaultRouter
+
+from company.views import company_views as views
+
+router = DefaultRouter()
+router.register(r'', views.CompanyViewSet, basename='company')
 
 urlpatterns = [
-   path('list/', company_views.CompanyListView.as_view()),
-   path('<str:name>/', company_views.CompanyDetailView.as_view()),
-   path('<str:name>/shares/', company_views.CompanySharesListView.as_view()),
+   path('<str:name>/shares/', views.CompanySharesListView.as_view()),
 ]
+
+urlpatterns += router.urls

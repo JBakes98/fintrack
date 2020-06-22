@@ -10,7 +10,7 @@ from country.models.country import Country
 class Exchange(models.Model):
     symbol = models.CharField(max_length=25, unique=True)
     name = models.CharField(max_length=250, unique=True)
-    country = models.ForeignKey(Country, on_delete=models.CASCADE, blank=True, null=True)
+    country = models.ForeignKey(Country, on_delete=models.CASCADE, blank=True, null=True, related_name='country_exchanges')
     timezone = models.CharField(max_length=50, blank=False, null=False, default='BST')
     opening_time = models.TimeField()
     closing_time = models.TimeField()
@@ -22,39 +22,45 @@ class Exchange(models.Model):
     def __str__(self):
         return self.symbol
 
-    def get_stock_count(self):
+    def stock_count(self):
         """
         Method that returns the number of Stocks on this Exchange
         :return: Number of Stocks
         """
-        return self.listed_exchange.count()
+        return self.exchange_stocks.count()
 
-    def get_listed_stocks(self):
+    def listed_stocks(self):
         """
         Method that returns all of the Stocks on this Exchange
         """
-        return self.listed_exchange.all()
+        return self.exchange_stocks.all()
 
     def market_local_time(self):
         """
         Method that gets the markets local time
         """
-        timezone = get_timezone(self.timezone, self.country.alpha2)
-        pytz_timezone = pytz.timezone(timezone)
-        return datetime.datetime.now(pytz_timezone)
+        try:
+            timezone = get_timezone(self.timezone, self.country.alpha2)
+            pytz_timezone = pytz.timezone(timezone)
+            return datetime.datetime.now(pytz_timezone)
+        except AttributeError:
+            return 'N/A'
 
     def market_open(self):
         """
         Method that checks if the market is open
         """
-        timezone = get_timezone(self.timezone, self.country.alpha2)
-        pytz_timezone = pytz.timezone(timezone)
-        exchange_time = datetime.datetime.now(pytz_timezone)
+        try:
+            timezone = get_timezone(self.timezone, self.country.alpha2)
+            pytz_timezone = pytz.timezone(timezone)
+            exchange_time = datetime.datetime.now(pytz_timezone)
 
-        if exchange_time.isoweekday() in range(1, 6):
-            if self.opening_time <= exchange_time.time() <= self.closing_time:
-                return True
-        return False
+            if exchange_time.isoweekday() in range(1, 6):
+                if self.opening_time <= exchange_time.time() <= self.closing_time:
+                    return True
+            return False
+        except AttributeError:
+            return 'N/A'
 
     def get_market_close_utc(self):
         """

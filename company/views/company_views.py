@@ -1,65 +1,53 @@
 from django.db.models import OuterRef, Subquery, Q
 from django.http import Http404
 
-from rest_framework import generics
-from rest_framework.response import Response
-from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated
+from rest_framework import generics, viewsets
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
 from company.models import Company
 from company.serializers import CompanySerializer
 from stock.models import Stock, StockPriceData
-from stock.serializers import BasicStockSerializer
+from stock.serializers import StockSerializer
 from fintrack.permissions import IsVerified
 
 
-class CompanyListView(generics.ListAPIView):
+class CompanyViewSet(viewsets.ModelViewSet):
     """
-    Get a list of all Company instances, User must be Authenticated and have
-    a verified User Email to use API.
+    Company ViewSet that offers the following actions, list(), retrieve(),
+    create(), update(), partial_update() and destroy(). Depending on the
+    HTTP method the User will require different permissions.
+
+    The User must be Verified to use this method
+    GET - List existing Companies or Retrieve specific Company
+
+
+    The User must be a Verified Admin User to use this methods
+    POST - Create new Company
+    PUT - Fully update existing Company
+    PATCH - Partially update existing Company
+    DELETE - Delete existing Company
     """
-    permission_classes = (IsAuthenticated, IsVerified)
     serializer_class = CompanySerializer
+    lookup_field = 'short_name'
 
     def get_queryset(self):
-        query_params = {'industry__sector__name': self.request.query_params.get('sector', None),
-                        'industry__name': self.request.query_params.get('industry', None)}
-        arguments = {}
+        return Company.objects.all()
 
-        # Iterate through request parameters and create dict to apply to queryset
-        for k, v in query_params.items():
-            if v:
-                arguments[k] = v
-
-        return Company.objects.filter(**arguments)
-
-
-class CompanyDetailView(APIView):
-    """
-    Retrieve a Company instance, User must be Authenticated and have
-    a verified User Email to use API.
-    """
-    permission_classes = (IsAuthenticated, IsVerified)
-
-    def get_object(self, name):
-        try:
-            return Company.objects.get(Q(short_name=name) | Q(long_name=name))
-        except Company.DoesNotExist:
-            raise Http404
-
-    def get(self, request, name, format=None):
-        company = self.get_object(name)
-        serializer = CompanySerializer(company)
-        return Response(serializer.data)
+    def get_permissions(self):
+        request_method = self.request.method
+        if request_method == 'GET':
+            return (IsAuthenticated(), IsVerified())
+        else:
+            return (IsAdminUser(), IsVerified())
 
 
 class CompanySharesListView(generics.ListAPIView):
     """
-    Retrieve a Companies listed Stocks, User must be Authenticated and have
-    a verified User Email to use API.
+    Retrieve a Companies listed Stocks, this view accepts HTTP GET requests only. The reuquest
+    User must be authenticated and verified to access the API.
     """
     permission_classes = (IsAuthenticated, IsVerified)
-    serializer_class = BasicStockSerializer
+    serializer_class = StockSerializer
 
     def get_queryset(self):
         name = self.kwargs['name']
