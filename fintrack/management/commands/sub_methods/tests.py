@@ -1,4 +1,4 @@
-from exchange.models import Exchange
+from fintrack_be.models import Exchange
 
 
 def exchange_close_utc():

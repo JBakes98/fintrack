@@ -22,6 +22,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'celery',
     'django_celery_results',
+    'django_extensions',
 
     # Local Apps
     'fintrack',

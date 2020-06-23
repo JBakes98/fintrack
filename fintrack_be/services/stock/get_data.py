@@ -1,4 +1,6 @@
 from http.client import IncompleteRead
+from urllib.error import HTTPError
+
 import yfinance as yf
 from django.core.exceptions import MultipleObjectsReturned
 
@@ -40,15 +42,15 @@ def get_stock_company(ticker):
             print(e)
         except MultipleObjectsReturned as e:
             print(e)
-        # except HTTPError as e:
-        #     if i < attempts - 1:
-        #         print(e)
-        #         print('Retrying attempt {}'.format(i))
-        #         continue
-        #     else:
-        #         print(e)
-        #         print('Attempted {} times, all unsuccessful'.format(attempts))
-        #     break
+        except HTTPError as e:
+            if i < attempts - 1:
+                print(e)
+                print('Retrying attempt {}'.format(i))
+                continue
+            else:
+                print(e)
+                print('Attempted {} times, all unsuccessful'.format(attempts))
+            break
 
 
 def get_stock_data(ticker, period, interval):

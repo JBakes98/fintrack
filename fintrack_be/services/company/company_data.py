@@ -13,6 +13,10 @@ def create_company(short_name, long_name, summary, industry):
     :param summary: The Company business summary
     :param industry: The Companies parent Industry
     """
+    # Strip commas from company names as this stop the names being accepted in URLs
+    short_name = short_name.replace(',', '')
+    long_name = long_name.replace(',', '')
+
     industry = Industry.objects.get(name=industry)
     Company.objects.update_or_create(short_name=short_name,
                                      long_name=long_name,
@@ -97,5 +101,9 @@ def extract_company_names_from_json(json):
     else:
         short_company_name = 'N/A'
         long_company_name = 'Parent company for objects that cant be linked to a parent company'
+
+    # Strip commas from company names as this stop the names being accepted in URLs
+    short_company_name = short_company_name.replace(',', '')
+    long_company_name = long_company_name.replace(',', '')
 
     return short_company_name, long_company_name

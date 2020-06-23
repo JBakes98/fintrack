@@ -1,4 +1,6 @@
 from django.db import models
+from django.urls import reverse
+
 from fintrack_be.models.industry import Industry
 
 
@@ -15,3 +17,6 @@ class Company(models.Model):
 
     def __str__(self):
         return self.short_name
+
+    def get_absolute_url(self):
+        return reverse('company-detail', kwargs={'short_name': self.short_name})

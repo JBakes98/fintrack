@@ -1,6 +1,4 @@
-from sector.models import Sector
-from industry.models import Industry
-from company.models import Company
+from fintrack_be.models import Sector, Industry, Company
 
 
 def fix():

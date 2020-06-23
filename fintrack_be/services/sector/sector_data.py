@@ -1,4 +1,4 @@
-from sector.models import Sector
+from fintrack_be.models import Sector
 
 
 def create_sector(name):

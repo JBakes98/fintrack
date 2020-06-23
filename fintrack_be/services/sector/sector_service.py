@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 import requests
-from sector.models import Sector
+from fintrack_be.models import Sector
 
 
 @dataclass
