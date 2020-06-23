@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from user.models import User
+from fintrack_be.models import User
 
 
 class Command(BaseCommand):

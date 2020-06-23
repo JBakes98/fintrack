@@ -1,6 +1,6 @@
 from django.db.backends.utils import logger
 
-from index.data.sp500 import SP500
+from fintrack_be.services.index.sp500 import SP500
 
 
 def create_indices():
