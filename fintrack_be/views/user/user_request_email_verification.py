@@ -10,6 +10,7 @@ from rest_framework.views import APIView
 from fintrack_be.helpers import user_token
 from fintrack_be.models import User
 from fintrack_be.serializers import UserSerializer
+from fintrack_be.tasks.email import send_email
 from fintrack_be.throttles import OncePerHourUserThrottle
 
 
@@ -37,7 +38,7 @@ class UserRequestEmailVerificationAPIView(APIView):
                 'token': user_token.make_token(user)
             })
             # Need to make this an async task
-            # send_email(subject, message, [user.email, ])
+            send_email.delay(subject, message, [user.email, ])
 
             return Response('Email sent', status=status.HTTP_202_ACCEPTED)
         return Response('User account already verified', status=status.HTTP_200_OK)

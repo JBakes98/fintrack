@@ -7,6 +7,7 @@ from rest_framework.views import APIView
 
 from fintrack_be.helpers import user_token
 from fintrack_be.models import User
+from fintrack_be.tasks.email import send_email
 from fintrack_be.throttles import OncePerHourUserThrottle
 
 
@@ -31,7 +32,7 @@ class RequestUserPasswordReset(APIView):
                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                 'token': user_token.make_token(user)
             })
-            # send_email(subject, message, [user.email, ])
+            send_email(subject, message, [user.email, ])
 
             return Response('Reset email sent to users email')
 
