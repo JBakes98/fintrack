@@ -18,7 +18,7 @@ app.autodiscover_tasks()
 
 @app.on_after_finalize.connect
 def setup_periodic_tasks(sender, **kwargs):
-    from exchange.tasks.exchange_tasks import get_exchanges_day_data
+    from fintrack_be.tasks.exchange.exchange_tasks import get_exchanges_day_data
     from exchange.models import Exchange
 
     exchanges = Exchange.objects.all()

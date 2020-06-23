@@ -25,22 +25,14 @@ INSTALLED_APPS = [
 
     # Local Apps
     'fintrack',
-    'user',
-    'country',
-    'sector',
-    'industry',
-    'exchange',
-    'company',
-    'stock',
-    'index',
-    'position',
+    'fintrack_be',
     'linkify',
 ]
 
 # API settings
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'user.authentication.ExpiringTokenAuthentication',
+        'fintrack_be.authentication.ExpiringTokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',
     ),
     'DEFAULT_RENDERER_CLASSES': (
@@ -116,7 +108,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-AUTH_USER_MODEL = 'user.User'
+AUTH_USER_MODEL = 'fintrack_be.User'
 PASSWORD_RESET_TIMEOUT_DAYS = 1
 
 # Internationalization

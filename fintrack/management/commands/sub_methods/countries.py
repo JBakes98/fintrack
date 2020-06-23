@@ -1,5 +1,5 @@
 from django.db.backends.utils import logger
-from country.services import country_data
+from fintrack_be.services.country import country_data
 
 
 def create_countries():
