@@ -29,7 +29,7 @@ class CompanyViewSet(viewsets.ModelViewSet):
     """
     serializer_class = CompanySerializer
     lookup_field = 'short_name'
-    lookup_value_regex = '[0-9.A-Z]+'
+    lookup_value_regex = '[0-9.A-Z%]+'
 
     def get_queryset(self):
         return Company.objects.all()
