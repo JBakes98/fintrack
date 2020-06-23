@@ -11,11 +11,7 @@ class UserPasswordResetView(APIView):
     def post(self, request, uidb64, token):
         """
         Method used to reset the users password, the URL contains the users
-        encoded id and the required token to authenticate the change. The password
-        :param request:
-        :param uidb64:
-        :param token:
-        :return:
+        encoded id and the required token to authenticate the change.
         """
         try:
             uid = force_text(urlsafe_base64_decode(uidb64))

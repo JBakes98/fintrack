@@ -18,8 +18,6 @@ class RequestUserPasswordReset(APIView):
         """
         Method for User to request an account password reset email, the user must post
         the accounts email, and it be a valid email registered to an account on the system.
-        :param request: Request that contains User email
-        :return: JSON response data
         """
         email = request.POST.get('email')
         try:

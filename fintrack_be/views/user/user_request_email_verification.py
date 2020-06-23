@@ -24,8 +24,6 @@ class UserRequestEmailVerificationAPIView(APIView):
         """
         Method for User to request an account verification email to be sent to
         the accounts email address to verify account.
-        :param request:
-        :return: JSON response
         """
         user = self.request.user
         if not user.is_verified:
