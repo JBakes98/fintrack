@@ -4,9 +4,33 @@ from django.db import models
 from django.urls import reverse
 
 from fintrack_be.models.stock import Stock
-from fintrack_be.models.interval_options import INTERVAL_OPTIONS
-from fintrack_be.models.prediction_options import PREDICTION_OPTIONS
 from fintrack_be.helpers import timezone_helper
+
+BUY = "BUY"
+SELL = "SELL"
+HOLD = "HOLD"
+
+PREDICTION_OPTIONS = (
+    (BUY, "BUY"),
+    (SELL, "SELL"),
+    (HOLD, "HOLD"),
+)
+
+ONEm = "1m"
+ONEh = "1h"
+ONEd = "1d"
+ONEw = "1w"
+ONEM = "1M"
+ONEy = "1y"
+
+INTERVAL_OPTIONS = (
+        (ONEm, "1m"),
+        (ONEh, "1h"),
+        (ONEd, "1d"),
+        (ONEw, "1w"),
+        (ONEM, "1M"),
+        (ONEy, "1y"),
+    )
 
 
 class StockPriceData(models.Model):
@@ -23,7 +47,7 @@ class StockPriceData(models.Model):
     change = models.DecimalField(max_digits=15, decimal_places=4, default=Decimal(0.00))
     change_perc = models.DecimalField(max_digits=15, decimal_places=4, default=Decimal(0.00))
 
-    ml_prediction = models.CharField(max_length=4, choices=PREDICTION_OPTIONS, default=PREDICTION_OPTIONS[2])
+    ml_prediction = models.CharField(max_length=4, choices=PREDICTION_OPTIONS, default=HOLD)
 
     class Meta:
         verbose_name = 'Stock Price Data'

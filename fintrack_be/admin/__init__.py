@@ -8,3 +8,5 @@ from .stock_admin import StockAdmin
 from .stock_price_admin import StockPriceAdmin
 from .index_admin import IndexAdmin
 from .index_price_admin import IndexPriceAdmin
+from .email_template_admin import EmailTemplateAdmin
+from .email_list_admin import EmailListAdmin

@@ -41,5 +41,9 @@ class Stock(models.Model):
         data = self.stock_prices.first()
         return data.close
 
+    @property
+    def latest_data(self):
+        return self.stock_prices.first()
+
     def get_price_data(self):
         return pd.DataFrame(list(self.stock_data.all().values()))

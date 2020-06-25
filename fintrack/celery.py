@@ -18,34 +18,39 @@ app.autodiscover_tasks()
 
 @app.on_after_finalize.connect
 def setup_periodic_tasks(sender, **kwargs):
+    from fintrack_be.models import Exchange
+    from fintrack_be.models import EmailList
     from fintrack_be.tasks.exchange.exchange_tasks import get_exchanges_day_data
-    from exchange.models import Exchange
+    from fintrack_be.tasks.email.email_tasks import send_email
 
     exchanges = Exchange.objects.all()
     for exchange in exchanges:
         close = exchange.get_market_close_utc()
         sender.add_periodic_task(
-            crontab(hour=close.hour, minute=0, day_of_week='mon-fri'),
+            crontab(hour=close.hour, minute=close.minute, day_of_week='mon-fri'),
             get_exchanges_day_data.s(exchange.symbol),
         )
 
-        # sender.add_periodic_task(
-        #     crontab(minute='*/1', day_of_week='mon-fri'),
-        #     get_exchanges_day_data.s('NASDAQ'),
-        # )
+    email_lists = EmailList.objects.all()
+    for email_list in email_lists:
+        for user in email_list.recipients.all():
+            sender.add_periodic_task(
+                crontab(hour=email_list.send_time.hour, day_of_week=email_list.send_days),
+                send_email.s(email_list.template,
+                             emails=[user.email, ],
+                             context={
+                                 'stocks': user.favourite_stocks.all(),
+                                 'user': user
+                             }
+                             ),
+            )
 
     # sender.add_periodic_task(
-    #     crontab(minute='*/1'),
-    #     get_latest_data_for_open_markets.s(),
-    # )
-
-    # sender.add_periodic_task(
-    #     crontab(minute='*/1'),
-    #     send_day_tasks_email.s(),
+    #     crontab(minute='*/1', day_of_week='mon-fri'),
+    #     get_exchanges_day_data.s('NASDAQ'),
     # )
 
 
 @app.task(bind=True)
 def debug_task(self):
     print('Request: {0!r}'.format(self.request))
-

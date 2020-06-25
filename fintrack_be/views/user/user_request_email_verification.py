@@ -1,5 +1,4 @@
 from django.contrib.sites.shortcuts import get_current_site
-from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 from rest_framework import status
@@ -16,7 +15,7 @@ from fintrack_be.throttles import OncePerHourUserThrottle
 
 class UserRequestEmailVerificationAPIView(APIView):
     throttle_classes = [OncePerHourUserThrottle]
-    permission_classes = (IsAuthenticated, )
+    permission_classes = (IsAuthenticated,)
     serializer_class = UserSerializer
     queryset = User.objects.all()
 
@@ -26,17 +25,18 @@ class UserRequestEmailVerificationAPIView(APIView):
         the accounts email address to verify account.
         """
         user = self.request.user
+        print(type(user))
         if not user.is_verified:
             current_site = get_current_site(self.request)
-            subject = 'Authenticate your FinTrack Account'
-            message = render_to_string('activation_request.html', {
-                'user': user,
-                'domain': current_site.domain,
-                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-                'token': user_token.make_token(user)
-            })
-            # Need to make this an async task
-            send_email.delay(subject, message, [user.email, ])
+            send_email.delay('account-authentication',
+                             emails=[user.email, ],
+                             context={
+                                 'domain': current_site.domain,
+                                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                                 'token': user_token.make_token(user),
+                                 'user': UserSerializer(user).data
+                             }
+                             )
 
             return Response('Email sent', status=status.HTTP_202_ACCEPTED)
         return Response('User account already verified', status=status.HTTP_200_OK)

@@ -40,5 +40,6 @@ def get_bulk_day_stock_data(ticker):
     from fintrack_be.services.stock.df_services import bulk_stock_price_data_to_model
 
     df = get_stock_data(ticker, period='1y', interval='1d')
+    print(df)
     bulk_stock_price_data_to_model(df)
     print('Added {} daily data'.format(ticker))

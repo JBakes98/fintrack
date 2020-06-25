@@ -30,12 +30,12 @@ def run_seed(self, mode):
                                 'N/A')
 
     # Create all exchange stocks
-    exchanges.add_nasdaq_stocks()
-    exchanges.add_nyse_stocks()
-    exchanges.add_lse_stocks()
+    # exchanges.add_nasdaq_stocks()
+    # exchanges.add_nyse_stocks()
+    # exchanges.add_lse_stocks()
 
     # Run fix to remove empty sector and industry created during seeding
-    fix_empty_sector_industry.fix()
+    # fix_empty_sector_industry.fix()
     exchanges.seed_exchange_stocks_data()
 
     # Create Indices and add constituents

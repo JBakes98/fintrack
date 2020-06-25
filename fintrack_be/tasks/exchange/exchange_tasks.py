@@ -30,7 +30,7 @@ def bulk_get_exchanges_day_data(exchange_symbol):
     """
     from fintrack_be.models import Exchange
     from fintrack_be.models import Stock
-    from fintrack_be.tasks import get_bulk_day_stock_data
+    from fintrack_be.tasks.stock.stock_tasks import get_bulk_day_stock_data
 
     exchange = Exchange.objects.get(symbol=exchange_symbol)
     stocks = Stock.objects.filter(exchange=exchange).order_by('ticker')
@@ -54,7 +54,7 @@ def get_latest_data_for_open_markets():
     """
     from fintrack_be.models import Exchange
     from fintrack_be.models import Stock
-    from fintrack_be.tasks import get_latest_stock_data
+    from fintrack_be.tasks.stock.stock_tasks import get_latest_stock_data
 
     exchanges = Exchange.objects.all().order_by('symbol')
     for exchange in exchanges:

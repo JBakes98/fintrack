@@ -1,9 +1,9 @@
 from __future__ import absolute_import, unicode_literals
-from django.core.mail import EmailMessage
-from fintrack.celery import app
+from celery.task import task
+from fintrack_be.models import EmailTemplate
 
 
-@app.task()
-def send_email(subject, message, recipient):
-    email = EmailMessage(subject, message, to=recipient)
-    email.send()
+@task()
+def send_email(*args, **kwargs):
+    return EmailTemplate.send(*args, **kwargs)
+
