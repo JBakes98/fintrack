@@ -35,7 +35,9 @@ def setup_periodic_tasks(sender, **kwargs):
     for email_list in email_lists:
         for user in email_list.recipients.all():
             sender.add_periodic_task(
-                crontab(hour=email_list.send_time.hour, day_of_week=email_list.send_days),
+                crontab(hour=email_list.send_time.hour,
+                        minute=email_list.send_time.minute,
+                        day_of_week=email_list.send_days),
                 send_email.s(email_list.template,
                              emails=[user.email, ],
                              context={
