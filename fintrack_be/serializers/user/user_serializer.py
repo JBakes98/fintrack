@@ -10,7 +10,15 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('first_name', 'last_name', 'email', 'password', 'password2', 'country', 'is_verified', 'favourite_stocks')
+        fields = ('first_name',
+                  'last_name',
+                  'email',
+                  'password',
+                  'password2',
+                  'country',
+                  'is_verified',
+                  'is_active',
+                  'favourite_stocks')
         depth = 1
         read_only_fields = ('is_verified', 'favourite_stocks')
 

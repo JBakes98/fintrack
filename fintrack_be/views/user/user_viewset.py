@@ -36,6 +36,9 @@ class UserViewSet(viewsets.ModelViewSet):
         user.is_staff = False
         user.save()
 
-        Token.objects.get(user_id=request.user.pk).delete()
+        try:
+            Token.objects.get(user_id=user.pk).delete()
+        except Token.DoesNotExist:
+            pass
 
         return Response('User deleted', status=status.HTTP_202_ACCEPTED)
