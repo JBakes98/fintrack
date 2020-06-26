@@ -6,3 +6,4 @@ from .exchange import *
 from .company import *
 from .stock import *
 from .index import *
+from .email import *

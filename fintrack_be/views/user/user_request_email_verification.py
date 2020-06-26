@@ -28,7 +28,7 @@ class UserRequestEmailVerificationAPIView(APIView):
         print(type(user))
         if not user.is_verified:
             current_site = get_current_site(self.request)
-            send_email.delay('account-authentication',
+            send_email.delay('account-verification',
                              emails=[user.email, ],
                              context={
                                  'domain': current_site.domain,

@@ -13,5 +13,5 @@ from .index_price import IndexPriceData
 from .index_constituents import IndexConstituents
 from .position import Position
 from .email_template import EmailTemplate
-from .email_list import EmailList
-from .email_list_recipients import EmailListRecipients
+from .mail_list import MailList
+from .mail_list_recipients import MailListRecipients

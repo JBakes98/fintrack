@@ -1,13 +1,13 @@
 from django.contrib import admin
-from fintrack_be.models import EmailList
+from fintrack_be.models import MailList
 
 
 class RecipientInlineAdmin(admin.TabularInline):
-    model = EmailList.recipients.through
+    model = MailList.recipients.through
     extra = 0
 
 
-class EmailListAdmin(admin.ModelAdmin):
+class MailListAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {'fields': (
             'name',
@@ -24,4 +24,4 @@ class EmailListAdmin(admin.ModelAdmin):
     ordering = ('name', )
 
 
-admin.site.register(EmailList, EmailListAdmin)
+admin.site.register(MailList, MailListAdmin)

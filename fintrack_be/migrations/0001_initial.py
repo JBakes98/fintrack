@@ -72,40 +72,6 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name='EmailList',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(blank=True, max_length=50, unique=True)),
-                ('description', models.CharField(blank=True, max_length=255, null=True)),
-                ('send_time', models.TimeField(blank=True, null=True)),
-                ('send_days', models.CharField(max_length=10)),
-            ],
-            options={
-                'verbose_name': 'Email List',
-                'verbose_name_plural': 'Email Lists',
-                'ordering': ['name'],
-            },
-        ),
-        migrations.CreateModel(
-            name='EmailTemplate',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('subject', models.CharField(blank=True, max_length=255, null=True)),
-                ('to_email', models.CharField(blank=True, max_length=255, null=True)),
-                ('from_email', models.CharField(blank=True, max_length=255, null=True)),
-                ('html_template', models.TextField(blank=True, null=True)),
-                ('plain_text', models.TextField(blank=True, null=True)),
-                ('is_html', models.BooleanField(default=False)),
-                ('is_text', models.BooleanField(default=False)),
-                ('template_key', models.CharField(max_length=255, unique=True)),
-            ],
-            options={
-                'verbose_name': 'Email',
-                'verbose_name_plural': 'Emails',
-                'ordering': ['subject'],
-            },
-        ),
-        migrations.CreateModel(
             name='Exchange',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
@@ -244,31 +210,6 @@ class Migration(migrations.Migration):
             name='constituents',
             field=models.ManyToManyField(blank=True, through='fintrack_be.IndexConstituents', to='fintrack_be.Stock'),
         ),
-        migrations.CreateModel(
-            name='EmailListRecipients',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('date_joined', models.DateField(default=django.utils.timezone.now)),
-                ('active', models.BooleanField(default=True)),
-                ('email_list', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='recipient_email_list', to='fintrack_be.EmailList')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='email_list_recipient', to=settings.AUTH_USER_MODEL)),
-            ],
-            options={
-                'verbose_name': 'Email List Recipient',
-                'verbose_name_plural': 'Email List Recipients',
-                'ordering': ['email_list', 'user'],
-            },
-        ),
-        migrations.AddField(
-            model_name='emaillist',
-            name='recipients',
-            field=models.ManyToManyField(blank=True, through='fintrack_be.EmailListRecipients', to=settings.AUTH_USER_MODEL),
-        ),
-        migrations.AddField(
-            model_name='emaillist',
-            name='template',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='list_email', to='fintrack_be.EmailTemplate'),
-        ),
         migrations.AddField(
             model_name='company',
             name='industry',
@@ -321,9 +262,5 @@ class Migration(migrations.Migration):
         migrations.AddConstraint(
             model_name='indexconstituents',
             constraint=models.UniqueConstraint(fields=('constituent', 'index'), name='index_constituent'),
-        ),
-        migrations.AddConstraint(
-            model_name='emaillistrecipients',
-            constraint=models.UniqueConstraint(fields=('email_list', 'user'), name='email_list_recipient'),
         ),
     ]

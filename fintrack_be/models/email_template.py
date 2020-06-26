@@ -18,14 +18,12 @@ class EmailTemplate(models.Model):
     from_email = models.CharField(max_length=255, null=True, blank=True)
     html_template = models.TextField(null=True, blank=True)
     plain_text = models.TextField(null=True, blank=True)
-    is_html = models.BooleanField(default=False)
-    is_text = models.BooleanField(default=False)
 
     template_key = models.CharField(max_length=255, unique=True)
 
     class Meta:
-        verbose_name = 'Email'
-        verbose_name_plural = 'Emails'
+        verbose_name = 'Email Template'
+        verbose_name_plural = 'Email Templates'
         ordering = ['subject', ]
 
     def __str__(self):
@@ -64,7 +62,7 @@ class EmailTemplate(models.Model):
         sender = sender or mail_template.get_sender()
         emails = mail_template.get_recipient(emails, context)
 
-        if mail_template.is_text:
+        if not mail_template.html_template:
             return send_mail(subject, body, sender, emails, fail_silently=not
             settings.DEBUG)
 
@@ -78,7 +76,7 @@ class EmailTemplate(models.Model):
         return msg.send(fail_silently=not (settings.DEBUG or settings.TEST))
 
     def _get_body(self):
-        if self.is_text:
+        if not self.html_template:
             return self.plain_text
 
         return self.html_template

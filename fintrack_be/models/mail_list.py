@@ -4,17 +4,17 @@ from fintrack_be.models import User
 from fintrack_be.models.email_template import EmailTemplate
 
 
-class EmailList(models.Model):
+class MailList(models.Model):
     name = models.CharField(max_length=50, unique=True, null=False, blank=True)
     description = models.CharField(max_length=255, null=True, blank=True)
-    template = models.ForeignKey(EmailTemplate, on_delete=models.CASCADE, related_name='list_email')
-    recipients = models.ManyToManyField(User, through='EmailListRecipients', blank=True)
+    template = models.ForeignKey(EmailTemplate, on_delete=models.CASCADE, related_name='mail_list_template')
+    recipients = models.ManyToManyField(User, through='MailListRecipients', blank=True)
     send_time = models.TimeField(null=True, blank=True)
     send_days = models.CharField(max_length=10)
 
     class Meta:
-        verbose_name = 'Email List'
-        verbose_name_plural = 'Email Lists'
+        verbose_name = 'Mail List'
+        verbose_name_plural = 'Mail Lists'
         ordering = ['name', ]
 
     def __str__(self):
