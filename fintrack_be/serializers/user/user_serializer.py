@@ -18,6 +18,9 @@ class UserSerializer(serializers.ModelSerializer):
                   'country',
                   'is_verified',
                   'is_active',
+                  'funds',
+                  'value',
+                  'result',
                   'favourite_stocks')
         depth = 1
         read_only_fields = ('is_verified', 'favourite_stocks')

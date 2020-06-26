@@ -1,5 +1,7 @@
 from django.db import models
 import pandas as pd
+
+from fintrack import settings
 from fintrack_be.models.stock import Stock
 import os
 
@@ -48,12 +50,12 @@ class Index(models.Model):
                 else:
                     main_df = main_df.join(df, how='outer')
 
-        main_df.to_csv('index/csv/{}-joined-closes.csv'.format(self.name))
+        main_df.to_csv('{}-joined-closes.csv'.format(self.name))
 
     def get_index_constituent_correlation(self):
-        if not os.path.exists('index/csv/{}-joined-closes.csv'.format(self.name)):
+        if not os.path.exists('{}-joined-closes.csv'.format(self.name)):
             self.compile_index_constituents_data()
 
-        df = pd.read_csv('index/csv/{}-joined-closes.csv'.format(self.name))
+        df = pd.read_csv('{}-joined-closes.csv'.format(self.name))
         df_corr = df.corr()
         return df_corr

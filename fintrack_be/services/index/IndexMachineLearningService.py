@@ -2,6 +2,7 @@ from dataclasses import dataclass
 import pandas as pd
 import os
 
+from fintrack import settings
 from fintrack_be.models import Index
 
 
@@ -14,10 +15,10 @@ class IndexDto:
 class IndexMachineLearningService:
     def get_index_constituent_correlation(self, index_id):
         index = Index.objects.get(pk=index_id)
-        if not os.path.exists('csv/{}-joined-closes.csv'.format(index.name)):
+        if not os.path.exists('{}-joined-closes.csv'.format(index.name)):
             self.compile_constituents_data(index.pk)
 
-        df = pd.read_csv('index/csv/{}-joined-closes.csv'.format(index.name))
+        df = pd.read_csv('{}-joined-closes.csv'.format(index.name))
         df_corr = df.corr()
         return df_corr
 
@@ -51,4 +52,4 @@ class IndexMachineLearningService:
                 else:
                     main_df = main_df.join(df, how='outer')
 
-        main_df.to_csv('index/csv/{}-joined-closes.csv'.format(index.name))
+        main_df.to_csv('{}-joined-closes.csv'.format(index.name))

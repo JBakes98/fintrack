@@ -1,4 +1,6 @@
 from django.http import Http404
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -21,10 +23,11 @@ class IndexCorrelationListView(generics.ListAPIView):
         except Index.DoesNotExist:
             raise Http404
 
+    @method_decorator(cache_page(60*60*2))
     def get(self, request, symbol, format=None):
         index = Index.objects.get(symbol=self.get_object(symbol))
         index_service = IndexMachineLearningService()
+
         df = index_service.get_index_constituent_correlation(index.pk)
-        serializer = IndexCorrelationSerializer(df.to_dict())
-        print(serializer.data)
+
         return Response(df.to_json())

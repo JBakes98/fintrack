@@ -46,4 +46,4 @@ class Stock(models.Model):
         return self.stock_prices.first()
 
     def get_price_data(self):
-        return pd.DataFrame(list(self.stock_data.all().values()))
+        return pd.DataFrame(list(self.stock_prices.all().values()))

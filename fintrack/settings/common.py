@@ -126,3 +126,4 @@ USE_L10N = True
 STATIC_URL = '/static/'
 STATIC_ROOT = 'static'
 
+MEDIA_ROOT = 'media/'

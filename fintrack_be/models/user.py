@@ -1,5 +1,6 @@
 import uuid
 import pytz
+import decimal
 
 import django
 from django.db import models
@@ -19,6 +20,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(blank=False, null=False, max_length=100)
     last_name = models.CharField(blank=False, null=False, max_length=100)
     country = models.ForeignKey(Country, on_delete=models.CASCADE, blank=True, null=True)
+
     is_verified = models.BooleanField(default=False)
     verified = models.DateTimeField(default=None, blank=True, null=True)
     is_staff = models.BooleanField(default=False)
@@ -26,7 +28,11 @@ class User(AbstractBaseUser, PermissionsMixin):
     date_joined = models.DateTimeField(default=django.utils.timezone.now, editable=False)
     last_login = models.DateTimeField(default=django.utils.timezone.now)
     timezone = models.CharField(max_length=50, default='UTC', choices=TIMEZONES, null=False, blank=False)
+
     favourite_stocks = models.ManyToManyField(Stock, related_name='favourite_stock')
+    funds = models.DecimalField(default=decimal.Decimal(0.00), max_digits=15, decimal_places=4, null=False, blank=False)
+    value = models.DecimalField(default=decimal.Decimal(0.00), max_digits=15, decimal_places=4, null=False, blank=False)
+    result = models.DecimalField(default=decimal.Decimal(0.00), max_digits=15, decimal_places=4, null=False, blank=False)
 
     USERNAME_FIELD = 'email'
     EMAIL_FIELD = 'email'
@@ -39,6 +45,15 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def get_absolute_url(self):
         return "/users/%i/" % (self.pk)
+
+    def update_funds(self, value):
+        print(value)
+        self.funds += value
+        self.save()
+        return self.funds
+
+    def sufficient_funds(self, value):
+        return self.funds >= value
 
 
 @receiver(django.db.models.signals.post_save, sender=User)

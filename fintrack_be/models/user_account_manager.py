@@ -31,3 +31,6 @@ class UserAccountManager(BaseUserManager):
 
     def create_superuser(self, email, password, **extra_fields):
         return self._create_user(email, password, True, True, **extra_fields)
+
+    def update_funds(self, cost):
+        self.funds = self.funds - cost
