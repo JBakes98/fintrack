@@ -16,6 +16,4 @@ class PositionSerializer(serializers.ModelSerializer):
                   'quantity', 'result', 'direction']
 
     def save(self):
-        data = self.validated_data
-        print(type(data))
         return PositionService.open_position(self.context['request'].user, self.validated_data)

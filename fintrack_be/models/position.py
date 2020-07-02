@@ -27,7 +27,6 @@ class Position(models.Model):
     quantity = models.DecimalField(max_digits=15, decimal_places=2, default=Decimal(0.00), null=False, blank=False)
     result = models.DecimalField(max_digits=15, decimal_places=4, default=Decimal(0.00))
     direction = models.CharField(max_length=4, choices=POSITION_DIRECTION, default=BUY)
-    is_open = models.BooleanField(blank=False, null=False, default=True)
 
     REQUIRED_FIELDS = ['instrument', 'user', 'open_date', 'open_price', 'quantity', 'direction']
 
@@ -43,5 +42,9 @@ class Position(models.Model):
         ]
 
     def __str__(self):
-        return self.id
+        return '{}'.format(self.id)
+
+    @property
+    def is_open(self):
+        return self.close_date is None
 

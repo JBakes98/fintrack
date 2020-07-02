@@ -2,7 +2,7 @@ from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
 from fintrack_be.models import Position
-from fintrack_be.permissions import IsVerified
+from fintrack_be.permissions import IsVerified, IsUser
 from fintrack_be.serializers.position.position_serializer import PositionSerializer
 
 
@@ -23,14 +23,21 @@ class PositionViewSet(viewsets.ModelViewSet):
     DELETE - Delete existing Position
     """
     serializer_class = PositionSerializer
-    lookup_field = 'symbol'
 
     def get_queryset(self):
-        return Position.objects.all()
+        if self.request.user.is_superuser:
+            return Position.objects.all()
+        return Position.objects.filter(user=self.request.user)
 
     def get_permissions(self):
-        request_method = self.request.method
-        if request_method == 'GET':
-            return (IsAuthenticated(), IsVerified())
+        # Allow non-authenticated User to create via POST method
+        if self.action == 'list':
+            self.permission_classes = [IsUser | IsAdminUser]
+        elif self.action == 'retrieve' or self.action == 'partial_update' or self.action == 'destroy':
+            self.permission_classes = [IsUser | IsAdminUser]
+        elif self.action == 'create':
+            self.permission_classes = []
         else:
-            return (IsAdminUser(), IsVerified())
+            self.permission_classes = [IsAuthenticated, IsVerified]
+
+        return super(self.__class__, self).get_permissions()
