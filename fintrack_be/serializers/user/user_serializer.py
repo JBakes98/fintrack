@@ -25,19 +25,18 @@ class UserSerializer(serializers.ModelSerializer):
         read_only_fields = ('is_verified', )
 
     def create(self, validated_data):
-        user = User(
-            email=self.validated_data['email'],
-            first_name=self.validated_data['first_name'],
-            last_name=self.validated_data['last_name'],
-            country=self.validated_data['country'],
-        )
         password = self.validated_data['password']
         password2 = self.validated_data['password2']
 
         if password != password2:
             raise serializers.ValidationError({'password', 'Passwords must match'})
 
-        user.set_password(password)
-        user.save()
+        user = User.objects.create_user(
+            email=self.validated_data['email'],
+            password=password,
+            first_name=self.validated_data['first_name'],
+            last_name=self.validated_data['last_name'],
+            country=self.validated_data['country'],
+        )
 
         return user

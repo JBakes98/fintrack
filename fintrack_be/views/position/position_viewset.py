@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from fintrack_be.models import Position
 from fintrack_be.permissions import IsVerified, IsUser, IsOwner
 from fintrack_be.serializers.position.position_serializer import PositionSerializer, PositionCloseSerializer
-from fintrack_be.services.position.position_services import PositionService
+from fintrack_be.services.position.position_service import PositionService
 
 
 class PositionViewSet(mixins.ListModelMixin,

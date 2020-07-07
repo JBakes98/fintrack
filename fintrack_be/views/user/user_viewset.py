@@ -29,6 +29,16 @@ class UserViewSet(viewsets.ModelViewSet):
 
         return super(self.__class__, self).get_permissions()
 
+    def create(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
+
+        if serializer.is_valid(raise_exception=True):
+            user = serializer.create(serializer.data)
+            user.send_verification_email(request)
+
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
     def retrieve(self, request, *args, **kwargs):
         """
         Method for User to request an account verification email to be sent to

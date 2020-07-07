@@ -74,11 +74,10 @@ class User(AbstractBaseUser, PermissionsMixin):
             token.created = datetime.datetime.utcnow()
             token.save()
 
-    def send_verification_email(self):
+    def send_verification_email(self, request):
         from fintrack_be.serializers.user.user_serializer import UserSerializer
         from fintrack_be.tasks.email.email_tasks import send_email
-
-        current_site = get_current_site(self.request)
+        current_site = get_current_site(request)
         send_email.delay('account-verification',
                          emails=[self.email, ],
                          context={

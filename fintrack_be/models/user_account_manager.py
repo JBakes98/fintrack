@@ -32,7 +32,6 @@ class UserAccountManager(BaseUserManager):
         user.set_password(password)
         user.save(using=self._db)
         user.create_user_token()
-        user.send_verification_email()
 
         return user
 

@@ -2,7 +2,7 @@ from rest_framework import serializers
 from rest_framework.fields import CurrentUserDefault
 
 from fintrack_be.models import User, Stock, Position
-from fintrack_be.services.position.position_services import PositionService
+from fintrack_be.services.position.position_service import PositionService
 
 
 class PositionSerializer(serializers.ModelSerializer):
