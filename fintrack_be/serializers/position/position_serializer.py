@@ -15,5 +15,14 @@ class PositionSerializer(serializers.ModelSerializer):
         fields = ['id', 'instrument', 'user', 'open_date', 'close_date', 'open_price', 'close_price',
                   'quantity', 'result', 'direction']
 
-    def save(self):
-        return PositionService.open_position(self.context['request'].user, self.validated_data)
+
+class PositionCloseSerializer(serializers.ModelSerializer):
+    user = serializers.PrimaryKeyRelatedField(read_only=True)
+    close_date = serializers.DateTimeField(required=False)
+    instrument = serializers.SlugRelatedField(read_only=True, slug_field='ticker')
+
+    class Meta:
+        model = Position
+        fields = ['id', 'instrument', 'user', 'open_date', 'close_date', 'open_price', 'close_price',
+                  'quantity', 'result', 'direction']
+        read_only_fields = ('id', 'instrument', 'user', 'open_date', 'open_price', 'quantity', 'direction')

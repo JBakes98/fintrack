@@ -9,7 +9,7 @@ router.register(r'', IndustryViewSet, basename='industry')
 urlpatterns = [
     path('companies/', IndustryCompanyListView.as_view(), name='industries_companies'),
     path('<str:name>/companies/', IndustryCompanyRetrieveView.as_view(), name='industry_companies'),
-    # path('<str:name>/stocks/', IndustryStockListVIew.as_view()),
+    path('<str:name>/stocks/', IndustryStockListVIew.as_view(), name='industry_stocks'),
 ]
 
 urlpatterns += router.urls

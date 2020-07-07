@@ -20,10 +20,9 @@ class UserSerializer(serializers.ModelSerializer):
                   'is_active',
                   'funds',
                   'value',
-                  'result',
-                  'favourite_stocks')
+                  'result')
         depth = 1
-        read_only_fields = ('is_verified', 'favourite_stocks')
+        read_only_fields = ('is_verified', )
 
     def create(self, validated_data):
         user = User(

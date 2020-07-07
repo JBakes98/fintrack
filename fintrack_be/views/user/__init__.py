@@ -4,3 +4,5 @@ from .user_activate import ActivateView
 from .user_request_email_verification import UserRequestEmailVerificationAPIView
 from .user_request_password_reset import RequestUserPasswordReset
 from .user_password_reset import UserPasswordResetView
+from .user_get_current import UserDetailsAPIView
+from .user_watchlist import UserWatchlistAPIView

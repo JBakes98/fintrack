@@ -1,2 +1,4 @@
 from .user_serializer import UserSerializer
 from .super_user_serializer import SuperUserSerializer
+from .user_watchlist_serializer import UserWatchlistSerializer
+from .reset_password_serializer import ResetPasswordSerializer

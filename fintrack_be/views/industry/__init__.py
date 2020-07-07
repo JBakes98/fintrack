@@ -1,3 +1,4 @@
 from .industry_viewset import IndustryViewSet
 from .industry_company_list import IndustryCompanyListView
 from .industry_company_retrieve import IndustryCompanyRetrieveView
+from .industry_stock_list import IndustryStockListVIew

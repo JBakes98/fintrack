@@ -1,12 +1,18 @@
+import datetime
 import uuid
 import pytz
 import decimal
 
 import django
+from django.contrib.sites.shortcuts import get_current_site
 from django.db import models
 from django.dispatch import receiver
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode
+from rest_framework.authtoken.models import Token
 
+from fintrack_be.helpers import user_token
 from fintrack_be.models.user_account_manager import UserAccountManager
 from fintrack_be.models.country import Country
 from fintrack_be.models.stock import Stock
@@ -55,17 +61,31 @@ class User(AbstractBaseUser, PermissionsMixin):
     def sufficient_funds(self, value):
         return self.funds >= value
 
+    def update_result(self, value):
+        self.result += value
+        self.save()
+        return self.result
 
-@receiver(django.db.models.signals.post_save, sender=User)
-def create_user_token(sender, instance, created, **kwargs):
-    from rest_framework.authtoken.models import Token
-    import datetime
+    def create_user_token(self):
+        token, created = Token.objects.get_or_create(user=self)
+        if not created:
+            token.delete()
+            token = Token.objects.create(user=self)
+            token.created = datetime.datetime.utcnow()
+            token.save()
 
-    if created:
-        if instance.is_active:
-            token, created = Token.objects.get_or_create(user=instance)
-            if not created:
-                token.delete()
-                token = Token.objects.create(user=instance)
-                token.created = datetime.datetime.utcnow()
-                token.save()
+    def send_verification_email(self):
+        from fintrack_be.serializers.user.user_serializer import UserSerializer
+        from fintrack_be.tasks.email.email_tasks import send_email
+
+        current_site = get_current_site(self.request)
+        send_email.delay('account-verification',
+                         emails=[self.email, ],
+                         context={
+                             'domain': current_site.domain,
+                             'uid': urlsafe_base64_encode(force_bytes(self.pk)),
+                             'token': user_token.make_token(self),
+                             'user': UserSerializer(self).data
+                         }
+                         )
+

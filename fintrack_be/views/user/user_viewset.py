@@ -29,6 +29,14 @@ class UserViewSet(viewsets.ModelViewSet):
 
         return super(self.__class__, self).get_permissions()
 
+    def retrieve(self, request, *args, **kwargs):
+        """
+        Method for User to request an account verification email to be sent to
+        the accounts email address to verify account.
+        """
+        serializer = self.serializer_class(self.request.user)
+        return Response(serializer.data)
+
     def destroy(self, request, *args, **kwargs):
         user = get_object_or_404(User, email=self.kwargs['email'])
         user.is_active = False

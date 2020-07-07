@@ -27,16 +27,7 @@ class UserRequestEmailVerificationAPIView(APIView):
         user = self.request.user
         print(type(user))
         if not user.is_verified:
-            current_site = get_current_site(self.request)
-            send_email.delay('account-verification',
-                             emails=[user.email, ],
-                             context={
-                                 'domain': current_site.domain,
-                                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-                                 'token': user_token.make_token(user),
-                                 'user': UserSerializer(user).data
-                             }
-                             )
+            user.send
 
             return Response('Email sent', status=status.HTTP_202_ACCEPTED)
         return Response('User account already verified', status=status.HTTP_200_OK)

@@ -1,8 +1,9 @@
-from django.shortcuts import get_object_or_404
-from rest_framework import generics, viewsets
+from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.response import Response
+
 from fintrack_be.models import Industry
-from fintrack_be.serializers import IndustrySerializer, IndustryCompanySerializer
+from fintrack_be.serializers import IndustrySerializer
 from fintrack_be.permissions import IsVerified
 
 
@@ -36,37 +37,15 @@ class IndustryViewSet(viewsets.ModelViewSet):
         else:
             return (IsAdminUser(), IsVerified())
 
+    def list(self, request, *args, **kwargs):
+        query_params = {'sector__name': self.request.query_params.get('sector', None)}
+        arguments = {}
 
+        for k, v in query_params.items():
+            if v:
+                arguments[k] = v
 
+        queryset = Industry.objects.filter(**arguments).order_by('name')
+        serializer = self.serializer_class(queryset, many=True)
 
-
-
-
-
-# class IndustryStockListVIew(generics.ListAPIView):
-#     """
-#     Get a list of Stock instances in a Industry
-#     """
-#     permission_classes = (IsAuthenticated, IsVerified)
-#     serializer_class = BasicStockSerializer
-#
-#     def get_queryset(self):
-#         name = self.kwargs['name']
-#         try:
-#             industries = Industry.objects.filter(name=name)
-#         except Industry.DoesNotExist:
-#             raise Http404
-#
-#         try:
-#             companies = Company.objects.filter(industry__in=industries)
-#         except Company.DoesNotExist:
-#             raise Http404
-#
-#         try:
-#             stocks = Stock.objects.filter(company__in=companies).order_by('ticker')
-#             latest_data = StockPriceData.objects.filter(stock=OuterRef('pk')).order_by('-timestamp')
-#             return stocks.annotate(price=Subquery(latest_data.values('close')[:1]))
-#         except Stock.DoesNotExist:
-#             raise Http404
-#         except StockPriceData.DoesNotExist:
-#             raise Http404
+        return Response(serializer.data)

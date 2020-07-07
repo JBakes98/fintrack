@@ -7,6 +7,9 @@ router = DefaultRouter()
 router.register(r'', UserViewSet, basename='user')
 
 urlpatterns = [
+    path('detail/', UserDetailsAPIView.as_view(), name='user_details'),
+    path('watchlist/', UserWatchlistAPIView.as_view(), name='user_watchlist'),
+
     path('login/', obtain_expiring_auth_token, name='get_token'),
     path('reset-password/', RequestUserPasswordReset.as_view(), name='request_password_reset'),
     path('reset-password/<uidb64>/<token>/', UserPasswordResetView.as_view(), name='password_reset'),

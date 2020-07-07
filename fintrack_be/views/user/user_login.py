@@ -21,7 +21,10 @@ class ObtainExpiringAuthToken(ObtainAuthToken):
                 token.created = timezone.now()
                 token.save()
 
-            return Response({'token': token.key})
+            return Response({'token': token.key,
+                             'user_id': user.pk,
+                             'user_email': user.email})
+
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
