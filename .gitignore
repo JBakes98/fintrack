@@ -11,3 +11,4 @@ fintrack/settings/secret_key.py
 .ebignore
 
 /static/
+.idea
