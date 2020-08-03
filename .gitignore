@@ -8,6 +8,8 @@ fintrack/settings/development.py
 fintrack/settings/production.py
 fintrack/settings/secret_key.py
 
+fintrack_fe/node_modules/*
+
 .ebignore
 
 /static/
