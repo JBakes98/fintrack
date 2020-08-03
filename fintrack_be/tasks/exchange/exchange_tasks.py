@@ -10,8 +10,7 @@ def get_exchanges_day_data(exchange_symbol):
     for that stock.
     :param exchange_symbol: Exchange symbol to get stocks for
     """
-    from fintrack_be.models import Exchange
-    from fintrack_be.models import Stock
+    from fintrack_be.models import Exchange, Stock
     from fintrack_be.tasks.stock.stock_tasks import get_day_stock_data
 
     exchange = Exchange.objects.get(symbol=exchange_symbol)
@@ -28,8 +27,7 @@ def bulk_get_exchanges_day_data(exchange_symbol):
     creates them in bulk
     :param exchange_symbol: Exchange symbol to get data for
     """
-    from fintrack_be.models import Exchange
-    from fintrack_be.models import Stock
+    from fintrack_be.models import Exchange, Stock
     from fintrack_be.tasks.stock.stock_tasks import get_bulk_day_stock_data
 
     exchange = Exchange.objects.get(symbol=exchange_symbol)
@@ -52,8 +50,7 @@ def get_latest_data_for_open_markets():
     Task that gets the latest price data for Stocks in Exchanges that are
     in trading hours.
     """
-    from fintrack_be.models import Exchange
-    from fintrack_be.models import Stock
+    from fintrack_be.models import Exchange, Stock
     from fintrack_be.tasks.stock.stock_tasks import get_latest_stock_data
 
     exchanges = Exchange.objects.all().order_by('symbol')
@@ -72,17 +69,15 @@ def get_exchanges_minute_data(exchange_symbol):
     for that stock.
     :param exchange_symbol: Exchange symbol to get stocks for
     """
-    from fintrack_be.models import Exchange
-    from fintrack_be.models import Stock
-    from fintrack_be.services.stock.get_data import get_stock_data
-    from fintrack_be.services.stock.df_services import stock_price_data_df_to_model
+    from fintrack_be.models import Exchange, Stock, StockPriceData
+    from fintrack_be.services.stock.stock_data import StockDataService
 
     exchange = Exchange.objects.get(symbol=exchange_symbol)
     stocks = Stock.objects.filter(exchange=exchange)
 
     for stock in stocks:
-        df = get_stock_data(ticker=stock.ticker, period='1d', interval='1m')
-        stock_price_data_df_to_model(df)
+        df = StockDataService.get_stock_data(stock.ticker, '1d', '1m')
+        StockPriceData.objects.create_df_data(df)
         print('Added {} minute data')
 
 
@@ -93,15 +88,13 @@ def bulk_get_exchanges_minute_data(exchange_symbol):
     creates them in bulk
     :param exchange_symbol: Exchange symbol to get data for
     """
-    from fintrack_be.models import Exchange
-    from fintrack_be.models import Stock
-    from fintrack_be.services.stock.get_data import get_stock_data
-    from fintrack_be.services.stock.df_services import bulk_stock_price_data_to_model
+    from fintrack_be.models import Exchange, Stock, StockPriceData
+    from fintrack_be.services.stock.stock_data import StockDataService
 
     exchange = Exchange.objects.get(symbol=exchange_symbol)
     stocks = Stock.objects.filter(exchange=exchange).order_by('symbol')
 
     for stock in stocks:
-        df = get_stock_data(symbol=stock.symbol, period='max', interval='1m')
-        bulk_stock_price_data_to_model(df)
+        df = StockDataService.get_stock_data(stock.symbol, 'max', '1m')
+        StockPriceData.objects.create_bulk_data(df)
         print('Added {} daily minute data'.format(stock.symbol))

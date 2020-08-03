@@ -4,6 +4,7 @@ from django.db import models
 from django.urls import reverse
 
 from fintrack_be.models.stock import Stock
+from fintrack_be.models.stock_price_manager import StockPriceManager
 from fintrack_be.helpers import timezone_helper
 
 BUY = "BUY"
@@ -49,6 +50,8 @@ class StockPriceData(models.Model):
 
     ml_prediction = models.CharField(max_length=4, choices=PREDICTION_OPTIONS, default=HOLD)
 
+    objects = StockPriceManager()
+
     class Meta:
         verbose_name = 'Stock Price Data'
         verbose_name_plural = 'Stocks Price Data'
@@ -68,6 +71,7 @@ class StockPriceData(models.Model):
     def get_absolute_url(self):
         return reverse('fintrack_be:price', kwargs={'pk': self.pk})
 
+    @property
     def timestamp_in_market_time(self):
         """
         Method that returns the price data timestamp in the market local time from the

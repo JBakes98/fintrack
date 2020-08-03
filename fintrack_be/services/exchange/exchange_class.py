@@ -1,7 +1,6 @@
 from django.db import IntegrityError
 
-from fintrack_be.models import Country
-from fintrack_be.models import Exchange
+from fintrack_be.models import Country, Exchange
 
 
 class ExchangeClass:
@@ -20,11 +19,11 @@ class ExchangeClass:
     def create_exchange(self):
         try:
             country_object = Country.objects.get(alpha2=self.country)
-            Exchange.objects.create(symbol=self.symbol,
-                                    name=self.name,
-                                    country=country_object,
-                                    timezone=self.timezone,
-                                    opening_time=self.opening_time,
-                                    closing_time=self.closing_time)
+            Exchange.objects.create_exchange(symbol=self.symbol,
+                                             name=self.name,
+                                             country=country_object,
+                                             timezone=self.timezone,
+                                             opening_time=self.opening_time,
+                                             closing_time=self.closing_time)
         except IntegrityError:
             print('Exchange Instance already exists')

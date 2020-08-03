@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     # Local Apps
     'fintrack',
     'fintrack_be',
+    'fintrack_fe',
     'linkify',
 ]
 

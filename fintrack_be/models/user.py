@@ -6,7 +6,6 @@ import decimal
 import django
 from django.contrib.sites.shortcuts import get_current_site
 from django.db import models
-from django.dispatch import receiver
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
@@ -51,40 +50,3 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def get_absolute_url(self):
         return "/users/%i/" % (self.pk)
-
-    def update_funds(self, value):
-        print(value)
-        self.funds += value
-        self.save()
-        return self.funds
-
-    def sufficient_funds(self, value):
-        return self.funds >= value
-
-    def update_result(self, value):
-        self.result += value
-        self.save()
-        return self.result
-
-    def create_user_token(self):
-        token, created = Token.objects.get_or_create(user=self)
-        if not created:
-            token.delete()
-            token = Token.objects.create(user=self)
-            token.created = datetime.datetime.utcnow()
-            token.save()
-
-    def send_verification_email(self, request):
-        from fintrack_be.serializers.user.user_serializer import UserSerializer
-        from fintrack_be.tasks.email.email_tasks import send_email
-        current_site = get_current_site(request)
-        send_email.delay('account-verification',
-                         emails=[self.email, ],
-                         context={
-                             'domain': current_site.domain,
-                             'uid': urlsafe_base64_encode(force_bytes(self.pk)),
-                             'token': user_token.make_token(self),
-                             'user': UserSerializer(self).data
-                         }
-                         )
-

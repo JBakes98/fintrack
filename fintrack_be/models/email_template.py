@@ -3,9 +3,6 @@ from django.conf import settings
 from django.core.mail import EmailMultiAlternatives, send_mail
 from django.db import models
 from django.template import Context
-from django.utils import timezone
-
-from fintrack_be.models import User
 
 
 class EmailTemplate(models.Model):

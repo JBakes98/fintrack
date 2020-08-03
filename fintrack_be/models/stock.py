@@ -21,13 +21,13 @@ class Stock(models.Model):
     def __str__(self):
         return self.ticker
 
-    def get_absolute_url(self):
-        return reverse('fintrack_be:stock-detail', kwargs={'ticker': self.ticker})
-
     class Meta:
         constraints = [
             models.UniqueConstraint(fields=['ticker', 'name', 'exchange_id'], name='exchange_stock')
         ]
+
+    def get_absolute_url(self):
+        return reverse('fintrack_be:stock-detail', kwargs={'ticker': self.ticker})
 
     @property
     def market_local_timestamp(self):

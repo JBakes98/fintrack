@@ -7,6 +7,7 @@ class IndexClass:
     """
     Index Parent class that is the blueprint for indices in the system
     """
+
     def __init__(self, name, symbol, constituent_links):
         self.name = name
         self.symbol = symbol
@@ -14,7 +15,7 @@ class IndexClass:
 
     def create_index(self):
         try:
-            Index.objects.create(symbol=self.symbol,
-                                 name=self.name)
+            Index.objects.create_index(symbol=self.symbol,
+                                       name=self.name)
         except IntegrityError:
             print('Index Instance already exists')

@@ -3,6 +3,7 @@ import datetime
 import pytz
 from django.db import models
 
+from fintrack_be.models.exchange_manager import ExchangeManager
 from fintrack_be.helpers.timezone_helper import get_timezone, convert_time_to_timezone
 from fintrack_be.models.country import Country
 
@@ -15,6 +16,8 @@ class Exchange(models.Model):
     opening_time = models.TimeField()
     closing_time = models.TimeField()
 
+    objects = ExchangeManager()
+
     class Meta:
         verbose_name = 'Exchange'
         verbose_name_plural = 'Exchanges'
@@ -23,6 +26,7 @@ class Exchange(models.Model):
     def __str__(self):
         return self.symbol
 
+    @property
     def stock_count(self):
         """
         Method that returns the number of Stocks on this Exchange
@@ -30,12 +34,14 @@ class Exchange(models.Model):
         """
         return self.exchange_stocks.count()
 
+    @property
     def listed_stocks(self):
         """
         Method that returns all of the Stocks on this Exchange
         """
         return self.exchange_stocks.all()
 
+    @property
     def market_local_time(self):
         """
         Method that gets the markets local time
@@ -47,6 +53,7 @@ class Exchange(models.Model):
         except AttributeError:
             return 'N/A'
 
+    @property
     def market_open(self):
         """
         Method that checks if the market is open
@@ -63,6 +70,7 @@ class Exchange(models.Model):
         except AttributeError:
             return 'N/A'
 
+    @property
     def get_market_close_utc(self):
         """
         Method that get the close time of market in UTC

@@ -1,8 +1,6 @@
 from django.core.management import BaseCommand
 from fintrack.management.commands.sub_methods import countries, exchanges, fix_empty_sector_industry, index
-from fintrack_be.services.sector import sector_data
-from fintrack_be.services.industry import industry_data
-from fintrack_be.services.company import company_data
+from fintrack_be.models import Sector, Industry, Company
 
 
 # python manage.py seed
@@ -22,12 +20,12 @@ def run_seed(self, mode):
     exchanges.create_exchanges()
 
     # Create empty objects for instances that dont have parents
-    sector_data.create_sector('N/A')
-    industry_data.create_industry('N/A', 'N/A')
-    company_data.create_company('N/A',
-                                'Non Parented Holding Company',
-                                'Company for holding Stock instances that dont have a known parent Company',
-                                'N/A')
+    # Sector.objects.create_sector('N/A')
+    # Industry.objects.create_industry('N/A', 'N/A')
+    # Company.objects.create_company('N/A',
+    #                                'Non Parented Holding Company',
+    #                                'Company for holding Stock instances that dont have a known parent Company',
+    #                                'N/A')
 
     # Create all exchange stocks
     exchanges.add_nasdaq_stocks()

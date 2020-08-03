@@ -1,5 +1,5 @@
 from fintrack_be.exceptions import PositionNotOpenError
-from fintrack_be.models import Stock, Position, User
+from fintrack_be.models import Stock, Position
 import datetime
 
 

@@ -1,6 +1,6 @@
 from django.db import models
 
-from fintrack_be.models import User
+from fintrack_be.models.user import User
 from fintrack_be.models.email_template import EmailTemplate
 
 

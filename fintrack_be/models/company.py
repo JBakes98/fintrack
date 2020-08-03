@@ -1,6 +1,7 @@
 from django.db import models
 from django.urls import reverse
 
+from fintrack_be.models.company_manager import CompanyManager
 from fintrack_be.models.industry import Industry
 
 
@@ -9,6 +10,8 @@ class Company(models.Model):
     long_name = models.CharField(max_length=512, unique=True, null=False, blank=False)
     business_summary = models.TextField()
     industry = models.ForeignKey(Industry, on_delete=models.CASCADE, related_name='industry_companies')
+
+    objects = CompanyManager()
 
     class Meta:
         verbose_name = 'Company'

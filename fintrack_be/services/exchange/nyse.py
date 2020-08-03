@@ -1,5 +1,5 @@
 from fintrack_be.services.exchange.exchange_class import ExchangeClass
-from fintrack_be.services.stock.create_stock import create_stock
+from fintrack_be.services.stock.stock_data import StockDataService
 import requests
 import bs4 as bs
 import datetime
@@ -53,8 +53,6 @@ class NYSE(ExchangeClass):
             for row in table.findAll('tr')[1:]:
                 ticker = row.findAll('td')[0].text
                 mapping = str.maketrans(".", "-")
-
                 ticker = ticker.translate(mapping)
                 name = row.findAll('td')[1].text
-
-                create_stock(ticker, name, self.symbol)
+                StockDataService.create_stock(ticker, name, self.symbol)

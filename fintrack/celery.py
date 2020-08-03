@@ -27,7 +27,7 @@ def setup_periodic_tasks(sender, **kwargs):
     for exchange in exchanges:
         close = exchange.get_market_close_utc()
         sender.add_periodic_task(
-            crontab(hour=close.hour, minute=close.minute, day_of_week='mon-fri'),
+            crontab(hour=close.hour, minute=close.minute, day_of_week='mon-sun'),
             get_exchanges_day_data.s(exchange.symbol),
         )
 

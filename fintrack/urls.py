@@ -4,9 +4,8 @@ from fintrack import views
 
 
 urlpatterns = [
-    path('', views.index),
     path('console/', admin.site.urls),
-
+    path('', include('fintrack_fe.urls')),
     path('v1/user/', include('fintrack_be.urls.user_urls')),
     path('v1/country/', include('fintrack_be.urls.country_urls')),
     path('v1/sector/', include('fintrack_be.urls.sector_urls')),
