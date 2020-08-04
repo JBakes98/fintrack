@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from fintrack_be.models import User
 from fintrack_be.permissions import IsUser, IsVerified
 from fintrack_be.serializers import UserSerializer
+from fintrack_be.services.user.user_service import UserService
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -34,21 +35,19 @@ class UserViewSet(viewsets.ModelViewSet):
 
         if serializer.is_valid(raise_exception=True):
             user = serializer.create(serializer.data)
-            user.send_verification_email(request)
+            user_service = UserService()
+            user_service.create_user_token(user.pk)
+            user_service.send_verification_email(user.pk, request)
 
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def retrieve(self, request, *args, **kwargs):
-        """
-        Method for User to request an account verification email to be sent to
-        the accounts email address to verify account.
-        """
         serializer = self.serializer_class(self.request.user)
         return Response(serializer.data)
 
     def destroy(self, request, *args, **kwargs):
-        user = get_object_or_404(User, email=self.kwargs['email'])
+        user = self.request.user
         user.is_active = False
         user.is_verified = False
         user.is_staff = False

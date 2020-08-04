@@ -6,7 +6,7 @@ from django.utils.http import urlsafe_base64_encode
 from rest_framework.authtoken.models import Token
 
 from fintrack_be.helpers import user_token
-from fintrack_be.models import User
+from fintrack_be.models.user import User
 
 
 class UserService:

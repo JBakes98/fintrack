@@ -25,7 +25,6 @@ class UserRequestEmailVerificationAPIView(APIView):
         the accounts email address to verify account.
         """
         user = self.request.user
-        print(type(user))
         if not user.is_verified:
             user.send
 

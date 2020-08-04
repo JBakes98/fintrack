@@ -1,13 +1,5 @@
-from datetime import datetime
-
 from django.contrib.auth.base_user import BaseUserManager
-from django.contrib.sites.shortcuts import get_current_site
 from django.utils import timezone
-from django.utils.encoding import force_bytes
-from django.utils.http import urlsafe_base64_encode
-from rest_framework.authtoken.models import Token
-
-from fintrack_be.helpers import user_token
 
 
 class UserAccountManager(BaseUserManager):
@@ -31,7 +23,6 @@ class UserAccountManager(BaseUserManager):
         )
         user.set_password(password)
         user.save(using=self._db)
-        user.create_user_token()
 
         return user
 
