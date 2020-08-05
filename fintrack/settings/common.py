@@ -35,7 +35,6 @@ INSTALLED_APPS = [
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'fintrack_be.authentication.ExpiringTokenAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
     ),
     'DEFAULT_RENDERER_CLASSES': (
         'rest_framework.renderers.JSONRenderer',
@@ -45,6 +44,11 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 50,
     'COERCE_DECIMAL_TO_STRING': False,
 }
+
+EMAIL_CONFIRMATION_EXPIRE_DAYS = 5
+# On password change as for users original password
+OLD_PASSWORD_FIELD_ENABLED = True
+LOGOUT_ON_PASSWORD_CHANGE = False
 
 TEMPLATES = [
     {

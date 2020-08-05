@@ -1,7 +1,7 @@
 from django.db import models
 
 from fintrack_be.models.stock import Stock
-from fintrack_be.models.index_manager import IndexManager
+from fintrack_be.managers.index_manager import IndexManager
 
 
 class Index(models.Model):

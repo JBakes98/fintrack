@@ -1,11 +1,9 @@
-from django.db.models import Q
-from django.http import Http404
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 
 from fintrack_be.models import Stock
 from fintrack_be.permissions import IsVerified
-from fintrack_be.serializers import StockSerializer
+from fintrack_be.serializers.stock import StockSerializer
 
 
 class CompanySharesListView(generics.ListAPIView):

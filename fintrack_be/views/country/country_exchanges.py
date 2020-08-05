@@ -4,7 +4,7 @@ from rest_framework.permissions import IsAuthenticated
 
 from fintrack_be.models import Country
 from fintrack_be.permissions import IsVerified
-from fintrack_be.serializers import CountryExchangeSerializer
+from fintrack_be.serializers.country import CountryExchangeSerializer
 
 
 class CountryExchangeListView(generics.ListAPIView):

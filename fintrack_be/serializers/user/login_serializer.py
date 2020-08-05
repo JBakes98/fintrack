@@ -49,8 +49,6 @@ class LoginSerializer(serializers.Serializer):
             msg = _('Unable to log in with provided credentials.')
             raise exceptions.ValidationError(msg)
 
-            # If required, is the email verified?
-
         email_address = user.emailaddress_set.get(email=user.email)
         if not email_address.verified:
             raise serializers.ValidationError(_('E-mail is not verified.'))

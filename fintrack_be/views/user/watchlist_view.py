@@ -3,18 +3,17 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from fintrack_be.models import User
-from fintrack_be.serializers import UserSerializer
+from fintrack_be.serializers.user import WatchlistSerializer
 
 
-class UserDetailsAPIView(APIView):
+class WatchlistAPIView(APIView):
     permission_classes = (IsAuthenticated,)
-    serializer_class = UserSerializer
+    serializer_class = WatchlistSerializer
     queryset = User.objects.all()
 
     def get(self, request):
         """
-        Method for User to request an account verification email to be sent to
-        the accounts email address to verify account.
+        Method for to get tokens users favourites watchlist
         """
         serializer = self.serializer_class(self.request.user)
         return Response(serializer.data)

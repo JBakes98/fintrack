@@ -2,7 +2,7 @@ from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
 from fintrack_be.models import Index
-from fintrack_be.serializers import IndexSerializer
+from fintrack_be.serializers.index import IndexSerializer
 from fintrack_be.permissions import IsVerified
 
 

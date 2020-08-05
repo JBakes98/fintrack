@@ -3,7 +3,7 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
 from fintrack_be.models import Company
 from fintrack_be.permissions import IsVerified
-from fintrack_be.serializers import CompanySerializer
+from fintrack_be.serializers.company import CompanySerializer
 
 
 class CompanyViewSet(viewsets.ModelViewSet):

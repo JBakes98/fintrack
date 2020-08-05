@@ -7,7 +7,6 @@ from rest_framework.response import Response
 
 from fintrack_be.models import Index
 from fintrack_be.permissions import IsVerified
-from fintrack_be.serializers import IndexCorrelationSerializer
 from fintrack_be.services.index.IndexMachineLearningService import IndexMachineLearningService
 
 

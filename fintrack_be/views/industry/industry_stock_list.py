@@ -4,7 +4,7 @@ from rest_framework.permissions import IsAuthenticated
 
 from fintrack_be.models import Industry, Company, Stock
 from fintrack_be.permissions import IsVerified
-from fintrack_be.serializers import StockSerializer
+from fintrack_be.serializers.stock import StockSerializer
 
 
 class IndustryStockListVIew(generics.ListAPIView):

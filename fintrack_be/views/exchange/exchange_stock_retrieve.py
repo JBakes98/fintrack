@@ -4,7 +4,7 @@ from rest_framework.permissions import IsAuthenticated
 
 from fintrack_be.models import Exchange
 from fintrack_be.permissions import IsVerified
-from fintrack_be.serializers import ExchangeStockSerializer
+from fintrack_be.serializers.exchange import ExchangeStockSerializer
 
 
 class ExchangeStockRetrieveView(generics.RetrieveAPIView):

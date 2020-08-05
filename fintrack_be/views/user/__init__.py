@@ -1,8 +1,9 @@
-from .user_viewset import UserViewSet
-from .user_login import ObtainExpiringAuthToken, obtain_expiring_auth_token
-from .user_activate import ActivateView
-from .user_request_email_verification import UserRequestEmailVerificationAPIView
-from .user_request_password_reset import RequestUserPasswordReset
-from .user_password_reset import UserPasswordResetView
-from .user_get_current import UserDetailsAPIView
-from .user_watchlist import UserWatchlistAPIView
+from .login_view import LoginView
+from .logout_view import LogoutView
+from .details_view import UserDetailsView
+
+from .password_reset_view import PasswordResetView
+from .password_reset_confirm_view import PasswordResetConfirmView
+from .password_change_view import PasswordChangeView
+
+from .watchlist_view import WatchlistAPIView

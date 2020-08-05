@@ -3,7 +3,7 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 
 from fintrack_be.models import Industry
-from fintrack_be.serializers import IndustrySerializer
+from fintrack_be.serializers.industry import IndustrySerializer
 from fintrack_be.permissions import IsVerified
 
 

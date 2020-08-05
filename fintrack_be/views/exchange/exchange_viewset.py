@@ -2,7 +2,7 @@ from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
 from fintrack_be.models import Exchange
-from fintrack_be.serializers import ExchangeSerializer
+from fintrack_be.serializers.exchange import ExchangeSerializer
 from fintrack_be.permissions import IsVerified
 
 

@@ -1,17 +1,7 @@
 from decimal import Decimal
 from django.db import models
+
 from fintrack_be.models.index import Index
-
-
-BUY = "BUY"
-SELL = "SELL"
-HOLD = "HOLD"
-
-PREDICTION_OPTIONS = (
-    (BUY, "BUY"),
-    (SELL, "SELL"),
-    (HOLD, "HOLD"),
-)
 
 
 class IndexPriceData(models.Model):

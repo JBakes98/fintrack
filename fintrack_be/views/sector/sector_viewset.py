@@ -1,7 +1,7 @@
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from fintrack_be.models import Sector
-from fintrack_be.serializers import SectorSerializer
+from fintrack_be.serializers.sector import SectorSerializer
 from fintrack_be.permissions import IsVerified
 
 

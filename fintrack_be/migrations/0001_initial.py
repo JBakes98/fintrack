@@ -3,7 +3,7 @@
 from decimal import Decimal
 from django.db import migrations, models
 import django.utils.timezone
-import fintrack_be.models.user_account_manager
+import fintrack_be.managers.user_account_manager
 import uuid
 
 
@@ -37,7 +37,7 @@ class Migration(migrations.Migration):
                 'abstract': False,
             },
             managers=[
-                ('objects', fintrack_be.models.user_account_manager.UserAccountManager()),
+                ('objects', fintrack_be.managers.user_account_manager.UserAccountManager()),
             ],
         ),
         migrations.CreateModel(

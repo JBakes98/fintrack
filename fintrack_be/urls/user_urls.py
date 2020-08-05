@@ -1,21 +1,18 @@
-from django.urls import path
-from rest_framework.routers import DefaultRouter
+from django.urls import path, re_path
 
 from fintrack_be.views.user import *
 
-router = DefaultRouter()
-router.register(r'', UserViewSet, basename='user')
 
 urlpatterns = [
-    path('detail/', UserDetailsAPIView.as_view(), name='user_details'),
-    path('watchlist/', UserWatchlistAPIView.as_view(), name='user_watchlist'),
+    path('login/', LoginView.as_view(), name='rest_login'),
+    path('logout/', LogoutView.as_view(), name='rest_logout'),
+    path('detail/', UserDetailsView.as_view(), name='rest_user_detail'),
 
-    path('login/', obtain_expiring_auth_token, name='get_token'),
-    path('reset-password/', RequestUserPasswordReset.as_view(), name='request_password_reset'),
-    path('reset-password/<uidb64>/<token>/', UserPasswordResetView.as_view(), name='password_reset'),
-    path('activate/<uidb64>/<token>/', ActivateView.as_view(), name='activate'),
-    path('get-email-verification/', UserRequestEmailVerificationAPIView.as_view(),
-         name='request_email_verification'),
+    path('password/change/', PasswordChangeView.as_view(), name='password_change'),
+    path('password/reset/', PasswordResetView.as_view(), name='rest_password_reset'),
+    re_path(r'^rest-auth/password/reset/confirm/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{'
+            r'1,20})/$', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+
+    path('watchlist/', WatchlistAPIView.as_view(), name='user_watchlist'),
+
 ]
-
-urlpatterns += router.urls

@@ -1,6 +1,6 @@
 from django.db import models
 
-from fintrack_be.models.country_manager import CountryManager
+from fintrack_be.managers.country_manager import CountryManager
 
 
 class Country(models.Model):

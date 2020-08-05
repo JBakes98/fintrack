@@ -4,7 +4,7 @@ from rest_framework.permissions import IsAuthenticated
 
 from fintrack_be.models import Sector
 from fintrack_be.permissions import IsVerified
-from fintrack_be.serializers import SectorIndustrySerializer
+from fintrack_be.serializers.sector import SectorIndustrySerializer
 
 
 class SectorIndustryRetrieveView(generics.RetrieveAPIView):

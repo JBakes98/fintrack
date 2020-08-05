@@ -1,7 +1,7 @@
 from django.db import models
 
 from fintrack_be.models.sector import Sector
-from fintrack_be.models.industry_manager import IndustryManager
+from fintrack_be.managers.industry_manager import IndustryManager
 
 
 class Industry(models.Model):

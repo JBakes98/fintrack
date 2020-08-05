@@ -3,7 +3,7 @@ import datetime
 import pytz
 from django.db import models
 
-from fintrack_be.models.exchange_manager import ExchangeManager
+from fintrack_be.managers.exchange_manager import ExchangeManager
 from fintrack_be.helpers.timezone_helper import get_timezone, convert_time_to_timezone
 from fintrack_be.models.country import Country
 

@@ -1,7 +1,7 @@
 from django.db import models
 from django.urls import reverse
 
-from fintrack_be.models.company_manager import CompanyManager
+from fintrack_be.managers.company_manager import CompanyManager
 from fintrack_be.models.industry import Industry
 
 

@@ -3,7 +3,7 @@ from rest_framework.permissions import IsAuthenticated
 
 from fintrack_be.models import Industry
 from fintrack_be.permissions import IsVerified
-from fintrack_be.serializers import IndustryCompanySerializer
+from fintrack_be.serializers.industry import IndustryCompanySerializer
 
 
 class IndustryCompanyListView(generics.ListAPIView):

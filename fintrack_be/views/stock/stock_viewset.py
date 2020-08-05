@@ -3,7 +3,7 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 
 from fintrack_be.models import Stock
-from fintrack_be.serializers import StockSerializer
+from fintrack_be.serializers.stock import StockSerializer
 from fintrack_be.permissions import IsVerified
 
 

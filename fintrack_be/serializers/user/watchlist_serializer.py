@@ -3,7 +3,7 @@ from rest_framework import serializers
 from fintrack_be.models import User
 
 
-class UserWatchlistSerializer(serializers.ModelSerializer):
+class WatchlistSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('favourite_stocks',)

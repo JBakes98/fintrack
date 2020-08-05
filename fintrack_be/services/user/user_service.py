@@ -28,8 +28,10 @@ class UserService:
             token.created = datetime.datetime.utcnow()
             token.save()
 
+        return token
+
     def send_verification_email(self, user_id, request):
-        from fintrack_be.serializers.user.user_serializer import UserSerializer
+        from fintrack_be.serializers.user import UserDetailsSerializer
         from fintrack_be.tasks.email.email_tasks import send_email
 
         user = self.get_user(user_id)
@@ -40,7 +42,7 @@ class UserService:
                              'domain': current_site.domain,
                              'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                              'token': user_token.make_token(user),
-                             'user': UserSerializer(user).data
+                             'user': UserDetailsSerializer(user).data
                          }
                          )
 

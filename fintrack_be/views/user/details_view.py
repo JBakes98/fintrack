@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 from rest_framework.generics import RetrieveUpdateAPIView
 from rest_framework.permissions import IsAuthenticated
 
-from fintrack_be.serializers.user.details import UserDetailsSerializer
+from fintrack_be.serializers.user import UserDetailsSerializer
 
 
 class UserDetailsView(RetrieveUpdateAPIView):
