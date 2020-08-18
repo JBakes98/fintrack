@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.core import signing
 
-from fintrack_be.utils import email as utils
+from fintrack_be.utils import email_util
 from fintrack_be.signals import user as signals
 
 
@@ -31,14 +31,14 @@ class EmailConfirmationHMAC:
     def confirm(self, request):
         if not self.email_address.verified:
             email_address = self.email_address
-            utils.confirm_email(request, email_address)
+            email_util.confirm_email(request, email_address)
             signals.email_confirmed.send(sender=self.__class__,
                                          request=request,
                                          email_address=email_address)
             return email_address
 
     def send(self, request=None, signup=False):
-        utils.send_confirmation_mail(request, self, signup)
+        email_util.send_confirmation_mail(request, self, signup)
         signals.email_confirmation_sent.send(sender=self.__class__,
                                              request=request,
                                              confirmation=self,

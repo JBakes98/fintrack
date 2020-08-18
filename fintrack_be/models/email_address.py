@@ -1,10 +1,8 @@
-from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.db import models, transaction
 from django.utils.translation import ugettext_lazy as _
 
 from fintrack_be.managers import EmailAddressManager
-from fintrack_be.models.email_confirmation_hmac import EmailConfirmationHMAC
 
 UserModel = get_user_model()
 
@@ -38,11 +36,7 @@ class EmailAddress(models.Model):
 
     def send_confirmation(self, request=None, signup=False):
         from fintrack_be.models.email_confirmation import EmailConfirmation
-
-        if settings.EMAIL_CONFIRMATION_HMAC:
-            confirmation = EmailConfirmationHMAC(self)
-        else:
-            confirmation = EmailConfirmation.create(self)
+        confirmation = EmailConfirmation.create(self)
         confirmation.send(request, signup=signup)
         return confirmation
 
