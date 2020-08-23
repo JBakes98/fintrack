@@ -1,6 +1,5 @@
 from django.contrib import admin
 from django.urls import path, include
-from fintrack import views
 
 
 urlpatterns = [
@@ -14,6 +13,5 @@ urlpatterns = [
     path('api/v1/company/', include('fintrack_be.urls.company_urls')),
     path('api/v1/stock/', include('fintrack_be.urls.stock_urls')),
     path('api/v1/index/', include('fintrack_be.urls.index_urls')),
-    path('api/v1/email-list/', include('fintrack_be.urls.mail_list_urls')),
     path('api/v1/position/', include('fintrack_be.urls.position_urls'))
 ]

@@ -1,8 +1,10 @@
+from django.contrib.auth import get_user_model
 from django.utils.translation import ugettext_lazy as _
 from rest_framework import serializers
 from fintrack_be.utils import email_util
 from fintrack_be.utils import password_util
-from fintrack_be.utils import user_util
+
+UserModel = get_user_model()
 
 
 class RegisterSerializer(serializers.Serializer):
@@ -19,16 +21,12 @@ class RegisterSerializer(serializers.Serializer):
         return email
 
     def validate_password1(self, password):
-        print(password)
         return password_util.clean_password(password)
 
     def validate(self, data):
         if data['password1'] != data['password2']:
             raise serializers.ValidationError(_("The two password fields didn't match."))
         return data
-
-    def custom_signup(self, request, user):
-        pass
 
     def get_cleaned_data(self):
         return {
@@ -38,10 +36,7 @@ class RegisterSerializer(serializers.Serializer):
             'last_name': self.validated_data.get('last_name', '')
         }
 
-    def save(self, request):
-        user = user_util.new_user(request)
-        self.cleaned_data = self.get_cleaned_data()
-        user_util.save_user(request, user, self)
-        self.custom_signup(request, user)
-        user_util.setup_user_email(request, user, [])
-        return user
+    def create(self, validated_data):
+        user = UserModel()
+        user.set_password(validated_data['password_1'])
+        return super(RegisterSerializer, self).create(validated_data)

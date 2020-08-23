@@ -1,6 +1,4 @@
 from .user_account_manager import UserAccountManager
-from .email_address_manager import EmailAddressManager
-from .email_confirmation_manager import EmailConfirmationManager
 from .country_manager import CountryManager
 from .sector_manager import SectorManager
 from .industry_manager import IndustryManager

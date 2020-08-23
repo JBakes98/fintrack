@@ -1,7 +1,4 @@
 from .user import User
-from .email_address import EmailAddress
-from .email_confirmation import EmailConfirmation
-from .email_confirmation_hmac import EmailConfirmationHMAC
 from .country import Country
 from .sector import Sector
 from .industry import Industry
@@ -13,6 +10,3 @@ from .index import Index
 from .index_price import IndexPriceData
 from .index_constituents import IndexConstituents
 from .position import Position
-from .email_template import EmailTemplate
-from .mail_list import MailList
-from .mail_list_recipients import MailListRecipients

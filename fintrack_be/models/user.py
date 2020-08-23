@@ -2,11 +2,9 @@ import uuid
 import pytz
 import decimal
 
-import django
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
-from django.utils.encoding import force_bytes
-from django.utils.translation import ugettext_lazy as _
+from django.utils import timezone
 
 from fintrack_be.managers.user_account_manager import UserAccountManager
 from fintrack_be.models.country import Country
@@ -26,8 +24,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     verified = models.DateTimeField(default=None, blank=True, null=True)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
-    date_joined = models.DateTimeField(default=django.utils.timezone.now, editable=False)
-    last_login = models.DateTimeField(default=django.utils.timezone.now)
+    date_joined = models.DateTimeField(default=timezone.now, editable=False)
+    last_login = models.DateTimeField(default=timezone.now)
     timezone = models.CharField(max_length=50, default='UTC', choices=TIMEZONES, null=False, blank=False)
 
     favourite_stocks = models.ManyToManyField(Stock, related_name='favourite_stock')

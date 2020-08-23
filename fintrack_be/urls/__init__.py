@@ -6,5 +6,4 @@ from .exchange_urls import *
 from .company_urls import *
 from .stock_urls import *
 from .index_urls import *
-from .mail_list_urls import *
 from .position_urls import *

@@ -22,15 +22,6 @@ class LoginSerializer(serializers.Serializer):
 
         return user
 
-    def _validate_email(self, email, password):
-        if email and password:
-            user = self.authenticate(email=email, password=password)
-        else:
-            msg = _('Must include "email" and "password".')
-            raise exceptions.ValidationError(msg)
-
-        return user
-
     def validate(self, attrs):
         email = attrs.get('email')
         user = None
@@ -49,8 +40,7 @@ class LoginSerializer(serializers.Serializer):
             msg = _('Unable to log in with provided credentials.')
             raise exceptions.ValidationError(msg)
 
-        email_address = user.emailaddress_set.get(email=user.email)
-        if not email_address.verified:
+        if not user.verified:
             raise serializers.ValidationError(_('E-mail is not verified.'))
 
         attrs['user'] = user
