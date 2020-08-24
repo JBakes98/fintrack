@@ -11,7 +11,8 @@ class PasswordChangeView(GenericAPIView):
     """
     Calls Django Auth SetPasswordForm save method.
 
-    Accepts the following POST parameters: new_password1, new_password2
+    Accepts the following POST parameters: new_password1, new_password2 and old_password,
+    the old password is used the verify the user changing the password
     Returns the success/fail message.
     """
     serializer_class = PasswordChangeSerializer

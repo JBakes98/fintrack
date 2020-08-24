@@ -1,10 +1,10 @@
 from django.db.backends.utils import logger
-from fintrack_be.services.country import country_data
+from fintrack_be.utils.seed_util import seed_countries
 
 
 def create_countries():
     """ Creates the countries """
     logger.info('Creating Countries...')
-    country_data.create_country_instances()
+    seed_countries()
     logger.info('Added Countries')
 

@@ -16,16 +16,16 @@ class Command(BaseCommand):
 
 
 def run_seed(self, mode):
-    countries.create_countries()
-    exchanges.create_exchanges()
+    # countries.create_countries()
+    # exchanges.create_exchanges()
 
     # Create empty objects for instances that dont have parents
-    # Sector.objects.create_sector('N/A')
-    # Industry.objects.create_industry('N/A', 'N/A')
-    # Company.objects.create_company('N/A',
-    #                                'Non Parented Holding Company',
-    #                                'Company for holding Stock instances that dont have a known parent Company',
-    #                                'N/A')
+#    Sector.objects.create_sector(name='N/A')
+ #   Industry.objects.create_industry(name='N/A', sector='N/A')
+   # Company.objects.create_company(short_name='N/A',
+   #                                 long_name='Non Parented Holding Company',
+   #                                 summary='Company for holding Stock instances that dont have a known parent Company',
+   #                                 industry=Industry.objects.get(name='N/A'))
 
     # Create all exchange stocks
     exchanges.add_nasdaq_stocks()

@@ -8,6 +8,8 @@ class SectorManager(models.Manager):
         sector = self.model(
             name=name
         )
+        sector.save()
+
         return sector
 
     def create_sector(self, name):

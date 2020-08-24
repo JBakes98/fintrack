@@ -10,10 +10,6 @@ class PasswordResetSerializer(serializers.Serializer):
     email = serializers.EmailField()
     password_reset_form_class = PasswordResetForm
 
-    def get_email_options(self):
-        """Override this method to change default e-mail options"""
-        return {}
-
     def validate_email(self, value):
         # Create PasswordResetForm with the serializer
         self.reset_form = self.password_reset_form_class(data=self.initial_data)
@@ -31,5 +27,4 @@ class PasswordResetSerializer(serializers.Serializer):
             'request': request,
         }
 
-        opts.update(self.get_email_options())
         self.reset_form.save(**opts)

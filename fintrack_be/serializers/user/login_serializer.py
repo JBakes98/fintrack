@@ -23,25 +23,32 @@ class LoginSerializer(serializers.Serializer):
         return user
 
     def validate(self, attrs):
-        email = attrs.get('email')
+        credentials = {
+            'email': attrs.get('email'),
+            'password': attrs.get('password')
+        }
         user = None
 
-        try:
-            user = UserModel.objects.get(email__iexact=email)
-        except UserModel.DoesNotExist:
-            pass
+        # Check if all fields are provided
+        if all(credentials.values()):
+            user = authenticate(**credentials)
 
-        # Did we get back an active user?
-        if user:
-            if not user.is_active:
-                msg = _('User account is disabled.')
+            # Did we get back an active user?
+            if user:
+                if not user.is_active:
+                    msg = _('User account is disabled.')
+                    raise exceptions.ValidationError(msg)
+
+            else:
+                msg = _('Unable to log in with provided credentials.')
                 raise exceptions.ValidationError(msg)
+
+            if not user.verified:
+                raise serializers.ValidationError(_('E-mail is not verified.'))
+
+            attrs['user'] = user
+            return attrs
+
         else:
-            msg = _('Unable to log in with provided credentials.')
-            raise exceptions.ValidationError(msg)
-
-        if not user.verified:
-            raise serializers.ValidationError(_('E-mail is not verified.'))
-
-        attrs['user'] = user
-        return attrs
+            msg = _("Must Include email and password.")
+            raise serializers.ValidationError(msg)

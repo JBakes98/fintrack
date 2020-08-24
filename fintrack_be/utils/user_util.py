@@ -10,7 +10,7 @@ def new_user():
     return user
 
 
-def save_user(user, data):
+def save_user(user, form):
     """
     Saves a new `User` instance using information provided
     """

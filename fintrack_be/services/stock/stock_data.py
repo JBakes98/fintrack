@@ -9,7 +9,7 @@ from django.core.exceptions import MultipleObjectsReturned
 
 from fintrack_be.models import Company, Exchange, Stock
 from fintrack_be.services.company import CompanyDataService
-from fintrack_be.services.stock.stock_df_service import StockDfService
+from fintrack_be.utils.df_util import prepare_stock_data_df
 
 
 class StockDataService:
@@ -94,4 +94,4 @@ class StockDataService:
         stock = yf.Ticker(ticker)
         df = stock.history(period=period, interval=interval)
 
-        return StockDfService.prepare_stock_data_df(df, ticker)
+        return prepare_stock_data_df(df, ticker)

@@ -12,9 +12,9 @@ class NYSE(ExchangeClass):
     def __init__(self):
         self.name = 'New York Stock Exchange'
         self.symbol = 'NYSE'
-        self.stock_links = ('http://eoddata.com/stocklist/NYSE/A.htm',
-                            'http://eoddata.com/stocklist/NYSE/B.htm',
-                            'http://eoddata.com/stocklist/NYSE/C.htm',
+        self.stock_links = ('http://eoddata.com/stocklist/NYSE/A.htm/',
+                            'http://eoddata.com/stocklist/NYSE/B.htm/',
+                            'http://eoddata.com/stocklist/NYSE/C.htm/',
                             'http://eoddata.com/stocklist/NYSE/D.htm',
                             'http://eoddata.com/stocklist/NYSE/E.htm',
                             'http://eoddata.com/stocklist/NYSE/F.htm',
