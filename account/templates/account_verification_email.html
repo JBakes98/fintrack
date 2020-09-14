@@ -1,13 +1,12 @@
 {% load i18n %}{% autoescape off %}
-{% blocktrans %}You're receiving this email because you have created an account for {{ site_name }}.{% endblocktrans %}
+    {% blocktrans %}Hi {{ user.first_name }}, you're receiving this email because you have created an account for {{ site_name }}.{% endblocktrans %}
+    {% trans "Please follow the below link to verify your account" %}
+    {% block verify_link %}
+        {{ protocol }}://{{ domain }}{% url 'account_verify_confirm' uidb64=uid token=token %}
+    {% endblock %}
 
-{% trans "Please follow the below link to verify your account" %}
-{% block verify_link %}
-{{ protocol }}://{{ domain }}{% url 'account_verify_confirm' uidb64=uid token=token %}
-{% endblock %}
+    {% trans "Thanks for using our site!" %}
 
-{% trans "Thanks for using our site!" %}
-
-{% blocktrans %}The {{ site_name }} team{% endblocktrans %}
+    {% blocktrans %}The {{ site_name }} team{% endblocktrans %}
 
 {% endautoescape %}
