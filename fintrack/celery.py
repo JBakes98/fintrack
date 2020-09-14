@@ -18,10 +18,8 @@ app.autodiscover_tasks()
 
 @app.on_after_finalize.connect
 def setup_periodic_tasks(sender, **kwargs):
-    from fintrack_be.models import Exchange
-    from fintrack_be.models import MailList
-    from fintrack_be.tasks.exchange.exchange_tasks import get_exchanges_day_data
-    from fintrack_be.tasks.email.email_tasks import send_mail_list
+    from exchange.models import Exchange
+    from exchange.tasks import get_exchanges_day_data
 
     exchanges = Exchange.objects.all()
     for exchange in exchanges:
@@ -29,15 +27,6 @@ def setup_periodic_tasks(sender, **kwargs):
         sender.add_periodic_task(
             crontab(hour=close.hour, minute=close.minute, day_of_week='mon-sun'),
             get_exchanges_day_data.s(exchange.symbol),
-        )
-
-    mail_lists = MailList.objects.all()
-    for mail_list in mail_lists:
-        sender.add_periodic_task(
-            crontab(hour=mail_list.send_time.hour,
-                    minute=mail_list.send_time.minute,
-                    day_of_week=mail_list.send_days),
-            send_mail_list.s(mail_list.pk),
         )
 
     # sender.add_periodic_task(
