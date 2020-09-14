@@ -12,7 +12,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    fetch("api/lead")
+    fetch("api/v1/exchange")
       .then(response => {
         if (response.status > 400) {
           return this.setState(() => {
@@ -24,7 +24,7 @@ class App extends Component {
       .then(data => {
         this.setState(() => {
           return {
-            data,
+            data: data.results,
             loaded: true
           };
         });
@@ -33,9 +33,15 @@ class App extends Component {
 
   render() {
     return (
-      <h1>
-      React App
-      </h1>
+      <ul>
+        {this.state.data.map(exchange => {
+          return (
+            <li key={exchange.id}>
+              {exchange.symbol} - {exchange.name}
+            </li>
+          );
+        })}
+      </ul>
     );
   }
 }

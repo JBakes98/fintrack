@@ -5,13 +5,11 @@ from django.urls import path, include
 urlpatterns = [
     path('console/', admin.site.urls),
     path('', include('fintrack_fe.urls')),
-    path('api/v1/user/', include('fintrack_be.urls.user_urls')),
-    path('api/v1/country/', include('fintrack_be.urls.country_urls')),
-    path('api/v1/sector/', include('fintrack_be.urls.sector_urls')),
-    path('api/v1/industry/', include('fintrack_be.urls.industry_urls')),
-    path('api/v1/exchange/', include('fintrack_be.urls.exchange_urls')),
-    path('api/v1/company/', include('fintrack_be.urls.company_urls')),
-    path('api/v1/stock/', include('fintrack_be.urls.stock_urls')),
-    path('api/v1/index/', include('fintrack_be.urls.index_urls')),
-    path('api/v1/position/', include('fintrack_be.urls.position_urls'))
+    path('api/v1/user/', include('account.urls')),
+    path('api/v1/country/', include('country.urls')),
+    path('api/v1/sector/', include('sector.urls')),
+    path('api/v1/industry/', include('industry.urls')),
+    path('api/v1/exchange/', include('exchange.urls')),
+    path('api/v1/company/', include('company.urls')),
+    path('api/v1/stock/', include('stock.urls')),
 ]
