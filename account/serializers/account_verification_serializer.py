@@ -34,8 +34,6 @@ class AccountVerificationSerializer(serializers.Serializer):
         self.user.verified = timezone.now()
         self.user.save()
 
-
-
         return attrs
 
     def save(self):

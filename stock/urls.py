@@ -7,7 +7,8 @@ router = DefaultRouter()
 router.register(r'', StockViewSet, basename='stock')
 
 urlpatterns = [
-   path('<str:ticker>/favourite/', UserFavouriteStockView.as_view(), name='stock_favourite'),
+   path('watchlist/<str:ticker>/', WatchStockView.as_view(), name='watchlist_stock'),
+   path('watchlist/', UserWatchlistAPIView.as_view(), name='stock_watchlist'),
    path('<str:ticker>/price/', StockPriceListView.as_view(), name='stock_price'),
    path('price/<int:pk>/', StockPriceRetrieveView.as_view(), name='price'),
 ]

@@ -16,7 +16,7 @@ class PasswordResetConfirmSerializer(serializers.Serializer):
     """
     new_password1 = serializers.CharField(max_length=128)
     new_password2 = serializers.CharField(max_length=128)
-    uid = serializers.CharField()
+    uidb64 = serializers.CharField()
     token = serializers.CharField()
 
     set_password_form_class = SetPasswordForm
@@ -29,10 +29,10 @@ class PasswordResetConfirmSerializer(serializers.Serializer):
 
         # Decode the uidb64 to uid to get User object
         try:
-            uid = force_text(uid_decoder(attrs['uid']))
+            uid = force_text(uid_decoder(attrs['uidb64']))
             self.user = UserModel._default_manager.get(pk=uid)
         except (TypeError, ValueError, OverflowError, UserModel.DoesNotExist):
-            raise ValidationError({'uid': ['Invalid value']})
+            raise ValidationError({'uidb64': ['Invalid value']})
 
         self.custom_validation(attrs)
         # Construct SetPasswordForm instance

@@ -15,7 +15,7 @@ class Stock(models.Model):
     name = models.CharField(max_length=255)
     exchange = models.ForeignKey(Exchange, on_delete=models.CASCADE, related_name='exchange_stocks')
     company = models.ForeignKey(Company, on_delete=models.CASCADE, default=None, related_name='company_stocks')
-    watchlist = models.ManyToManyField(UserModel, related_name='user_watchlist')
+    watchlist = models.ManyToManyField(UserModel, related_name='stock_watchlist')
 
     class Meta:
         verbose_name = 'Stock'

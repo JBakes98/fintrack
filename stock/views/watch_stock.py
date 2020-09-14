@@ -9,19 +9,19 @@ from stock.models import Stock
 UserModel = get_user_model()
 
 
-class UserFavouriteStockView(APIView):
+class WatchStockView(APIView):
     permission_classes = (IsAuthenticated, IsVerified)
 
     def post(self, request, ticker):
         try:
             stock = Stock.objects.get(ticker=ticker)
         except Stock.DoesNotExist:
-            return Response('Stock with ticker {} not found'.format(ticker))
+            return Response({'detail': 'Stock with ticker {} not found'.format(ticker)})
 
         user = request.user
-        if UserModel.objects.filter(pk=user.pk, favourite_stocks__pk=stock.pk):
-            user.favourite_stocks.remove(stock)
-            return Response('{} Removed from favourites'.format(ticker))
+        if Stock.objects.filter(pk=stock.pk, watchlist=user):
+            stock.watchlist.remove(user)
+            return Response({"detail": '{} Removed from watchlist'.format(ticker)})
         else:
-            user.favourite_stocks.add(stock)
-            return Response('{} Added to favourites'.format(ticker))
+            stock.watchlist.add(user)
+            return Response({'detail': '{} Added to watchlist'.format(ticker)})

@@ -4,7 +4,7 @@ from django.core import exceptions
 from django.utils.translation import ugettext_lazy as _
 from rest_framework import serializers
 
-from account.utils import email_util
+from account.services import AccountService
 
 UserModel = get_user_model()
 
@@ -44,7 +44,7 @@ class LoginSerializer(serializers.Serializer):
                     'to_email': user.email,
                 }
 
-                email_util.send_verification_email(**opts)
+                AccountService.send_verification_email(**opts)
 
                 raise serializers.ValidationError(_('Account is not verified, please check your email for verification.'))
 

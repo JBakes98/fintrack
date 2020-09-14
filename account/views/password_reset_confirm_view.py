@@ -23,6 +23,10 @@ class PasswordResetConfirmView(GenericAPIView):
         return super(PasswordResetConfirmView, self).dispatch(*args, **kwargs)
 
     def post(self, request, *args, **kwargs):
+        # Get the uidb64 and tokens from the URL and add them to the request data
+        request.data['uidb64'] = kwargs['uidb64']
+        request.data['token'] = kwargs['token']
+
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()

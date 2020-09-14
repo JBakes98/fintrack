@@ -9,12 +9,8 @@ from account.serializers import AccountVerificationSerializer
 
 class AccountVerifyConfirmView(GenericAPIView):
     """
-    Password reset e-mail link is confirmed, therefore
-    this resets the user's password.
-
-    Accepts the following POST parameters: token, uid,
-        new_password1, new_password2
-    Returns the success/fail message.
+    User Account is verified and the user can now use
+    their account
     """
     serializer_class = AccountVerificationSerializer
     permission_classes = (AllowAny,)
@@ -23,6 +19,8 @@ class AccountVerifyConfirmView(GenericAPIView):
         return super(AccountVerifyConfirmView, self).dispatch(*args, **kwargs)
 
     def get(self, request, *args, **kwargs):
+        # Can just pass kwargs to the serializer as this should contain both the uidb64 and
+        # token values
         serializer = self.get_serializer(data=kwargs)
         serializer.is_valid(raise_exception=True)
         serializer.save()

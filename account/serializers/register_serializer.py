@@ -2,6 +2,7 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.utils.translation import ugettext_lazy as _
 from rest_framework import serializers
+from account.services import AccountService
 from account.utils import email_util
 from account.utils import password_util
 
@@ -15,8 +16,7 @@ class RegisterSerializer(serializers.Serializer):
 
     def validate_email(self, email):
         if email and email_util.email_address_exists(email):
-            raise serializers.ValidationError(
-                _("A user is already registered with this e-mail address."))
+            raise serializers.ValidationError(_("A user is already registered with this e-mail address."))
         return email
 
     def validate_password1(self, password):
@@ -48,6 +48,6 @@ class RegisterSerializer(serializers.Serializer):
             'to_email': user.email,
         }
 
-        email_util.send_verification_email(**opts)
+        AccountService.send_verification_email(**opts)
 
         return user

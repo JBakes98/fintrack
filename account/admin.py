@@ -18,6 +18,7 @@ class UserAdmin(BaseUserAdmin):
         )}),
         ('Permissions', {'fields': (
             'is_verified',
+            'verified',
             'is_active',
             'is_staff',
             'is_superuser',
@@ -32,6 +33,7 @@ class UserAdmin(BaseUserAdmin):
                     'country',
                     'timezone',
                     'is_verified',
+                    'verified',
                     'is_staff',
                     'is_superuser',
                     'last_login')
