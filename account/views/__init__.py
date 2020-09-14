@@ -4,6 +4,7 @@ from .logout_view import LogoutView
 from .details_view import UserDetailsView
 from .account_inactive_view import AccountInactiveView
 from .account_email_verification_sent_view import AccountEmailVerificationSentView
+from .account_verification_confirm import AccountVerifyConfirmView
 
 from .password_reset_view import PasswordResetView
 from .password_reset_confirm_view import PasswordResetConfirmView

@@ -1,7 +1,10 @@
+from django.conf import settings
 from django.contrib.auth import get_user_model, authenticate
 from django.core import exceptions
 from django.utils.translation import ugettext_lazy as _
 from rest_framework import serializers
+
+from account.utils import email_util
 
 UserModel = get_user_model()
 
@@ -32,7 +35,18 @@ class LoginSerializer(serializers.Serializer):
                 raise exceptions.ValidationError(msg)
 
             if not user.is_verified:
-                raise serializers.ValidationError(_('E-mail is not verified.'))
+                request = self.context.get('request')
+                # Set some values to trigger the send_email method.
+                opts = {
+                    'use_https': request.is_secure(),
+                    'from_email': getattr(settings, 'DEFAULT_FROM_EMAIL'),
+                    'request': request,
+                    'to_email': user.email,
+                }
+
+                email_util.send_verification_email(**opts)
+
+                raise serializers.ValidationError(_('Account is not verified, please check your email for verification.'))
 
             attrs['user'] = user
             return attrs

@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.utils.translation import ugettext_lazy as _
 from rest_framework import serializers
@@ -37,4 +38,16 @@ class RegisterSerializer(serializers.Serializer):
     def save(self, request):
         self.cleaned_data = self.get_cleaned_data()
         user = get_user_model().objects.create_user(**self.cleaned_data)
+
+        request = self.context.get('request')
+        # Set some values to trigger the send_email method.
+        opts = {
+            'use_https': request.is_secure(),
+            'from_email': getattr(settings, 'DEFAULT_FROM_EMAIL'),
+            'request': request,
+            'to_email': user.email,
+        }
+
+        email_util.send_verification_email(**opts)
+
         return user
