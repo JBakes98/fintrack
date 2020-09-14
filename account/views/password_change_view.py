@@ -1,4 +1,5 @@
 from django.utils.translation import ugettext_lazy as _
+from rest_framework import status
 
 from rest_framework.generics import GenericAPIView
 from rest_framework.permissions import IsAuthenticated
@@ -25,4 +26,4 @@ class PasswordChangeView(GenericAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return Response({"detail": _("New password has been saved.")})
+        return Response({"detail": _("New password has been saved.")}, status=status.HTTP_202_ACCEPTED)

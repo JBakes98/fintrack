@@ -4,7 +4,7 @@ from rest_framework.response import Response
 
 from django.utils.translation import ugettext_lazy as _
 
-from account.serializers import AccountVerificationSerializer
+from account.serializers import VerificationSerializer
 
 
 class AccountVerifyConfirmView(GenericAPIView):
@@ -12,7 +12,7 @@ class AccountVerifyConfirmView(GenericAPIView):
     User Account is verified and the user can now use
     their account
     """
-    serializer_class = AccountVerificationSerializer
+    serializer_class = VerificationSerializer
     permission_classes = (AllowAny,)
 
     def dispatch(self, *args, **kwargs):
