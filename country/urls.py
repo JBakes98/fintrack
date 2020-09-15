@@ -4,7 +4,7 @@ from rest_framework.routers import DefaultRouter
 from country.views import *
 
 router = DefaultRouter()
-router.register(r'', CountryViewSet, basename='country')
+router.register(r'', CountryViewSet, basename='countries')
 
 urlpatterns = [
     path('exchanges/', CountryExchangeListView.as_view(), name='countries_exchanges'),

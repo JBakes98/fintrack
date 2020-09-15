@@ -26,4 +26,7 @@ class PasswordChangeView(GenericAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return Response({"detail": _("New password has been saved.")}, status=status.HTTP_202_ACCEPTED)
+        return Response({
+            "detail": _("New password has been saved.")},
+            status=status.HTTP_202_ACCEPTED
+        )

@@ -1,3 +1,4 @@
+from rest_framework import status
 from rest_framework.generics import GenericAPIView
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
@@ -30,6 +31,7 @@ class PasswordResetConfirmView(GenericAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return Response(
-            {"detail": _("Password has been reset with the new password.")}
+        return Response({
+            "detail": _("Password has been reset with the new password.")},
+            status=status.HTTP_202_ACCEPTED
         )

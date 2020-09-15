@@ -30,7 +30,9 @@ class LogoutView(APIView):
             pass
         django_logout(request)
 
-        response = Response({"detail": _("Successfully logged out.")},
-                            status=status.HTTP_200_OK)
+        response = Response({
+            "detail": _("Successfully logged out.")},
+            status=status.HTTP_200_OK
+        )
 
         return response

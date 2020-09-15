@@ -31,3 +31,11 @@ class UserAccountManager(BaseUserManager):
 
     def create_superuser(self, email, password, **extra_fields):
         return self._create_user(email, password, True, True, **extra_fields)
+
+    def find_by_email(self, email):
+        queryset = self.get_queryset()
+        return queryset.filter(email=email)
+
+    def factory_user_account(self, email, password, **kwargs):
+        # Factory to create a user account
+        return self.create_user(email, password, **kwargs)

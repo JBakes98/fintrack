@@ -4,7 +4,7 @@ from rest_framework.routers import DefaultRouter
 from stock.views import *
 
 router = DefaultRouter()
-router.register(r'', StockViewSet, basename='stock')
+router.register(r'', StockViewSet, basename='stocks')
 
 urlpatterns = [
    path('watchlist/<str:ticker>/', WatchStockView.as_view(), name='watchlist_stock'),

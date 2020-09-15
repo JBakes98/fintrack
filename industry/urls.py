@@ -4,7 +4,7 @@ from rest_framework.routers import DefaultRouter
 from industry.views import *
 
 router = DefaultRouter()
-router.register(r'', IndustryViewSet, basename='industry')
+router.register(r'', IndustryViewSet, basename='industries')
 
 urlpatterns = [
     path('companies/', IndustryCompanyListView.as_view(), name='industries_companies'),

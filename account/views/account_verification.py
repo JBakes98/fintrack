@@ -1,3 +1,4 @@
+from rest_framework import status
 from rest_framework.generics import GenericAPIView
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
@@ -24,6 +25,7 @@ class AccountVerifyConfirmView(GenericAPIView):
         serializer = self.get_serializer(data=kwargs)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return Response(
-            {"detail": _("Thank you for verifying your account.")}
+        return Response({
+            "detail": _("Thank you for verifying your account.")},
+            status=status.HTTP_202_ACCEPTED
         )

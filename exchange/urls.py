@@ -4,7 +4,7 @@ from rest_framework.routers import DefaultRouter
 from exchange.views import *
 
 router = DefaultRouter()
-router.register(r'', ExchangeViewSet, basename='exchange')
+router.register(r'', ExchangeViewSet, basename='exchanges')
 
 urlpatterns = [
     path('stocks/', ExchangeStockListView.as_view(), name='exchanges_stocks'),

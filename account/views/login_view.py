@@ -5,7 +5,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
 from account.serializers import LoginSerializer, TokenSerializer
-from account.services import AccountService
+from account.services import AccountToken
 
 
 class LoginView(GenericAPIView):
@@ -29,13 +29,14 @@ class LoginView(GenericAPIView):
 
     def login(self):
         self.user = self.serializer.validated_data['user']
-        account_service = AccountService()
-        self.token = account_service.create_user_token(self.user.pk)
+        self.token = AccountToken(id=self.user.id).create_user_token()
 
     def get_response(self):
         serializer_class = self.get_response_serializer()
-        serializer = serializer_class(instance=self.token,
-                                      context={'request': self.request})
+        serializer = serializer_class(
+            instance=self.token,
+            context={'request': self.request}
+        )
         response = Response(serializer.data, status=status.HTTP_200_OK)
 
         return response

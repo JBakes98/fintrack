@@ -1,3 +1,4 @@
+from django.utils.translation import ugettext_lazy as _
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 from rest_framework.generics import CreateAPIView
@@ -24,5 +25,7 @@ class RegisterView(CreateAPIView):
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
 
-        return Response({"detail": "Account verification email sent, please verify your account."},
-                        status=status.HTTP_201_CREATED)
+        return Response({
+            "detail": _("Account verification email sent, please verify your account.")},
+            status=status.HTTP_201_CREATED
+        )
