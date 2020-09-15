@@ -1,8 +1,6 @@
-from django.http import JsonResponse
 from django.utils.translation import ugettext_lazy as _
-from rest_framework import serializers, status
-from account.services import RegisterUserAccount
-from account.exceptions import EmailAlreadyExistsError
+from rest_framework import serializers
+from account.services import AccountService
 
 
 class RegisterSerializer(serializers.Serializer):
@@ -27,6 +25,6 @@ class RegisterSerializer(serializers.Serializer):
 
     def save(self, request):
         self.cleaned_data = self.get_cleaned_data()
-        usecase = RegisterUserAccount(**self.cleaned_data)
-        usecase.execute()
+        service = AccountService(**self.cleaned_data)
+        service.register()
 

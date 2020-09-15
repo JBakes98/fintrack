@@ -5,7 +5,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
 from account.serializers import LoginSerializer, TokenSerializer
-from account.services import AccountToken
+from account.services import AccountService
 
 
 class LoginView(GenericAPIView):
@@ -29,7 +29,7 @@ class LoginView(GenericAPIView):
 
     def login(self):
         self.user = self.serializer.validated_data['user']
-        self.token = AccountToken(id=self.user.id).create_user_token()
+        self.token = AccountService(email=self.user.email).create_user_token()
 
     def get_response(self):
         serializer_class = self.get_response_serializer()

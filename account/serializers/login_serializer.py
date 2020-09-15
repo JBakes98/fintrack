@@ -1,12 +1,6 @@
-from django.conf import settings
-from django.contrib.auth import get_user_model, authenticate
-from django.core import exceptions
 from django.utils.translation import ugettext_lazy as _
 from rest_framework import serializers
-
-from account.services import LoginUserAccount
-
-UserModel = get_user_model()
+from account.services import AccountService
 
 
 class LoginSerializer(serializers.Serializer):
@@ -20,8 +14,9 @@ class LoginSerializer(serializers.Serializer):
         }
         # Check if all fields are provided
         if all(credentials.values()):
-            usecase = LoginUserAccount(**credentials)
-            return usecase.execute()
+            service = AccountService(**credentials)
+            attrs['user'] = service.login()
+            return attrs
         else:
             msg = _("Must Include email and password.")
             raise serializers.ValidationError(msg)

@@ -1,5 +1,5 @@
 {% load i18n %}{% autoescape off %}
-    {% blocktrans %}Hi {{ user.first_name }}, you're receiving this email because you have created an account for {{ site_name }}.{% endblocktrans %}
+    {% blocktrans %}Hi {{ user }}, you're receiving this email because you have created an account for {{ site_name }}.{% endblocktrans %}
     {% trans "Please follow the below link to verify your account" %}
     {% block verify_link %}
         {{ protocol }}://{{ domain }}{% url 'account_verify_confirm' uidb64=uid token=token %}
