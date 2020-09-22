@@ -10,9 +10,9 @@ class LSE(ExchangeClass):
     ExchangeClass child
     """
     def __init__(self):
-        self.name = 'London Stock Exchange'
-        self.symbol = 'LSE'
-        self.stock_links = ('http://eoddata.com/stocklist/LSE/0.htm',
+        self._name = 'London Stock Exchange'
+        self._symbol = 'LSE'
+        self._stock_links = ('http://eoddata.com/stocklist/LSE/0.htm',
                             'http://eoddata.com/stocklist/LSE/3.htm',
                             'http://eoddata.com/stocklist/LSE/4.htm',
                             'http://eoddata.com/stocklist/LSE/5.htm',
@@ -46,14 +46,14 @@ class LSE(ExchangeClass):
                             'http://eoddata.com/stocklist/LSE/X.htm',
                             'http://eoddata.com/stocklist/LSE/Y.htm',
                             'http://eoddata.com/stocklist/LSE/Z.htm',)
-        self.country = 'GB'
-        self.timezone = 'BST'
-        self.opening_time = datetime.time(hour=8)
-        self.closing_time = datetime.time(hour=16, minute=30)
+        self._country = 'GB'
+        self._timezone = 'BST'
+        self._opening_time = datetime.time(hour=8)
+        self._closing_time = datetime.time(hour=16, minute=30)
 
     def create_stocks(self):
         """ Method for creating all of the classes listed stocks """
-        for link in self.stock_links:
+        for link in self._stock_links:
             resp = requests.get(link)
             soup = bs.BeautifulSoup(resp.text, "lxml")
             table = soup.find('table', {'class': 'quotes'})
@@ -63,4 +63,4 @@ class LSE(ExchangeClass):
                 mapping = str.maketrans(".", "-")
                 ticker = ticker.translate(mapping) + ".L"
                 name = row.findAll('td')[1].text
-                StockDataService.create_stock(ticker, name, self.symbol)
+                StockDataService(ticker=ticker, name=name, exchange=self._symbol).create_stock()

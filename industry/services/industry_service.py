@@ -3,8 +3,11 @@ from industry.models import Industry
 
 
 class IndustryService:
-    @staticmethod
-    def create_industry(name, sector):
+    def __init__(self, name, sector):
+        self._name = name
+        self._sector = sector
+
+    def create_industry(self):
         """
         Method to create an Industry taking individual parameters, if parent Sector
         does not exist then it creates the Sector
@@ -12,12 +15,12 @@ class IndustryService:
         :param sector: Industries parent Sector
         """
         try:
-            sector = Sector.objects.get(name=sector)
-            Industry.objects.update_or_create(name=name, sector=sector)
-            print('{} created'.format(name))
+            sector_obj = Sector.objects.get(name=self._sector)
+            Industry.objects.update_or_create(name=self._name, sector=sector_obj)
+            print('{} created'.format(self._name))
 
         except Sector.DoesNotExist as e:
-            print('{}: {}'.format(sector, e))
-            sector = Sector.objects.create_sector(sector)
-            Industry.objects.update_or_create(name=name, sector=sector)
-            print('{} created'.format(name))
+            print('{}: {}'.format(self._sector, e))
+            sector = Sector.objects.create_sector(self._sector)
+            Industry.objects.update_or_create(name=self._name, sector=sector)
+            print('{} created'.format(self._name))

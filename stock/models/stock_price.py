@@ -23,7 +23,7 @@ class StockPriceData(models.Model):
     change = models.DecimalField(max_digits=15, decimal_places=4, default=Decimal(0.00))
     change_perc = models.DecimalField(max_digits=15, decimal_places=4, default=Decimal(0.00))
 
-    ml_prediction = models.CharField(max_length=4, choices=PREDICTION_OPTIONS, default=PREDICTION_OPTIONS[2])
+    ml_prediction = models.CharField(max_length=4, choices=PREDICTION_OPTIONS, default=2)
 
     objects = StockPriceManager()
 

@@ -10,9 +10,9 @@ class NYSE(ExchangeClass):
     ExchangeClass child
     """
     def __init__(self):
-        self.name = 'New York Stock Exchange'
-        self.symbol = 'NYSE'
-        self.stock_links = ('http://eoddata.com/stocklist/NYSE/A.htm/',
+        self._name = 'New York Stock Exchange'
+        self._symbol = 'NYSE'
+        self._stock_links = ('http://eoddata.com/stocklist/NYSE/A.htm/',
                             'http://eoddata.com/stocklist/NYSE/B.htm/',
                             'http://eoddata.com/stocklist/NYSE/C.htm/',
                             'http://eoddata.com/stocklist/NYSE/D.htm',
@@ -38,10 +38,10 @@ class NYSE(ExchangeClass):
                             'http://eoddata.com/stocklist/NYSE/X.htm',
                             'http://eoddata.com/stocklist/NYSE/Y.htm',
                             'http://eoddata.com/stocklist/NYSE/Z.htm',)
-        self.country = 'US'
-        self.timezone = 'EST'
-        self.opening_time = datetime.time(hour=9, minute=30)
-        self.closing_time = datetime.time(hour=16)
+        self._country = 'US'
+        self._timezone = 'EST'
+        self._opening_time = datetime.time(hour=9, minute=30)
+        self._closing_time = datetime.time(hour=16)
 
     def create_stocks(self):
         """ Function for creating classes stocks """
@@ -55,4 +55,4 @@ class NYSE(ExchangeClass):
                 mapping = str.maketrans(".", "-")
                 ticker = ticker.translate(mapping)
                 name = row.findAll('td')[1].text
-                StockDataService.create_stock(ticker, name, self.symbol)
+                StockDataService(ticker=ticker, name=name, exchange=self._symbol).create_stock()

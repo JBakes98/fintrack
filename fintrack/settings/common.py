@@ -33,7 +33,6 @@ INSTALLED_APPS = [
     'company',
     'exchange.apps.ExchangeConfig',
     'stock',
-    'fintrack_fe',
 ]
 
 # API settings
