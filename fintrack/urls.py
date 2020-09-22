@@ -11,4 +11,5 @@ urlpatterns = [
     path('api/v1/exchanges/', include('exchange.urls')),
     path('api/v1/companies/', include('company.urls')),
     path('api/v1/stocks/', include('stock.urls')),
+    path('api/v1/indices/', include('index.urls')),
 ]

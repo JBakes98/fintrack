@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'company',
     'exchange.apps.ExchangeConfig',
     'stock',
+    'index',
 ]
 
 # API settings
@@ -117,6 +118,7 @@ USE_L10N = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 STATIC_URL = '/static/'
-STATIC_ROOT = 'static'
+STATIC_ROOT = 'static/'
 
+MEDIA_URL = '/media/'
 MEDIA_ROOT = 'media/'
