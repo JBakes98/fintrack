@@ -27,9 +27,6 @@ class StockDataService:
     def create_stock(self):
         """
         Method for creating a stock and finding its parent company object
-        :param ticker: Stocks ticker
-        :param name: Stocks name
-        :param exchange: Stocks parent Exchange
         """
         try:
             exchange_obj = Exchange.objects.get(Q(symbol=self._exchange) | Q(name=self._exchange))
@@ -54,7 +51,6 @@ class StockDataService:
         Method for getting the parent company of the specified stock, if company cannot be found
         then it will call the create_company method to create the company. If the method fails
         it will attempt 3 times before failing completely.
-        :param ticker: Stock ticker
         :return: Stocks parent Company
         """
         # Returns JSON data that contains data on the stock
@@ -97,7 +93,6 @@ class StockDataService:
         it into a dataframe
         :param interval: Interval of data that should be retrieved, options are 1m, 1d, 1m, 1y
         :param period: Period of data that should be retrieved
-        :param ticker: Stocks ticker
         :return: Stocks price data dataframe
         """
         stock = yf.Ticker(self._ticker)

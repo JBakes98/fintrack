@@ -1,4 +1,5 @@
 from .stock_serializer import StockSerializer
 from .stock_price_serializer import StockPriceSerializer
 from .stock_watchlist_serializer import StockWatchlistSerializer
+from .stock_correlations_serializer import StockCorrelationSerializer
 

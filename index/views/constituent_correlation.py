@@ -26,4 +26,4 @@ class IndexCorrelationListView(generics.ListAPIView):
     def get(self, request, symbol, format=None):
         index_service = IndexService(symbol=self.get_object(symbol))
         df = index_service.get_index_constituent_correlation()
-        return Response(df.to_json())
+        return Response(df)

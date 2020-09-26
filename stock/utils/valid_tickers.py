@@ -11,7 +11,10 @@ def check_valid_ticker(tickers: []):
     """
 
     valid_tickers = []
+
+    tickers = map(str.upper, tickers)
     for ticker in tickers:
+        print(ticker)
         try:
             stock = Stock.objects.get(ticker=ticker)
             valid_tickers.append(stock.ticker)
