@@ -29,16 +29,32 @@ class IndexService:
             raise e
 
     def get_index_constituent_correlation(self):
+        """
+        Gets the indexs constituents correlation by reading
+        the indices joined closes .csv file into a dataframe,
+        if this file is not found it will run the method to
+        create the file. Once the .csv is read it create a
+        dataframe based off the built in pandas dataframe function
+        .corr() which calculates the correlation of the stocks.
+        :return: Dataframe of stocks correlations
+        """
         index = self._get_index_obj()
         if not os.path.exists('{}-joined-closes.csv'.format(index.name)):
             self.compile_index_constituents_data()
 
         df = pd.read_csv('{}{}-joined-closes.csv'.format(settings.MEDIA_ROOT, index.symbol))
+        print(df)
         df_corr = df.corr()
 
         return df_corr
 
     def compile_index_constituents_data(self):
+        """
+        Compiles the closing price data of the stocks and returns a
+        dataframe with dates and the stocks respective closing price
+        on that date.
+        :return: Dataframe of stock closing prices on dates
+        """
         # Selects all of the stock constituents for the index
         index = self._get_index_obj()
         stocks = index.constituents.all()
@@ -55,10 +71,8 @@ class IndexService:
                 # the stocks symbol so it can be identified and then drop the data thats not needed
                 df.set_index('timestamp', inplace=True)
                 df.rename(columns={'close': stock.ticker}, inplace=True)
-                df.drop(
-                    ['id', 'stock_id', 'open', 'high', 'low', 'volume', 'change', 'change_perc', 'ml_prediction'],
-                    1,
-                    inplace=True)
+                df.drop(['id', 'stock_id', 'open', 'high', 'low', 'volume', 'change', 'change_perc', 'ml_prediction'],
+                        1, inplace=True)
 
                 # If main df is empty set it to the df otherwise add it to the
                 # existing main df

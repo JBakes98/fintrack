@@ -3,6 +3,7 @@ from urllib.error import HTTPError
 from django.db import IntegrityError
 from django.db.models import Q
 import yfinance as yf
+import pandas as pd
 from django.core.exceptions import MultipleObjectsReturned
 from company.models import Company
 from exchange.models import Exchange
@@ -12,10 +13,16 @@ from stock.utils import df_util
 
 
 class StockDataService:
-    def __init__(self, ticker, name, exchange):
+    def __init__(self, ticker, name=None, exchange=None):
         self._ticker = ticker
         self._name = name
         self._exchange = exchange
+
+    def _get_stock_obj(self):
+        try:
+            return Stock.objects.get(ticker=self._ticker)
+        except Stock.DoesNotExist as e:
+            raise e
 
     def create_stock(self):
         """
@@ -97,3 +104,7 @@ class StockDataService:
         df = stock.history(period=period, interval=interval)
 
         return df_util.prepare_stock_data_df(df, self._ticker)
+
+    def get_price_data(self):
+        stock = self._get_stock_obj()
+        return pd.DataFrame(list(stock.stock_prices.all().values()))
