@@ -11,10 +11,12 @@ class IndexAdmin(admin.ModelAdmin):
         (None, {'fields': (
             'symbol',
             'name',
+            'correlation',
         )}),
     )
 
-    inlines = (ConstituentInlineAdmin, )
+    # This causes huge performance issue due to indices having many constituents
+    # inlines = (ConstituentInlineAdmin, )
     list_display = ('symbol', 'name', 'constituents_count')
     search_fields = ('symbol', 'name')
     ordering = ('symbol',)

@@ -22,9 +22,10 @@ class StocksCorrelation(APIView):
         """
         Post a list of stock tickers and get their price
         correlation
+
+        Example of POST data "stocks" : ["AAPL", "GOOGL"]
         """
         serializer = StockCorrelationSerializer(data=request.data)
-        # ["Ford", "BMW", "Fiat"]
         serializer.is_valid(raise_exception=True)
 
         cl_tickers = valid_tickers.check_valid_ticker(serializer.validated_data['stocks'])

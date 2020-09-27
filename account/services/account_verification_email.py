@@ -1,3 +1,4 @@
+from celery import task
 from django.conf import settings
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.encoding import force_bytes
@@ -19,11 +20,12 @@ class AccountVerificationEmail:
         self.html_email_template_name = None
         self.extra_email_context = None
 
+    @task
     def send(self):
         """
-            Generate a one-use only link for verifying user account and send
-            it to the user email.
-            """
+        Generate a one-use only link for verifying user account and send
+        it to the user email.
+        """
         user = User.objects.get(email=self._to_email)
 
         site_name = domain = settings.DEFAULT_DOMAIN

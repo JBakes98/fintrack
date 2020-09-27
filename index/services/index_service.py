@@ -39,11 +39,11 @@ class IndexService:
         :return: Dataframe of stocks correlations
         """
         index = self._get_index_obj()
-        if not os.path.exists('{}-joined-closes.csv'.format(index.name)):
+        if index.correlation is None:
             self.compile_index_constituents_data()
+            index = self._get_index_obj()
 
-        df = pd.read_csv('{}{}-joined-closes.csv'.format(settings.MEDIA_ROOT, index.symbol))
-        print(df)
+        df = index.loadframe()
         df_corr = df.corr()
 
         return df_corr
@@ -80,6 +80,4 @@ class IndexService:
                     main_df = df
                 else:
                     main_df = main_df.join(df, how='outer')
-
-        main_df.to_csv('{}{}-joined-closes.csv'.format(settings.MEDIA_ROOT, index.symbol),
-                       encoding='utf-8', index=False)
+        index.putframe(main_df)
