@@ -1,2 +1,3 @@
 from .stock_data_service import StockDataService
 from .stock_ml_service import StockMachineLearningService
+from .service_dto import StockDto

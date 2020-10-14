@@ -1,4 +1,7 @@
+import json
+
 from django.db import models
+from django_celery_beat.models import PeriodicTask, IntervalSchedule, CrontabSchedule
 
 
 class ExchangeManager(models.Manager):

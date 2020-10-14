@@ -1,8 +1,8 @@
-from celery import task
 from django.conf import settings
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
+from celery import shared_task
 
 from account.models import User
 from account.utils import email_util
@@ -20,7 +20,7 @@ class AccountVerificationEmail:
         self.html_email_template_name = None
         self.extra_email_context = None
 
-    @task
+    @shared_task()
     def send(self):
         """
         Generate a one-use only link for verifying user account and send

@@ -1,8 +1,8 @@
 from __future__ import absolute_import, unicode_literals
-from celery import task
+from celery import shared_task
 
 
-@task()
+@shared_task
 def get_latest_stock_data(ticker):
     """
     Method that gets the latest data for a Stock
@@ -16,7 +16,7 @@ def get_latest_stock_data(ticker):
     print('Added {} minute data'.format(ticker))
 
 
-@task
+@shared_task
 def get_day_stock_data(ticker):
     """
     Method that that gets the day data for a Stock
@@ -30,7 +30,7 @@ def get_day_stock_data(ticker):
     print('Added {} day data'.format(ticker))
 
 
-@task
+@shared_task
 def get_bulk_day_stock_data(ticker):
     """
     Method that that gets the day data for a Stock

@@ -1,7 +1,9 @@
 import datetime
+import json
 
 import pytz
 from django.db import models
+from django_celery_beat.models import CrontabSchedule, PeriodicTask
 
 from exchange.managers import ExchangeManager
 from exchange.helpers import timezone_helper as tz_help
@@ -25,6 +27,25 @@ class Exchange(models.Model):
 
     def __str__(self):
         return self.symbol
+
+    def save(self, silent=False, *args, **kwargs):
+        super(Exchange, self).save(*args, **kwargs)
+        cron_schedule = CrontabSchedule.objects.create(minute=self.get_market_close_utc.minute,
+                                                       hour=self.get_market_close_utc.hour,
+                                                       day_of_week='mon-fri')
+        task = PeriodicTask.objects.create(crontab=cron_schedule,
+                                    name='{}_refresh_stock_data'.format(self.symbol),
+                                    task='get_exchanges_day_data',
+                                    kwargs=json.dumps({
+                                        'exchange_symbol': self.symbol,
+                                    })
+                                    )
+        task.save()
+
+    def delete(self, using=None, keep_parents=False):
+        task = PeriodicTask.objects.get(name='{}_refresh_stock_data'.format(self.symbol))
+        task.delete()
+        super(Exchange, self).delete()
 
     @property
     def stock_count(self):

@@ -1,8 +1,8 @@
 from __future__ import absolute_import, unicode_literals
-from celery import task
+from celery import shared_task
 
 
-@task()
+@shared_task
 def get_exchanges_day_data(exchange_symbol):
     """
     Method that iterates through an exchange and all of its listed stocks
@@ -21,7 +21,7 @@ def get_exchanges_day_data(exchange_symbol):
         get_day_stock_data(stock.ticker)
 
 
-@task()
+@shared_task
 def bulk_get_exchanges_day_data(exchange_symbol):
     """
     Method that gets a specific exchanges listed stocks day price data and
@@ -46,7 +46,7 @@ used
 """
 
 
-@task()
+@shared_task
 def get_latest_data_for_open_markets():
     """
     Task that gets the latest price data for Stocks in Exchanges that are
@@ -64,7 +64,7 @@ def get_latest_data_for_open_markets():
                 get_latest_stock_data.delay(stock.ticker)
 
 
-@task()
+@shared_task
 def get_exchanges_minute_data(exchange_symbol):
     """
     Method that iterates through an exchange and all of its listed stocks
@@ -85,7 +85,7 @@ def get_exchanges_minute_data(exchange_symbol):
         print('Added {} minute data')
 
 
-@task()
+@shared_task
 def bulk_get_exchanges_minute_data(exchange_symbol):
     """
     Method that gets a specific exchanges listed stocks minute price data and

@@ -18,23 +18,14 @@ app.autodiscover_tasks()
 
 @app.on_after_finalize.connect
 def setup_periodic_tasks(sender, **kwargs):
-    from exchange.models import Exchange
-    from exchange.tasks import get_exchanges_day_data
-
-    exchanges = Exchange.objects.all()
-    for exchange in exchanges:
-        close = exchange.get_market_close_utc()
-        sender.add_periodic_task(
-            crontab(hour=close.hour, minute=close.minute, day_of_week='mon-sun'),
-            get_exchanges_day_data.s(exchange.symbol),
-        )
-
-    # sender.add_periodic_task(
-    #     crontab(minute='*/1', day_of_week='mon-fri'),
-    #     get_exchanges_day_data.s('NASDAQ'),
-    # )
+    sender.add_periodic_task(crontab(hour=8), test.s(arg='Hello testing'),)
 
 
 @app.task(bind=True)
 def debug_task(self):
     print('Request: {0!r}'.format(self.request))
+
+
+@app.task
+def test(arg):
+    print(arg)

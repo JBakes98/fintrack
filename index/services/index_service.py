@@ -1,7 +1,4 @@
-import os
-
 import pandas as pd
-from django.conf import settings
 from django.db import IntegrityError
 from django.db.models import Q
 
@@ -43,7 +40,7 @@ class IndexService:
             self.compile_index_constituents_data()
             index = self._get_index_obj()
 
-        df = index.loadframe()
+        df = index.load_correlation()
         df_corr = df.corr()
 
         return df_corr
@@ -80,4 +77,4 @@ class IndexService:
                     main_df = df
                 else:
                     main_df = main_df.join(df, how='outer')
-        index.putframe(main_df)
+        index.put_correlation(main_df)

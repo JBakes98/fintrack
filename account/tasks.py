@@ -1,11 +1,11 @@
 from __future__ import absolute_import, unicode_literals
-from celery import task
+from celery import shared_task
 
 from django.core.mail import EmailMultiAlternatives
 from django.template import loader
 
 
-@task
+@shared_task()
 def send_mail(subject_template_name, email_template_name,
               context, from_email, to_email, html_email_template_name=None):
     """
