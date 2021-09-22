@@ -15,7 +15,7 @@ contextlib2==0.6.0
 Cython==0.29.16
 distlib==0.3.0
 distro==1.4.0
-Django==3.0.7
+Django==3.1.13
 django-celery-results==1.2.1
 django-cors-headers==3.2.1
 django-filter==2.2.0
